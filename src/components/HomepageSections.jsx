@@ -706,7 +706,7 @@ function WhatWeDoSection() {
 
           <div className="s4-divider">
             <div className="s4-divider-line" />
-            <span>continues</span>
+            <span>continues →</span>
             <div className="s4-divider-line" />
           </div>
 
@@ -1291,7 +1291,8 @@ const S4_CSS = `
   }
   .s4-node.active .s4-node-inner {
     border-left-color: #081F5C;
-    background: #f0f4f8;
+    border-left-width: 4px;
+    background: #E8F4FD;
   }
   .s4-badge {
     display: inline-flex;
@@ -1300,14 +1301,15 @@ const S4_CSS = `
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #0477BF;
-    color: #ffffff;
+    background: rgba(4, 119, 191, 0.15);
+    color: #0477BF;
     font-size: 9px;
     font-weight: 600;
     margin-bottom: 6px;
   }
   .s4-node.active .s4-badge {
     background: #081F5C;
+    color: #ffffff;
   }
   .s4-conn {
     flex-shrink: 0;
@@ -1370,6 +1372,8 @@ const S4_CSS = `
   .s4-detail.expanded {
     padding: 20px 24px;
     display: block;
+    border-top: 2px solid #0477BF;
+    border-left: 3px solid #0477BF;
   }
   .s4-detail-prompt {
     font-size: 13px;
@@ -1393,12 +1397,16 @@ const S4_CSS = `
   .s4-next-example {
     background: none;
     border: none;
+    border-top: 0.5px solid rgba(4, 119, 191, 0.25);
     color: #0477BF;
     font-size: 12px;
     font-family: IBM Plex Sans, sans-serif;
     cursor: pointer;
-    padding: 8px 0 0;
+    padding: 12px 0 0;
+    margin-top: 12px;
     display: block;
+    width: 100%;
+    text-align: left;
     transition: opacity 120ms ease;
   }
   .s4-next-example:hover { opacity: 0.7; }
