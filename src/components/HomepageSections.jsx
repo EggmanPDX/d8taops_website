@@ -659,25 +659,15 @@ function S4Connector() {
 
 function WhatWeDoSection() {
   const [activeIdx, setActiveIdx] = React.useState(null);
-  const [exampleIndices, setExampleIndices] = React.useState({});
 
   const row1 = s4Agents.slice(0, 4);
   const row2 = s4Agents.slice(4, 8);
-
-  const handleNodeClick = (idx) => {
-    setActiveIdx(idx);
-    setExampleIndices(prev => ({ ...prev, [idx]: prev[idx] ?? 0 }));
-  };
-
-  const cycleExample = (idx) => {
-    setExampleIndices(prev => ({ ...prev, [idx]: ((prev[idx] ?? 0) + 1) % 4 }));
-  };
 
   const renderRow = (rowAgents, startIdx) => (
     <div className="s4-row">
       {rowAgents.map((agent, i) => (
         <React.Fragment key={agent.d}>
-          <S4Node agent={agent} idx={startIdx + i} activeIdx={activeIdx} setActiveIdx={handleNodeClick} />
+          <S4Node agent={agent} idx={startIdx + i} activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
           {i < rowAgents.length - 1 && <S4Connector />}
         </React.Fragment>
       ))}
@@ -685,7 +675,6 @@ function WhatWeDoSection() {
   );
 
   const active = activeIdx !== null ? s4Agents[activeIdx] : null;
-  const exampleIdx = activeIdx !== null ? (exampleIndices[activeIdx] ?? 0) : 0;
 
   return (
     <>
@@ -728,8 +717,7 @@ function WhatWeDoSection() {
                 </div>
                 <div className="s4-detail-block">
                   <div className="s4-detail-block-label">Example</div>
-                  <div className="s4-detail-block-text">{active.examples[exampleIdx]}</div>
-                  <button className="s4-next-example" onClick={() => cycleExample(activeIdx)}>next example →</button>
+                  <div className="s4-detail-block-text">{active.examples[0]}</div>
                 </div>
               </div>
             </div>
@@ -1394,22 +1382,6 @@ const S4_CSS = `
     color: #081F5C;
     margin-bottom: 8px;
   }
-  .s4-next-example {
-    background: none;
-    border: none;
-    border-top: 0.5px solid rgba(4, 119, 191, 0.25);
-    color: #0477BF;
-    font-size: 12px;
-    font-family: IBM Plex Sans, sans-serif;
-    cursor: pointer;
-    padding: 12px 0 0;
-    margin-top: 12px;
-    display: block;
-    width: 100%;
-    text-align: left;
-    transition: opacity 120ms ease;
-  }
-  .s4-next-example:hover { opacity: 0.7; }
   .s4-detail-what {
     font-size: 14px;
     color: #333333;
