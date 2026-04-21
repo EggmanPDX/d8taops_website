@@ -2,12 +2,9 @@ import React from 'react';
 import HomepageNav from './components/HomepageNav';
 import {
   HeroSection,
-  ComparisonSection,
-  WhoWeAreSection,
   WhatWeDoSection,
   WhatWeDoGrid,
-  IngestAgentDemo,
-  DashboardShowcase,
+  WhoItIsSection,
   ProofBlockSection,
   ClosingCTA,
   GlobalFooter
@@ -30,11 +27,8 @@ export default function Homepage() {
         <ProofBar />
         <WhatWeDoGrid />
         <WhatWeDoSection />
-        <ComparisonSection />
-        <WhoWeAreSection />
+        <WhoItIsSection />
         <ProofBlockSection />
-        <IngestAgentDemo />
-        <DashboardShowcase />
         <ClosingCTA />
         <GlobalFooter />
       </div>

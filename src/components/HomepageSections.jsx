@@ -315,74 +315,8 @@ function HeroSection() {
 }
 
 // ============================================================
-// COMPARISON SECTION
-// ============================================================
-function ComparisonSection() {
-  const rows = [
-    { label: 'What it is', d8: 'Agent orchestration layer', platform: 'Data warehouse + analytics', generic: 'LLM wrapper' },
-    { label: 'Where your data goes', d8: 'Stays in your environment', platform: 'Migrated to their cloud', generic: 'Sent to their API' },
-    { label: 'What it produces', d8: 'Governed, auditable outputs', platform: 'A place to store and query data', generic: 'Unstructured responses' },
-    { label: 'Governance', d8: 'Built-in, enforced per agent', platform: 'Inside their ecosystem only', generic: 'None' },
-    { label: 'Timeline', d8: '90 days to production', platform: 'Multi-year migration + build', generic: 'Depends on what you wire up' },
-    { label: 'Works with what you have', d8: 'Yes — runs on top', platform: 'Replaces what you have', generic: "Doesn't integrate deeply" },
-  ];
-
-  const BORDER = '1px solid #E4E7EC';
-
-  return (
-    <section style={{ padding: '96px 24px', background: BG_LIGHT, color: NAVY }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-        <h2 style={{ textAlign: 'center', margin: '0 auto 64px', fontSize: 'clamp(24px, 3vw, 32px)', color: NAVY, fontWeight: 700, lineHeight: 1.4, maxWidth: 800 }}>
-          Not a warehouse. Not a generic AI tool.<br />
-          The orchestration layer your stack has been missing.
-        </h2>
-
-        {/* The Table Wrapper matching Shadcn Table */}
-        <div style={{
-          width: '100%', overflowX: 'auto',
-          borderRadius: 12, position: 'relative',
-          background: WHITE,
-          boxShadow: '0 4px 24px rgba(8,31,92,0.03)'
-        }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, fontFamily: 'var(--font-sans)', textAlign: 'left' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '24px 20px', fontWeight: 600, borderBottom: BORDER, borderRight: BORDER }}></th>
-                <th style={{ padding: '24px 20px', fontWeight: 700, color: NAVY, borderBottom: BORDER, borderRight: BORDER }}>D8TAOPS</th>
-                <th style={{ padding: '24px 20px', fontWeight: 600, color: MUTED, borderBottom: BORDER, borderRight: BORDER }}>Data Platforms (Snowflake, Databricks)</th>
-                <th style={{ padding: '24px 20px', fontWeight: 600, color: MUTED, borderBottom: BORDER }}>Generic AI Tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r, i) => (
-                <tr key={i}>
-                  <td style={{ padding: '20px', verticalAlign: 'middle', fontWeight: 700, color: NAVY, borderBottom: i === rows.length - 1 ? 'none' : BORDER, borderRight: BORDER }}>{r.label}</td>
-                  <td style={{ padding: '20px', verticalAlign: 'middle', fontWeight: 700, color: NAVY, borderBottom: i === rows.length - 1 ? 'none' : BORDER, borderRight: BORDER }}>{r.d8}</td>
-                  <td style={{ padding: '20px', verticalAlign: 'middle', fontWeight: 500, color: MUTED, borderBottom: i === rows.length - 1 ? 'none' : BORDER, borderRight: BORDER }}>{r.platform}</td>
-                  <td style={{ padding: '20px', verticalAlign: 'middle', fontWeight: 500, color: MUTED, borderBottom: i === rows.length - 1 ? 'none' : BORDER }}>{r.generic}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Caption */}
-        <div style={{ marginTop: 32, textAlign: 'center' }}>
-          <p style={{ margin: '0 auto', fontSize: 15, color: '#18181b', lineHeight: 1.6, maxWidth: 800 }}>
-            <strong style={{ color: BLUE }}>“We sit alongside them, not against them.”</strong> Already using Snowflake or Databricks? Good. We run alongside them. Our agents connect to your data wherever it lives, including inside your warehouse.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================
-// WHO WE ARE — short left-justified intro
-// ============================================================
-function WhoWeAreSection() {
-  return null;
-}
+function ComparisonSection() { return null; }
+function WhoWeAreSection() { return null; }
 
 // ============================================================
 // WHAT WE DO — full-width audit widget
@@ -731,326 +665,10 @@ function WhatWeDoSection() {
 
 
 
-// ============================================================
-// INGEST AGENT DEMO — orbiting sources + live log
-// ============================================================
-function IngestAgentDemo() {
-  const [tick, setTick] = React.useState(0);
-  const [logs, setLogs] = React.useState([]);
-  const logRef = React.useRef(null);
-  const sources = [
-    { label: 'Postgres', angle: -45 },
-    { label: 'CSV / Excel', angle: 0 },
-    { label: 'REST API', angle: 45 },
-  ];
-
-  React.useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), 1400);
-    return () => clearInterval(id);
-  }, []);
-
-  React.useEffect(() => {
-    const src = sources[tick % sources.length];
-    const ts = new Date().toLocaleTimeString([], { hour12: false });
-    setLogs(prev => [...prev.slice(-4), `[${ts}] DB:INGEST ✓ pulled batch from ${src.label}`]);
-    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-  }, [tick]);
-
-  const radius = 140;
-
-  return (
-    <section style={{ padding: '96px 24px', background: BG_LIGHT }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-        <div style={{ marginBottom: 40, textAlign: 'center' }}>
-          <SectionEyebrow code="D8:INGEST" />
-          <h2 style={{ margin: '12px auto', fontSize: 'clamp(32px, 3.6vw, 48px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: '22ch' }}>See the Ingest Agent in motion.</h2>
-          <p style={{ margin: '0 auto', fontSize: 16, color: MUTED, maxWidth: 640, lineHeight: 1.6 }}>
-            Watch as Ingest pulls from multiple sources, normalizes the payloads, and hands off a unified data layer to the next agent.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'stretch' }}>
-          {/* Left Orbital Card */}
-          <div style={{ position: 'relative', borderRadius: 12, background: WHITE, border: `1px solid #E4E7EC`, height: 400, overflow: 'hidden', boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
-            <div style={{
-              position: 'absolute', width: radius * 2, height: radius * 2,
-              left: `calc(50% - ${radius}px)`, top: `calc(50% - ${radius}px)`,
-              borderRadius: '50%', border: `1px dashed #E4E7EC`,
-            }} />
-            <div style={{
-              position: 'absolute', width: radius * 3, height: radius * 3,
-              left: `calc(50% - ${radius * 1.5}px)`, top: `calc(50% - ${radius * 1.5}px)`,
-              borderRadius: '50%', border: `1px dashed #E4E7EC`,
-            }} />
-
-            {sources.map((s, i) => {
-              const rad = s.angle * Math.PI / 180;
-              const x = Math.cos(rad) * radius;
-              const y = Math.sin(rad) * radius;
-              const active = tick % sources.length === i;
-              return (
-                <React.Fragment key={s.label}>
-                  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'visible' }}>
-                    <line
-                      x1={`calc(50% + ${x}px)`} y1={`calc(50% + ${y}px)`} x2="50%" y2="50%"
-                      stroke={active ? '#CBD5E1' : '#F1F5F9'} strokeWidth={1}
-                      style={{ transition: 'stroke 300ms' }} />
-                  </svg>
-                  <div style={{
-                    position: 'absolute', left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)`,
-                    transform: `translate(-50%, -50%) scale(${active ? 1.05 : 1})`,
-                    transition: 'transform 300ms',
-                    background: WHITE, border: '1px solid #E4E7EC', padding: '8px 12px',
-                    borderRadius: 8, color: NAVY, fontSize: 12, fontWeight: 600,
-                    boxShadow: active ? '0 4px 12px rgba(8,31,92,0.05)' : 'none',
-                    zIndex: 2
-                  }}>
-                    {s.label}
-                  </div>
-                  {active && (
-                    <div key={`packet-${tick}`} style={{
-                      position: 'absolute', left: '50%', top: '50%',
-                      width: 8, height: 8, borderRadius: '4px', background: BLUE,
-                      animation: `packet-${i} 1s ease-in-out forwards`,
-                    }}>
-                      <style>{`@keyframes packet-${i}{
-                        0%{transform:translate(${x - 4}px,${y - 4}px) scale(0.6);opacity:0}
-                        25%{opacity:1}
-                        100%{transform:translate(-4px,-4px) scale(0.4);opacity:0}
-                      }`}</style>
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })}
-
-            {/* Center Agent */}
-            <div style={{
-              position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-              background: NAVY, width: 88, height: 88, borderRadius: 12,
-              justifyContent: 'center', color: WHITE, zIndex: 3,
-              boxShadow: '0 8px 24px rgba(8,31,92,0.1)'
-            }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 800, letterSpacing: '0.05em' }}>DB:INGEST</span>
-            </div>
-
-            {/* ACTIVE badge */}
-            <div style={{
-              position: 'absolute', top: 20, left: 20,
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '6px 12px', borderRadius: 9999, background: '#F1F5F9',
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: SUCCESS }} />
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', color: NAVY }}>ACTIVE</span>
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* Terminal */}
-            <div style={{ borderRadius: 12, background: '#1E293B', color: WHITE, padding: 20, fontFamily: 'var(--font-mono)', fontSize: 12, lineHeight: 1.6, height: 200, display: 'flex', flexDirection: 'column', boxShadow: '0 8px 24px rgba(8,31,92,0.1)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#EF4444' }} />
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#F59E0B' }} />
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981' }} />
-                <span style={{ marginLeft: 12, color: 'rgba(255,255,255,0.5)', fontSize: 11, letterSpacing: '0.1em' }}>INGEST.LOG</span>
-              </div>
-              <div ref={logRef} style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                {logs.map((l, i) => <div key={i} style={{ color: '#E2E8F0' }}>{l}</div>)}
-              </div>
-            </div>
-
-            {/* What's Happening */}
-            <div style={{ borderRadius: 12, background: WHITE, border: '1px solid #E4E7EC', padding: 24, flex: 1, boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94A3B8' }}>WHAT'S HAPPENING</span>
-              <ul style={{ margin: '16px 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 16 }}>
-                {[
-                  'Connect to source systems via secure adapters',
-                  'Normalize schemas into a unified payload',
-                  'Hand off to DB:CAT for classification',
-                ].map(s => (
-                  <li key={s} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, color: NAVY, fontWeight: 600 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: BLUE, flexShrink: 0 }} />
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================
-// DASHBOARD SHOWCASE — stacked browser-chrome cards, click to expand
-// ============================================================
-function DashboardChrome({ label, children }) {
-  return (
-    <div style={{
-      borderRadius: 12, overflow: 'hidden', background: WHITE,
-      border: '1px solid rgba(8,31,92,0.12)', boxShadow: '0 24px 48px rgba(8,31,92,0.15)',
-    }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px',
-        background: '#EDF0F5', borderBottom: '1px solid rgba(8,31,92,0.08)',
-      }}>
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#e04b4b' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ecc229' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#26c26a' }} />
-        <span style={{ marginLeft: 8, fontSize: 12, color: MUTED, fontWeight: 500 }}>{label}</span>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function FakeDashboard({ variant }) {
-  if (variant === 'reports') {
-    return (
-      <div style={{ background: WHITE, borderRadius: 12, border: '1px solid #E4E7EC', padding: 24, display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, minHeight: 360, boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
-        <aside style={{ paddingRight: 24, borderRight: '1px solid #E4E7EC', fontSize: 13, color: MUTED }}>
-          <div style={{ fontWeight: 800, color: NAVY, marginBottom: 16 }}>Reports</div>
-          {['Overview', 'Compliance', 'Origination', 'Portfolio', 'Risk', 'Exports'].map((s, i) => (
-            <div key={s} style={{ padding: '8px 12px', borderRadius: 6, background: i === 1 ? NAVY : 'transparent', color: i === 1 ? WHITE : MUTED, marginBottom: 4, fontWeight: i === 1 ? 600 : 500 }}>{s}</div>
-          ))}
-        </aside>
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 24 }}>
-            <div>
-              <div style={{ fontSize: 11, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700 }}>Compliance</div>
-              <div style={{ fontSize: 20, fontWeight: 800, color: NAVY, marginTop: 4 }}>Portfolio Audit Summary</div>
-            </div>
-            <div style={{ fontSize: 12, color: NAVY, padding: '6px 12px', border: '1px solid #E4E7EC', borderRadius: 6, fontWeight: 600, height: 'fit-content' }}>Q2 2026</div>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-            {[{ v: '1,247', l: 'Loans audited' }, { v: '99.5%', l: 'Accuracy' }, { v: '12', l: 'Flagged' }, { v: '$1.2M', l: 'Savings' }].map(m => (
-              <div key={m.l} style={{ padding: 16, border: '1px solid #E4E7EC', borderRadius: 8 }}>
-                <div style={{ fontSize: 24, fontWeight: 800, color: NAVY }}>{m.v}</div>
-                <div style={{ fontSize: 12, color: MUTED, marginTop: 4, fontWeight: 500 }}>{m.l}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ height: 140, border: '1px solid #E4E7EC', borderRadius: 8, padding: 16, display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-            {[40, 62, 55, 78, 90, 72, 85, 95, 88, 92, 80, 96].map((h, i) => (
-              <div key={i} style={{ flex: 1, height: `${h}%`, background: i > 8 ? BLUE : '#E4E7EC', borderRadius: 4, transition: 'height 1s ease' }} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div style={{ background: WHITE, borderRadius: 12, border: '1px solid #E4E7EC', overflow: 'hidden', boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderBottom: '1px solid #E4E7EC' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Activity size={20} color={BLUE} strokeWidth={2.5} />
-          <div style={{ fontSize: 16, fontWeight: 700, color: NAVY }}>Loan Requests</div>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <div style={{ fontSize: 13, padding: '8px 16px', borderRadius: 6, background: NAVY, color: WHITE, fontWeight: 600, cursor: 'pointer' }}>All Queue</div>
-          <div style={{ fontSize: 13, padding: '8px 16px', borderRadius: 6, border: '1px solid #E4E7EC', color: MUTED, fontWeight: 500, cursor: 'pointer' }}>Pending</div>
-        </div>
-      </div>
-      <div>
-        <div style={{ display: 'grid', gridTemplateColumns: '100px 2fr 1fr 1fr 100px 100px', gap: 16, padding: '16px 24px', fontSize: 11, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#94A3B8' }}>
-          <span>ID</span><span>Borrower</span><span>Product</span><span>Amount</span><span>Risk</span><span>Status</span>
-        </div>
-        {[
-          ['L-20417', 'Kenwood Holdings LLC', 'Commercial RE', '$2.4M', 'LOW', { l: 'Approved', c: SUCCESS }],
-          ['L-20416', 'River Valley Farms', 'Agricultural', '$875K', 'MEDIUM', { l: 'Pending', c: '#94A3B8' }],
-          ['L-20415', 'Mercer & Sons', 'SBA 7(a)', '$450K', 'LOW', { l: 'Approved', c: SUCCESS }],
-          ['L-20414', 'Nova Tech Partners', 'Equipment', '$1.2M', 'HIGH', { l: 'Flagged', c: '#F59E0B' }],
-          ['L-20413', 'Bright Canyon Hotels', 'Commercial RE', '$4.1M', 'MEDIUM', { l: 'Pending', c: '#94A3B8' }],
-          ['L-20412', 'Coastal Metals Co.', 'Working Capital', '$320K', 'LOW', { l: 'Approved', c: SUCCESS }],
-        ].map((row, i) => (
-          <div key={i} style={{
-            display: 'grid', gridTemplateColumns: '100px 2fr 1fr 1fr 100px 100px', gap: 16,
-            padding: '16px 24px', fontSize: 13,
-            borderTop: '1px solid #E4E7EC',
-          }}>
-            <span style={{ fontFamily: 'var(--font-mono)', color: '#94A3B8', fontWeight: 500 }}>{row[0]}</span>
-            <span style={{ fontWeight: 700, color: NAVY }}>{row[1]}</span>
-            <span style={{ color: '#64748B' }}>{row[2]}</span>
-            <span style={{ fontWeight: 700, color: NAVY }}>{row[3]}</span>
-            <span style={{
-              fontSize: 10, fontWeight: 800, padding: '4px 10px', borderRadius: 12,
-              background: '#F1F5F9', color: '#64748B', display: 'inline-block', width: 'fit-content',
-            }}>{row[4]}</span>
-            <span style={{
-              fontSize: 13, fontWeight: 500, color: row[5].c, display: 'flex', alignItems: 'center', gap: 6
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: row[5].c }} />
-              {row[5].l}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DashboardShowcase() {
-  const [active, setActive] = React.useState(null);
-  const cards = [
-    { id: 'requests', label: 'Loan Requests', variant: 'requests' },
-    { id: 'reports', label: 'Reports & Analytics', variant: 'reports' },
-  ];
-  return (
-    <section style={{ padding: '96px 24px', background: WHITE }}>
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <div style={{ marginBottom: 48 }}>
-          <SectionEyebrow code="D8:DASHBOARD" />
-          <h2 style={{ margin: '12px 0 12px', fontSize: 'clamp(32px, 3.6vw, 48px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: '22ch' }}>See your data come alive.</h2>
-          <p style={{ margin: 0, fontSize: 16, color: MUTED, maxWidth: 640, lineHeight: 1.6 }}>Our agents surface insights in real-time dashboards built for your workflows.</p>
-        </div>
-
-        {active !== null ? (
-          <div style={{ marginBottom: 32 }}>
-            <DashboardChrome label={`D8TAOPS — ${cards[active].label}`}>
-              <div style={{ position: 'relative' }}>
-                <button onClick={() => setActive(null)} style={{
-                  position: 'absolute', top: 8, right: 12, zIndex: 2,
-                  background: 'transparent', border: 'none', cursor: 'pointer',
-                  fontSize: 12, color: MUTED, padding: '6px 10px', borderRadius: 6,
-                }}>✕ Close</button>
-                <FakeDashboard variant={cards[active].variant} />
-              </div>
-            </DashboardChrome>
-          </div>
-        ) : (
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: 520, gap: 24 }}>
-            <div aria-hidden style={{
-              position: 'absolute', inset: -24, borderRadius: 48, filter: 'blur(48px)',
-              background: `radial-gradient(ellipse at center, ${BLUE}80, ${NAVY}50, transparent 70%)`,
-              opacity: 0.15, pointerEvents: 'none',
-            }} />
-            {cards.map((c, i) => (
-              <div key={c.id} onClick={() => setActive(i)} style={{
-                position: 'relative', width: '100%', maxWidth: 900,
-                marginLeft: 0,
-                marginTop: i === 1 ? 24 : 0,
-                zIndex: i === 0 ? 2 : 1,
-                cursor: 'pointer',
-                transition: `transform 300ms ${EASE}`,
-              }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0) scale(1)'}
-              >
-                <DashboardChrome label={c.label}>
-                  <FakeDashboard variant={c.variant} />
-                </DashboardChrome>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
+function IngestAgentDemo() { return null; }
+function DashboardChrome() { return null; }
+function FakeDashboard() { return null; }
+function DashboardShowcase() { return null; }
 // ============================================================
 // PROOF BLOCK — 3:2 split, quote left, metrics bento right
 // ============================================================
@@ -1545,12 +1163,126 @@ function WhatWeDoGrid() {
   );
 }
 
+// ============================================================
+// S5 — WHO IT'S FOR — persona card grid
+// ============================================================
+const S5_CSS = `
+  .s5-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .s5-card {
+    background: #f5f7fa;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .s5-pain-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #333333;
+    margin-bottom: 6px;
+  }
+  .s5-pain-text {
+    font-size: 15px;
+    color: #333333;
+    line-height: 1.6;
+  }
+  .s5-solves-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0477BF;
+    margin-bottom: 6px;
+  }
+  .s5-solves-text {
+    font-size: 15px;
+    color: #0477BF;
+    line-height: 1.6;
+  }
+  .s5-divider {
+    height: 0.5px;
+    background: rgba(8, 31, 92, 0.1);
+  }
+  @media (max-width: 768px) {
+    .s5-grid { grid-template-columns: 1fr; }
+  }
+`;
+
+const s5Personas = [
+  {
+    label: 'VP / C-Suite',
+    pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
+    solves: 'A working system in 90 days with measurable ROI. No infrastructure overhaul required.',
+    delay: 0,
+  },
+  {
+    label: 'Data Engineer / Architect',
+    pain: 'Asked to \u2018add AI\u2019 to systems not designed for it. Unclear ownership. No governance layer.',
+    solves: 'Agents that run inside your existing stack. Clean interfaces. Traceable lineage. Governance built in.',
+    delay: 100,
+  },
+  {
+    label: 'Operations Leader',
+    pain: 'Manual, high-volume work that doesn\u2019t scale. Audit coverage gaps. Human error at scale.',
+    solves: 'Automated workflows with human-in-the-loop controls. Complete coverage without headcount growth.',
+    delay: 200,
+  },
+];
+
+function WhoItIsSection() {
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: S5_CSS }} />
+      <section style={{ background: '#ffffff', width: '100%', padding: '96px 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1rem, 5vw, 3rem)' }}>
+          <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 16 }}>
+            WHO IT'S FOR
+          </div>
+          <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 48 }}>
+            Built for the teams that own the data and the outcomes.
+          </h2>
+          <div className="s5-grid">
+            {s5Personas.map((p) => (
+              <div
+                key={p.label}
+                className="s5-card d8-reveal"
+                style={{ transitionDelay: `${p.delay}ms` }}
+              >
+                <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 16, color: '#081F5C' }}>
+                  {p.label}
+                </div>
+                <div>
+                  <div className="s5-pain-label">Pain</div>
+                  <div className="s5-pain-text">{p.pain}</div>
+                </div>
+                <div className="s5-divider" />
+                <div>
+                  <div className="s5-solves-label">D8TAOPS solves</div>
+                  <div className="s5-solves-text">{p.solves}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export {
   HeroSection,
   ComparisonSection,
   WhoWeAreSection,
   WhatWeDoSection,
   WhatWeDoGrid,
+  WhoItIsSection,
   IngestAgentDemo,
   DashboardShowcase,
   ProofBlockSection,
