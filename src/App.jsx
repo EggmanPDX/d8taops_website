@@ -5,13 +5,14 @@ import {
   ComparisonSection,
   WhoWeAreSection,
   WhatWeDoSection,
-  AgentOverviewSection,
+  WhatWeDoGrid,
   IngestAgentDemo,
   DashboardShowcase,
   ProofBlockSection,
   ClosingCTA,
   GlobalFooter
 } from './components/HomepageSections';
+import ProofBar from './components/ProofBar';
 
 export default function Homepage() {
   React.useEffect(() => {
@@ -26,11 +27,12 @@ export default function Homepage() {
       <HomepageNav />
       <div style={{ paddingTop: 88 }}>
         <HeroSection />
+        <ProofBar />
+        <WhatWeDoGrid />
         <WhatWeDoSection />
         <ComparisonSection />
         <WhoWeAreSection />
         <ProofBlockSection />
-        <AgentOverviewSection />
         <IngestAgentDemo />
         <DashboardShowcase />
         <ClosingCTA />

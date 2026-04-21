@@ -1,5 +1,6 @@
 import React from 'react';
 import { Globe, CheckCircle2, ChevronRight, Activity } from 'lucide-react';
+import { GooeyText } from './GooeyText';
 
 // HomepageSections.jsx — D8TAOPS homepage modeled on the real site, brief colors
 
@@ -25,6 +26,17 @@ function SectionEyebrow({ code, muted = false }) {
     }}>{code}</span>
   );
 }
+
+const HERO_MORPH_TEXTS = [
+  'No Rip-and-tear systems.',
+  'No New platforms.',
+  'No External data slop.',
+  'No Security risks.',
+  'No High-paid consultants.',
+  'No IT migrations.',
+  'No Manual audits necessary.',
+  'No Unorganized data.',
+];
 
 // ============================================================
 // HERO — particle canvas + typewriter on navy→blue gradient
@@ -130,51 +142,171 @@ function ScrambleRotator() {
   );
 }
 
+const PANEL_ITEMS = [
+  { strong: 'Runs on top of your stack.', muted: '' },
+  { strong: 'Your data stays put.', muted: 'On-premise, in the cloud, SaaS platforms.' },
+  { strong: 'Governed by design.', muted: 'Auditable outputs. Human-in-the-loop.' },
+  { strong: 'Live in 90 days.', muted: 'Not multi-year migrations.' },
+];
+
 function HeroSection() {
   return (
     <section style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Background — untouched */}
       <div style={{
-        position: 'relative', width: '100%', padding: '128px 24px 80px',
+        position: 'relative', width: '100%',
+        minHeight: 'max(680px, 90vh)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'linear-gradient(135deg, #0c1428 0%, #0f2560 40%, #0477BF 100%)',
       }}>
         <ParticleCanvas />
-        <div style={{
-          position: 'relative', zIndex: 1, maxWidth: 1152, margin: '0 auto',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-        }}>
-          <div style={{ marginBottom: 24 }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8, padding: '4px 12px',
-              borderRadius: 9999, border: '1px solid rgba(255,255,255,0.2)',
-              background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)',
-              fontSize: 11, color: '#fff',
+
+        {/* Two-column content grid */}
+        <div
+          className="hero-grid"
+          style={{
+            position: 'relative', zIndex: 1,
+            width: '100%', maxWidth: 1200,
+            padding: '80px clamp(2rem, 5%, 64px)',
+            display: 'grid',
+            gridTemplateColumns: '1.15fr 0.85fr',
+            gap: 80,
+            alignItems: 'center',
+          }}
+        >
+          {/* ── LEFT COLUMN ── */}
+          <div>
+            <p className="hero-eyebrow" style={{
+              margin: '0 0 14px', fontSize: 12, color: '#2ea062',
+              fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase',
             }}>
-              <span style={{ fontWeight: 700 }}>🏆 Global 100</span>
-              <span style={{ color: 'rgba(255,255,255,0.7)' }}>— Best Data Infrastructure & Analytics 2026</span>
+              Agent orchestration · Regulated industries
+            </p>
+
+            <h1
+              className="hero-h1"
+              style={{
+                margin: '0 0 20px', fontSize: 'clamp(40px, 5vw, 68px)', fontWeight: 700,
+                color: '#ffffff', lineHeight: 1.08, letterSpacing: '-0.02em',
+              }}
+            >
+              We get <span style={{ color: '#2ea062' }}>YOUR</span> data ready for AI.
+            </h1>
+
+            <h2 style={{
+              margin: '0 0 22px', fontSize: 20, fontWeight: 400,
+              color: 'rgba(255,255,255,0.65)', lineHeight: 1.5, maxWidth: 480,
+              letterSpacing: '-0.01em',
+            }}>
+              Agentic systems tailored to your infrastructure. Governed, auditable outputs — deployed in 90 days.
+            </h2>
+
+            {/* Morphing "No [word]" line */}
+            <div style={{ margin: '0 0 32px', height: 36 }}>
+              <GooeyText
+                texts={HERO_MORPH_TEXTS}
+                morphTime={1.1}
+                cooldownTime={2.2}
+                style={{ height: '100%', justifyContent: 'flex-start' }}
+                textStyle={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'clamp(14px, 1.4vw, 17px)',
+                  fontWeight: 500,
+                  color: '#2ea062',
+                  letterSpacing: '0.01em',
+                  textAlign: 'left',
+                }}
+              />
+            </div>
+
+            {/* CTA row */}
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+              <a href="#contact" style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                padding: '14px 30px', fontSize: 15, fontWeight: 600,
+                background: '#ffffff', color: '#08183a', borderRadius: 24,
+                textDecoration: 'none', whiteSpace: 'nowrap',
+              }}>
+                Get in touch.
+              </a>
+              <a href="#ingest" style={{
+                fontSize: 14, color: 'rgba(255,255,255,0.6)',
+                textDecoration: 'none', whiteSpace: 'nowrap',
+              }}>
+                See how it works →
+              </a>
+            </div>
+
+            <div style={{ margin: '24px 0 0' }}>
+              <p style={{
+                margin: '0',
+                fontSize: 10, color: 'rgba(255,255,255,0.4)',
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                fontFamily: 'var(--font-sans)',
+              }}>
+                Deployed at Kitsap Credit Union and leading financial institutions.
+              </p>
+            </div>
+
+            {/* NVIDIA badge */}
+            <div style={{ marginTop: 28 }}>
+              <img
+                src="/assets/nvidia-inception.png"
+                alt="NVIDIA Inception Program"
+                style={{ height: 36, opacity: 0.75 }}
+                onError={e => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextSibling.style.display = 'block';
+                }}
+              />
+              <p style={{
+                display: 'none', margin: 0,
+                fontSize: 10, color: 'rgba(255,255,255,0.4)',
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                fontFamily: 'var(--font-sans)',
+              }}>
+                NVIDIA INCEPTION MEMBER
+              </p>
             </div>
           </div>
 
-          <h1 style={{
-            margin: 0, fontSize: 'clamp(44px, 5.8vw, 80px)', fontWeight: 800,
-            color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.05,
+          {/* ── RIGHT COLUMN ── */}
+          <div style={{
+            background: 'rgba(255,255,255,0.19)',
+            border: '0.5px solid rgba(255,255,255,0.1)',
+            borderRadius: 10,
+            padding: '28px 32px',
           }}>
-            We get <span style={{ color: '#22C55E' }}>YOUR</span> data ready for AI.
-          </h1>
+            <p style={{
+              margin: '0 0 16px', fontFamily: 'var(--font-mono)', fontSize: 'clamp(14px, 1.4vw, 17px)', color: '#2ea062',
+              fontWeight: 500, letterSpacing: '0.01em', textTransform: 'uppercase',
+            }}>
+              HOW WE'RE DIFFERENT
+            </p>
 
-          <p style={{
-            fontSize: 18, color: '#fff', maxWidth: 640,
-            lineHeight: 1.55, margin: '48px auto 0',
-          }}>
-            Your data stays in your environment. Your team stays in control. No migration. No lock-in. No risk.
-          </p>
-
-          <div style={{ marginTop: 32 }}>
-            <a href="#contact" style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              padding: '12px 24px', fontSize: 14, fontWeight: 700, letterSpacing: '0.02em',
-              background: '#fff', color: NAVY, borderRadius: 9999, textDecoration: 'none',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.2)',
-            }}>Get in touch.</a>
+            {PANEL_ITEMS.map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', gap: 12,
+                marginBottom: i === PANEL_ITEMS.length - 1 ? 0 : 14,
+              }}>
+                <div style={{
+                  width: 18, height: 18, flexShrink: 0, marginTop: 1,
+                  background: 'rgba(46,160,98,0.18)',
+                  border: '1px solid rgba(46,160,98,0.4)',
+                  borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                    <path d="M1 4l3 3 5-6" stroke="#2ea062" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div style={{ fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 1.4 }}>
+                  <strong style={{ color: '#fff', fontWeight: 600 }}>{item.strong}</strong>
+                  {' '}
+                  <span style={{ color: 'rgba(255,255,255,0.45)' }}>{item.muted}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -201,14 +333,14 @@ function ComparisonSection() {
     <section style={{ padding: '96px 24px', background: BG_LIGHT, color: NAVY }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', margin: '0 auto 64px', fontSize: 'clamp(24px, 3vw, 32px)', color: NAVY, fontWeight: 700, lineHeight: 1.4, maxWidth: 800 }}>
-          Not a warehouse. Not a generic AI tool.<br/>
+          Not a warehouse. Not a generic AI tool.<br />
           The orchestration layer your stack has been missing.
         </h2>
 
         {/* The Table Wrapper matching Shadcn Table */}
         <div style={{
-          width: '100%', overflowX: 'auto', 
-          borderRadius: 12, position: 'relative', 
+          width: '100%', overflowX: 'auto',
+          borderRadius: 12, position: 'relative',
           background: WHITE,
           boxShadow: '0 4px 24px rgba(8,31,92,0.03)'
         }}>
@@ -253,148 +385,363 @@ function WhoWeAreSection() {
 }
 
 // ============================================================
-// WHAT WE DO — three-up feature row
+// WHAT WE DO — full-width audit widget
 // ============================================================
-function WhatWeDoSection() {
-  const cols = [
-    { title: 'Your environment. Not ours.', body: 'Agents run inside your existing AWS, Azure, GCP, or on-prem infrastructure. No data leaves your perimeter. Your security team stays in the loop.' },
-    { title: 'Production in 90 days.', body: 'We scope a µMVP, validate it with your team, and deploy to production. Most clients go live within 90 days of kickoff.' },
-    { title: 'Human-in-the-loop by design.', body: 'Your team reviews, overrides, and approves what the agents produce. Agents handle volume. People handle judgment.' },
-  ];
-  return (
-    <section style={{ padding: '96px 24px', background: BG_LIGHT }}>
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <SectionEyebrow code="D8:DIFFERENCE" />
-        <h2 style={{ margin: '12px 0 48px', fontSize: 'clamp(32px, 3.6vw, 48px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: '22ch' }}>
-          We deploy agents. You keep control.
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gridTemplateRows: '1fr 1fr', gap: 16 }}>
-          {cols.map((c, i) => {
-            const isPrimary = i === 0;
-            return (
-              <div key={i} style={{ 
-                background: isPrimary ? NAVY : WHITE, 
-                borderRadius: 24, 
-                padding: isPrimary ? '32px 40px' : 32,
-                gridColumn: isPrimary ? 1 : 2,
-                gridRow: isPrimary ? '1 / 3' : 'auto',
-                minWidth: 0,
-                wordBreak: isPrimary ? 'normal' : 'break-word'
-              }}>
-                <h3 style={{ margin: '0 0 12px', fontSize: isPrimary ? 22 : 15, fontWeight: 700, color: isPrimary ? WHITE : NAVY, letterSpacing: '-0.02em' }}>{c.title}</h3>
-                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.65, color: isPrimary ? 'rgba(255,255,255,0.85)' : BODY }}>{c.body}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
+const D8_AUDIT_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-// ============================================================
-// AGENT OVERVIEW — 8-card grid with hover border + arrow reveal
-// ============================================================
-const agents = [
-  { d: 'D8:INGEST',  n: 'Ingest',     b: 'Connects to your data sources and normalizes everything into a unified layer. Then hands off to the next agent.' },
-  { d: 'D8:CAT',     n: 'Categorize', b: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin.' },
-  { d: 'D8:CURATE',  n: 'Curate',     b: 'Validates and cleans your data before it reaches AI models. Catches problems before they become errors.' },
-  { d: 'D8:SEC',     n: 'Secure',     b: 'Enforces access controls, masks sensitive fields, and logs every action. Governance built in — not bolted on.' },
-  { d: 'D8:FLOW',    n: 'Flow',       b: 'Orchestrates the entire workflow. A supervisor agent coordinates task routing, policy checks, and human handoffs.' },
-  { d: 'D8:OBSERVE', n: 'Observe',    b: 'Monitors pipeline health in real time. Tracks every decision and generates audit-ready reports.' },
-  { d: 'D8:STAGE',   n: 'Stage',      b: 'Delivers production-ready data products to the systems and teams that need them.' },
-  { d: 'D8:VIEW',    n: 'View',       b: 'The human-facing layer. Clean, validated data delivered as dashboards, reports, and APIs in real time.' },
+  /* ── Outer section wrapper ── */
+  .d8-audit-section {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: #eef2f7;
+    padding: 4.5rem 3rem;
+  }
+  .d8-audit-inner { max-width: 1200px; margin: 0 auto; }
+
+  /* ── Inner navy card ── */
+  .d8-audit-card {
+    background: #081F5C;
+    border-radius: 18px;
+    padding: 36px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .d8-audit-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 85% 10%, rgba(4,119,191,.18) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(255,255,255,.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* ── Zone 1: Header ── */
+  .d8-audit-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 24px; margin-bottom: 28px; position: relative;
+  }
+  .d8-audit-left { flex: 1; }
+  .d8-audit-h2 {
+    font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 0 0 8px 0; line-height: 1.2; color: #fff;
+  }
+  .d8-audit-subhead {
+    font-size: 14px; color: rgba(255,255,255,0.52);
+    line-height: 1.6; max-width: 580px; margin: 0;
+  }
+  .d8-audit-pills {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px;
+  }
+  .d8-audit-pill {
+    background: rgba(255,255,255,0.09); border-radius: 20px;
+    padding: 5px 16px; font-size: 12px; color: rgba(255,255,255,0.75);
+  }
+  .d8-audit-shield {
+    width: 48px; height: 48px; background: rgba(255,255,255,0.07);
+    border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; position: relative;
+  }
+
+  /* ── Divider ── */
+  .d8-audit-divider {
+    border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 0 0 24px 0;
+  }
+
+  /* ── Zone 2: Live feed ── */
+  .d8-audit-feed-hdr {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  }
+  .d8-audit-live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #26D07C;
+    animation: d8AuditPulse 2s ease-in-out infinite; flex-shrink: 0;
+  }
+  @keyframes d8AuditPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+  .d8-audit-feed-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; color: rgba(255,255,255,0.38); text-transform: uppercase;
+  }
+  .d8-audit-viewport {
+    overflow: hidden; position: relative; height: 294px; margin-bottom: 28px;
+  }
+  .d8-audit-feed-inner { position: absolute; width: 100%; bottom: 0; }
+  .d8-audit-row {
+    display: flex; align-items: center; padding: 13px 0; gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .d8-audit-row:last-child { border-bottom: none; }
+  .d8-audit-row__ts {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    color: rgba(255,255,255,0.28); min-width: 40px; flex-shrink: 0;
+  }
+  .d8-audit-row__text {
+    font-size: 14px; color: rgba(255,255,255,0.85); flex: 1; line-height: 1.4;
+  }
+  .d8-audit-row__badge {
+    padding: 3px 12px; border-radius: 6px; font-size: 11px;
+    font-weight: 500; white-space: nowrap;
+  }
+  .d8-audit-badge--done    { background: rgba(38,208,124,0.15);  color: #26D07C; }
+  .d8-audit-badge--review  { background: rgba(232,168,56,0.15);   color: #e8a838; }
+  .d8-audit-badge--running { background: rgba(79,180,245,0.15);   color: #4fb4f5; }
+  .d8-audit-badge--queued  { background: rgba(255,255,255,0.07);  color: rgba(255,255,255,0.30); }
+  @keyframes d8SlideIn  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes d8SlideOut { from { opacity: 1; transform: translateY(0); }   to { opacity: 0; transform: translateY(-10px); } }
+  .d8-audit-row.entering { animation: d8SlideIn  0.4s  ease forwards; }
+  .d8-audit-row.leaving  { animation: d8SlideOut 0.35s ease forwards; }
+
+  /* ── Zone 3: Metrics grid ── */
+  .d8-audit-metrics {
+    display: grid; grid-template-columns: auto 1fr 1fr 1fr;
+    align-items: start;
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px;
+  }
+  .d8-audit-metric { padding-right: 32px; }
+  .d8-audit-metric + .d8-audit-metric {
+    padding-left: 32px; border-left: 1px solid rgba(255,255,255,0.07);
+  }
+  .d8-audit-metric:last-child { padding-right: 0; }
+  .d8-audit-metric-lbl {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+    letter-spacing: 0.12em; color: rgba(255,255,255,0.32);
+    text-transform: uppercase; margin: 0 0 12px 0;
+  }
+  .d8-audit-big { font-size: 34px; font-weight: 600; color: #fff; margin: 0 0 6px 0; line-height: 1; }
+  .d8-audit-big--blue { color: #4fb4f5; }
+  .d8-audit-sub  { font-size: 12px; color: rgba(255,255,255,0.36); margin: 0; }
+  /* bar rows */
+  .d8-audit-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .d8-audit-bar-row:last-of-type { margin-bottom: 0; }
+  .d8-audit-bar-track {
+    flex: 1; height: 5px; background: rgba(255,255,255,0.08);
+    border-radius: 3px; overflow: hidden;
+  }
+  .d8-audit-bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1s ease; }
+  .d8-audit-bar-val {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    color: rgba(255,255,255,0.45); min-width: 30px; text-align: right;
+  }
+  .d8-audit-bars-sub { margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.36); }
+
+  /* ── Reveal animation ── */
+  .d8-audit-reveal {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .d8-audit-reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .d8-audit-metrics { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .d8-audit-metric + .d8-audit-metric { padding-left: 0; border-left: none; }
+    .d8-audit-metric { padding-right: 0; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 20px; }
+    .d8-audit-metric:last-child { border-bottom: none; padding-bottom: 0; }
+  }
+  @media (max-width: 600px) {
+    .d8-audit-section { padding: 3rem 1.25rem; }
+    .d8-audit-card { padding: 24px; }
+    .d8-audit-metrics { grid-template-columns: 1fr; }
+    .d8-audit-h2 { font-size: 18px; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+`;
+
+const s4Agents = [
+  { num: 1, d: 'D8:INGEST',  n: 'Ingest',     r: 'Collect & normalize',
+    what: 'Connects to your existing data sources — core systems, cloud storage, APIs — and normalizes everything into a unified layer automatically.',
+    why: 'Most organizations have data spread across five or more systems that don\'t talk to each other. D8:INGEST replaces manual exports and one-off scripts with a governed, repeatable pipeline.',
+    examples: [
+      'Financial services: Connected to Kitsap Credit Union\'s core banking system and LOS overnight. Every loan record normalized and ready — no manual pull, no missing fields.',
+      'Media & operations: Connected to billboard lease contract data by facility ID across hundreds of locations. All contract records pulled into a single normalized layer per billing cycle.',
+      'Healthcare: Connected to EHR, insurance verification, and clinical research systems simultaneously. Patient records assembled from three siloed sources without manual export.',
+      'Real estate: Normalized property data across MLS, internal portfolio systems, and financial platforms. One unified layer — no IT involvement required.',
+    ]},
+  { num: 2, d: 'D8:CAT',     n: 'Categorize', r: 'Classify & catalog',
+    what: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin to current state.',
+    why: 'You can\'t govern what you can\'t see. Without a catalog, teams don\'t know what data exists or whether they\'re allowed to use it. Shadow data creates compliance exposure and duplicated work.',
+    examples: [
+      'Financial services: Cataloged every loan record by type, origination date, and applicable policy version. Auditors traced any data point back to its source system in seconds.',
+      'Media & operations: Classified lease contracts by property type, billing period, and calculation method. Every record tagged before the calculation pipeline ran.',
+      'Healthcare: Cataloged patient records across EHR, billing, and lab systems. Every dataset tagged with origin, access permissions, and clinical context.',
+      'Real estate: Classified portfolio properties by asset class, ownership structure, and market region. Full lineage from acquisition record to current valuation.',
+    ]},
+  { num: 3, d: 'D8:CURATE',  n: 'Curate',     r: 'Validate & clean',
+    what: 'Validates and cleans your data before it reaches AI models — catching wrong formats, missing fields, and inconsistent values at the source.',
+    why: 'Garbage in, garbage out. AI output is only as reliable as the data it runs on. D8:CURATE ensures models work with clean, structured data every time.',
+    examples: [
+      'Financial services: Flagged 84 loan records with missing or inconsistent fields before the audit ran. 100% coverage confirmed with no bad data reaching the policy check layer.',
+      'Media & operations: Identified mismatched billing periods and duplicate facility records before the percent rent calculation ran. Zero calculation errors on output.',
+      'Healthcare: Normalized patient records across EHR, billing, and lab systems — ensuring every field was complete and consistent before clinical recommendations were generated.',
+      'Real estate: Cleaned stale comparable data and flagged properties with incomplete ownership records before the portfolio intelligence dashboard populated.',
+    ]},
+  { num: 4, d: 'D8:SEC',     n: 'Secure',     r: 'Enforce governance',
+    what: 'Enforces role-based access controls, masks sensitive fields, and logs every action across the pipeline for compliance review.',
+    why: 'Governance bolted on after the fact creates gaps. D8:SEC builds access control and audit logging directly into the pipeline — not as a separate layer.',
+    examples: [
+      'Financial services: Applied PII masking to borrower data. Enforced role-based access so only credentialed reviewers saw exception findings. Every action timestamped and logged.',
+      'Media & operations: Enforced contract data access by billing team role. Sensitive lease terms masked from operations staff without clearance. Full change log maintained.',
+      'Healthcare: Enforced HIPAA-compliant access controls on patient records. Masked sensitive clinical fields from non-treating staff. Every access event logged for audit.',
+      'Real estate: Applied role-based access to financial performance data. Acquisition team saw full portfolio metrics. External advisors saw anonymized comparables only.',
+    ]},
+  { num: 5, d: 'D8:FLOW',    n: 'Flow',       r: 'Orchestrate workflow',
+    what: 'Orchestrates the entire workflow. A supervisor agent coordinates task routing, policy checks, and handoffs between agents and human reviewers.',
+    why: 'Without orchestration, complex pipelines break down at handoff points. D8:FLOW keeps every step in sequence and routes exceptions to humans at exactly the right moment.',
+    examples: [
+      'Financial services: Ran policy checks across all loan records. Automatically routed 31 exception findings to the compliance team. No manual triage required.',
+      'Media & operations: Orchestrated the full percent rent calculation — Type A and Type B formulas applied in correct sequence, payment restriction rules enforced, payee splits separated automatically.',
+      'Healthcare: Routed patient intake data through eligibility verification, prior authorization check, and clinical protocol matching — in sequence, without human coordination between steps.',
+      'Real estate: Coordinated portfolio data refresh across four source systems. Flagged properties with stale valuations and routed them to the analyst team for manual review.',
+    ]},
+  { num: 6, d: 'D8:OBSERVE', n: 'Observe',    r: 'Monitor & trace',
+    what: 'Monitors pipeline health in real time. Tracks every decision, override, and approval with full traceability for regulatory review.',
+    why: 'Regulators don\'t just want results — they want to see how you got there. D8:OBSERVE generates a complete, explainable audit trail on every run.',
+    examples: [
+      'Financial services: Monitored the full audit run in real time. Produced a complete trail showing every policy decision, agent handoff, and human override. 99.4% accuracy confirmed.',
+      'Media & operations: Logged every calculation step and IMS error classification decision. Full traceability from raw contract data to Tririga-ready output — every run.',
+      'Healthcare: Tracked every clinical recommendation against the source data that informed it. Any override by a physician logged with rationale for compliance review.',
+      'Real estate: Monitored portfolio dashboard refresh cycles. Flagged data latency issues before they reached the reporting layer. Every analyst override recorded.',
+    ]},
+  { num: 7, d: 'D8:STAGE',   n: 'Stage',      r: 'Package output',
+    what: 'Delivers production-ready data products. Validates and prepares output before it reaches its final destination — dashboard, downstream system, or human reviewer.',
+    why: 'Raw pipeline output isn\'t usable output. D8:STAGE ensures what comes out the other end is complete, validated, and formatted for immediate use.',
+    examples: [
+      'Financial services: Packaged all exception findings into a structured audit report. Validated completeness before handoff — zero manual reformatting by the compliance team.',
+      'Media & operations: Validated ownership splits, separated payees, and delivered output in Tririga-ready format. Direct system entry — no manual reformatting.',
+      'Healthcare: Formatted clinical recommendations into a structured patient summary for physician review. Complete, validated, ready to act on during the appointment.',
+      'Real estate: Packaged portfolio intelligence into the standard board reporting format. Leadership received the deck-ready output — no analyst reformatting required.',
+    ]},
+  { num: 8, d: 'D8:VIEW',    n: 'View',       r: 'Surface to humans',
+    what: 'Connects curated, validated data to your dashboard. The human-facing layer that gives operators and decision-makers exactly what they need to act.',
+    why: 'The best pipeline in the world fails if the output isn\'t accessible. D8:VIEW closes the loop — turning agent work into visible, actionable intelligence.',
+    examples: [
+      'Financial services: Delivered the exception dashboard to the compliance team. Flagged loans, policy violations, and recommended actions — ready to review without opening a raw data file.',
+      'Media & operations: Surfaced the completed billing run to the finance team. Payment totals, payee splits, and error classifications visible in one view — no spreadsheet required.',
+      'Healthcare: Delivered a unified patient dashboard to the physician — EHR, insurance status, and clinical research in one view, available while the doctor was still in the room.',
+      'Real estate: Delivered a live portfolio dashboard to leadership. Every property, current market comparables, and performance metrics — updated in real time, no IT request needed.',
+    ]},
 ];
 
-function AgentCard({ a, i }) {
-  const [hover, setHover] = React.useState(false);
-  const num = String(i + 1).padStart(2, '0');
-  const isIngest = a.d === 'D8:INGEST';
-  const isView = a.d === 'D8:VIEW';
-
+function S4Node({ agent, idx, activeIdx, setActiveIdx }) {
   return (
     <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        position: 'relative', borderRadius: 12, padding: 1,
-        gridArea: isIngest ? '1 / 1 / 4 / 2' : isView ? 'auto / 2 / auto / 5' : 'auto',
-        background: hover
-          ? `linear-gradient(135deg, ${NAVY} 0%, ${BLUE} 100%)`
-          : isIngest ? NAVY : BG_LIGHT,
-        transition: 'all 300ms',
-        cursor: 'pointer',
-        transform: hover ? 'translateY(-6px)' : 'translateY(0)',
-        boxShadow: hover ? `0 18px 40px -18px ${BLUE}70` : 'none',
-        height: 'auto', overflow: 'visible',
-        breakInside: 'avoid',
-        pageBreakInside: 'avoid'
-      }}
+      className={`s4-node${activeIdx === idx ? ' active' : ''}`}
+      onClick={() => setActiveIdx(idx)}
     >
-      <div style={{
-        position: 'relative', borderRadius: 11,
-        background: hover ? WHITE : isIngest ? NAVY : BG_LIGHT,
-        padding: 24, height: 'auto', minHeight: '160px', overflow: 'visible',
-        transition: 'background 300ms',
-      }}>
-        <span style={{
-          position: 'absolute', top: 16, right: 16,
-          minWidth: 28, height: 24, padding: '0 8px', display: 'inline-flex',
-          alignItems: 'center', justifyContent: 'center', borderRadius: 6,
-          fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.08em',
-          background: hover ? NAVY : isIngest ? 'rgba(255,255,255,0.1)' : '#E4E7EC',
-          color: hover ? WHITE : isIngest ? '#FFFFFF' : MUTED,
-          transform: hover ? 'scale(1.1)' : 'scale(1)',
-          transition: 'all 300ms',
-        }}>{num}</span>
-        <span style={{
-          display: 'block', marginBottom: 4,
-          fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: hover ? BLUE : isIngest ? 'rgba(255,255,255,0.5)' : MUTED,
-          transition: 'color 300ms',
-        }}>{a.d}</span>
-        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
-          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: hover || !isIngest ? NAVY : '#FFFFFF', letterSpacing: '-0.02em' }}>{a.n}</h3>
-          <i data-lucide="arrow-right" style={{
-            width: 16, height: 16, color: BLUE,
-            opacity: hover ? 1 : 0, transform: hover ? 'translateX(0)' : 'translateX(-4px)',
-            transition: 'all 300ms',
-          }} />
-          <span style={{
-            position: 'absolute', left: 0, bottom: -4, height: 2, width: '100%',
-            background: BLUE, transformOrigin: 'left',
-            transform: hover ? 'scaleX(1)' : 'scaleX(0)',
-            transition: 'transform 300ms',
-          }} />
-        </div>
-        <p style={{ margin: 0, fontSize: 13, lineHeight: 1.6, color: hover || !isIngest ? '#1F1F1F' : 'rgba(255,255,255,0.8)' }}>{a.b}</p>
+      <div className="s4-node-inner">
+        <div className="s4-badge">{agent.num}</div>
+        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 9, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 3 }}>{agent.d}</div>
+        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 13, color: '#081F5C', marginBottom: 3 }}>{agent.n}</div>
+        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 11, color: '#333333', lineHeight: 1.3 }}>{agent.r}</div>
       </div>
     </div>
   );
 }
 
-function AgentOverviewSection() {
-  React.useEffect(() => { window.lucide && window.lucide.createIcons(); }, []);
+function S4Connector() {
   return (
-    <section style={{ padding: '96px 24px', background: WHITE }}>
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <div style={{ marginBottom: 40 }}>
-          <SectionEyebrow code="D8:AGENTS" />
-          <h2 style={{ margin: '12px 0 12px', fontSize: 'clamp(32px, 3.6vw, 48px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: '22ch' }}>
-            Meet the 8 Agents who get your data ready for AI.
-          </h2>
-          <p style={{ margin: 0, fontSize: 16, color: MUTED, maxWidth: 640, lineHeight: 1.6 }}>
-            Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr repeat(3, 1fr)', gridTemplateRows: 'repeat(3, auto)', gap: 16 }}>
-          {agents.map((a, i) => <AgentCard key={a.d} a={a} i={i} />)}
-        </div>
+    <div className="s4-conn">
+      <div className="s4-conn-line">
+        <div className="s4-conn-pulse" />
       </div>
-    </section>
+      <div className="s4-conn-arrow" />
+    </div>
   );
 }
+
+function WhatWeDoSection() {
+  const [activeIdx, setActiveIdx] = React.useState(null);
+  const [exampleIndices, setExampleIndices] = React.useState({});
+
+  const row1 = s4Agents.slice(0, 4);
+  const row2 = s4Agents.slice(4, 8);
+
+  const handleNodeClick = (idx) => {
+    setActiveIdx(idx);
+    setExampleIndices(prev => ({ ...prev, [idx]: prev[idx] ?? 0 }));
+  };
+
+  const cycleExample = (idx) => {
+    setExampleIndices(prev => ({ ...prev, [idx]: ((prev[idx] ?? 0) + 1) % 4 }));
+  };
+
+  const renderRow = (rowAgents, startIdx) => (
+    <div className="s4-row">
+      {rowAgents.map((agent, i) => (
+        <React.Fragment key={agent.d}>
+          <S4Node agent={agent} idx={startIdx + i} activeIdx={activeIdx} setActiveIdx={handleNodeClick} />
+          {i < rowAgents.length - 1 && <S4Connector />}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+
+  const active = activeIdx !== null ? s4Agents[activeIdx] : null;
+  const exampleIdx = activeIdx !== null ? (exampleIndices[activeIdx] ?? 0) : 0;
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: S4_CSS }} />
+      <section style={{ background: '#f5f7fa', width: '100%', padding: '96px clamp(1rem, 5vw, 3rem)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 16 }}>
+            THE PLATFORM
+          </div>
+          <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12, textAlign: 'left' }}>
+            Meet the D8:Agents who get your data ready for AI.
+          </h2>
+          <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 18, color: '#333333', maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px 0' }}>
+            The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
+          </p>
+
+          {renderRow(row1, 0)}
+
+          <div className="s4-divider">
+            <div className="s4-divider-line" />
+            <span>continues</span>
+            <div className="s4-divider-line" />
+          </div>
+
+          {renderRow(row2, 4)}
+
+          {active === null ? (
+            <div className="s4-detail">
+              <div className="s4-detail-prompt">Select an agent above to see what it does, why it matters, and a real-world example.</div>
+            </div>
+          ) : (
+            <div className="s4-detail expanded">
+              <div className="s4-detail-desig">{active.d}</div>
+              <div className="s4-detail-name">{active.n}</div>
+              <div className="s4-detail-what">{active.what}</div>
+              <div className="s4-detail-row">
+                <div className="s4-detail-block">
+                  <div className="s4-detail-block-label">Why it matters</div>
+                  <div className="s4-detail-block-text">{active.why}</div>
+                </div>
+                <div className="s4-detail-block">
+                  <div className="s4-detail-block-label">Example</div>
+                  <div className="s4-detail-block-text">{active.examples[exampleIdx]}</div>
+                  <button className="s4-next-example" onClick={() => cycleExample(activeIdx)}>next example →</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </section>
+    </>
+  );
+}
+
+
 
 // ============================================================
 // INGEST AGENT DEMO — orbiting sources + live log
@@ -404,23 +751,23 @@ function IngestAgentDemo() {
   const [logs, setLogs] = React.useState([]);
   const logRef = React.useRef(null);
   const sources = [
-    { label: 'Postgres',    angle: -45 },
+    { label: 'Postgres', angle: -45 },
     { label: 'CSV / Excel', angle: 0 },
-    { label: 'REST API',    angle: 45 },
+    { label: 'REST API', angle: 45 },
   ];
-  
+
   React.useEffect(() => {
     const id = setInterval(() => setTick(t => t + 1), 1400);
     return () => clearInterval(id);
   }, []);
-  
+
   React.useEffect(() => {
     const src = sources[tick % sources.length];
     const ts = new Date().toLocaleTimeString([], { hour12: false });
     setLogs(prev => [...prev.slice(-4), `[${ts}] DB:INGEST ✓ pulled batch from ${src.label}`]);
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [tick]);
-  
+
   const radius = 140;
 
   return (
@@ -446,7 +793,7 @@ function IngestAgentDemo() {
               left: `calc(50% - ${radius * 1.5}px)`, top: `calc(50% - ${radius * 1.5}px)`,
               borderRadius: '50%', border: `1px dashed #E4E7EC`,
             }} />
-            
+
             {sources.map((s, i) => {
               const rad = s.angle * Math.PI / 180;
               const x = Math.cos(rad) * radius;
@@ -478,7 +825,7 @@ function IngestAgentDemo() {
                       animation: `packet-${i} 1s ease-in-out forwards`,
                     }}>
                       <style>{`@keyframes packet-${i}{
-                        0%{transform:translate(${x-4}px,${y-4}px) scale(0.6);opacity:0}
+                        0%{transform:translate(${x - 4}px,${y - 4}px) scale(0.6);opacity:0}
                         25%{opacity:1}
                         100%{transform:translate(-4px,-4px) scale(0.4);opacity:0}
                       }`}</style>
@@ -487,7 +834,7 @@ function IngestAgentDemo() {
                 </React.Fragment>
               );
             })}
-            
+
             {/* Center Agent */}
             <div style={{
               position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
@@ -525,7 +872,7 @@ function IngestAgentDemo() {
                 {logs.map((l, i) => <div key={i} style={{ color: '#E2E8F0' }}>{l}</div>)}
               </div>
             </div>
-            
+
             {/* What's Happening */}
             <div style={{ borderRadius: 12, background: WHITE, border: '1px solid #E4E7EC', padding: 24, flex: 1, boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94A3B8' }}>WHAT'S HAPPENING</span>
@@ -578,7 +925,7 @@ function FakeDashboard({ variant }) {
       <div style={{ background: WHITE, borderRadius: 12, border: '1px solid #E4E7EC', padding: 24, display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, minHeight: 360, boxShadow: '0 4px 12px rgba(8,31,92,0.03)' }}>
         <aside style={{ paddingRight: 24, borderRight: '1px solid #E4E7EC', fontSize: 13, color: MUTED }}>
           <div style={{ fontWeight: 800, color: NAVY, marginBottom: 16 }}>Reports</div>
-          {['Overview','Compliance','Origination','Portfolio','Risk','Exports'].map((s, i) => (
+          {['Overview', 'Compliance', 'Origination', 'Portfolio', 'Risk', 'Exports'].map((s, i) => (
             <div key={s} style={{ padding: '8px 12px', borderRadius: 6, background: i === 1 ? NAVY : 'transparent', color: i === 1 ? WHITE : MUTED, marginBottom: 4, fontWeight: i === 1 ? 600 : 500 }}>{s}</div>
           ))}
         </aside>
@@ -591,7 +938,7 @@ function FakeDashboard({ variant }) {
             <div style={{ fontSize: 12, color: NAVY, padding: '6px 12px', border: '1px solid #E4E7EC', borderRadius: 6, fontWeight: 600, height: 'fit-content' }}>Q2 2026</div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-            {[{v:'1,247',l:'Loans audited'},{v:'99.5%',l:'Accuracy'},{v:'12',l:'Flagged'},{v:'$1.2M',l:'Savings'}].map(m => (
+            {[{ v: '1,247', l: 'Loans audited' }, { v: '99.5%', l: 'Accuracy' }, { v: '12', l: 'Flagged' }, { v: '$1.2M', l: 'Savings' }].map(m => (
               <div key={m.l} style={{ padding: 16, border: '1px solid #E4E7EC', borderRadius: 8 }}>
                 <div style={{ fontSize: 24, fontWeight: 800, color: NAVY }}>{m.v}</div>
                 <div style={{ fontSize: 12, color: MUTED, marginTop: 4, fontWeight: 500 }}>{m.l}</div>
@@ -599,7 +946,7 @@ function FakeDashboard({ variant }) {
             ))}
           </div>
           <div style={{ height: 140, border: '1px solid #E4E7EC', borderRadius: 8, padding: 16, display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-            {[40,62,55,78,90,72,85,95,88,92,80,96].map((h, i) => (
+            {[40, 62, 55, 78, 90, 72, 85, 95, 88, 92, 80, 96].map((h, i) => (
               <div key={i} style={{ flex: 1, height: `${h}%`, background: i > 8 ? BLUE : '#E4E7EC', borderRadius: 4, transition: 'height 1s ease' }} />
             ))}
           </div>
@@ -624,12 +971,12 @@ function FakeDashboard({ variant }) {
           <span>ID</span><span>Borrower</span><span>Product</span><span>Amount</span><span>Risk</span><span>Status</span>
         </div>
         {[
-          ['L-20417','Kenwood Holdings LLC','Commercial RE','$2.4M','LOW',{l:'Approved',c:SUCCESS}],
-          ['L-20416','River Valley Farms','Agricultural','$875K','MEDIUM',{l:'Pending',c:'#94A3B8'}],
-          ['L-20415','Mercer & Sons','SBA 7(a)','$450K','LOW',{l:'Approved',c:SUCCESS}],
-          ['L-20414','Nova Tech Partners','Equipment','$1.2M','HIGH',{l:'Flagged',c:'#F59E0B'}],
-          ['L-20413','Bright Canyon Hotels','Commercial RE','$4.1M','MEDIUM',{l:'Pending',c:'#94A3B8'}],
-          ['L-20412','Coastal Metals Co.','Working Capital','$320K','LOW',{l:'Approved',c:SUCCESS}],
+          ['L-20417', 'Kenwood Holdings LLC', 'Commercial RE', '$2.4M', 'LOW', { l: 'Approved', c: SUCCESS }],
+          ['L-20416', 'River Valley Farms', 'Agricultural', '$875K', 'MEDIUM', { l: 'Pending', c: '#94A3B8' }],
+          ['L-20415', 'Mercer & Sons', 'SBA 7(a)', '$450K', 'LOW', { l: 'Approved', c: SUCCESS }],
+          ['L-20414', 'Nova Tech Partners', 'Equipment', '$1.2M', 'HIGH', { l: 'Flagged', c: '#F59E0B' }],
+          ['L-20413', 'Bright Canyon Hotels', 'Commercial RE', '$4.1M', 'MEDIUM', { l: 'Pending', c: '#94A3B8' }],
+          ['L-20412', 'Coastal Metals Co.', 'Working Capital', '$320K', 'LOW', { l: 'Approved', c: SUCCESS }],
         ].map((row, i) => (
           <div key={i} style={{
             display: 'grid', gridTemplateColumns: '100px 2fr 1fr 1fr 100px 100px', gap: 16,
@@ -661,7 +1008,7 @@ function DashboardShowcase() {
   const [active, setActive] = React.useState(null);
   const cards = [
     { id: 'requests', label: 'Loan Requests', variant: 'requests' },
-    { id: 'reports',  label: 'Reports & Analytics', variant: 'reports' },
+    { id: 'reports', label: 'Reports & Analytics', variant: 'reports' },
   ];
   return (
     <section style={{ padding: '96px 24px', background: WHITE }}>
@@ -701,8 +1048,8 @@ function DashboardShowcase() {
                 cursor: 'pointer',
                 transition: `transform 300ms ${EASE}`,
               }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0) scale(1)'}
+                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0) scale(1)'}
               >
                 <DashboardChrome label={c.label}>
                   <FakeDashboard variant={c.variant} />
@@ -721,10 +1068,10 @@ function DashboardShowcase() {
 // ============================================================
 function ProofBlockSection() {
   const metrics = [
-    { v: '97%',     l: 'Faster' },
-    { v: '100%',    l: 'Coverage' },
-    { v: '99.5%',   l: 'Accuracy' },
-    { v: '$1.2M+',  l: 'Projected Savings' },
+    { v: '97%', l: 'Faster' },
+    { v: '100%', l: 'Coverage' },
+    { v: '99.5%', l: 'Accuracy' },
+    { v: '$1.2M+', l: 'Projected Savings' },
     { v: '90 Days', l: 'Deployed', wide: true },
   ];
   return (
@@ -772,20 +1119,20 @@ function ProofBlockSection() {
 // ============================================================
 function ClosingCTA() {
   return (
-    <section id="contact" style={{ 
-      padding: '88px 24px 72px', 
-      scrollMarginTop: '88px', 
-      background: 'linear-gradient(135deg, #0c1428 0%, #0f2560 40%, #0477BF 100%)', 
+    <section id="contact" style={{
+      padding: '88px 24px 72px',
+      scrollMarginTop: '88px',
+      background: 'linear-gradient(135deg, #0c1428 0%, #0f2560 40%, #0477BF 100%)',
       color: WHITE,
-      position: 'relative', 
+      position: 'relative',
       overflow: 'hidden'
     }}>
       <ParticleCanvas />
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 2, 
-        maxWidth: 960, 
-        margin: '0 auto', 
+      <div style={{
+        position: 'relative',
+        zIndex: 2,
+        maxWidth: 960,
+        margin: '0 auto',
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'column',
@@ -820,10 +1167,10 @@ function ClosingCTA() {
 // ============================================================
 function GlobalFooter() {
   const cols = [
-    { title: 'Platform', links: ['Overview','Agents','Observability','Security','Pricing'] },
-    { title: 'Solutions', links: ['Credit Unions','Financial Services','Healthcare','Public Sector'] },
-    { title: 'Company',  links: ['About','Career','Press','Contact'] },
-    { title: 'Resources', links: ['Blog','Documentation','Case Studies','Trust Center'] },
+    { title: 'Platform', links: ['Overview', 'Agents', 'Observability', 'Security', 'Pricing'] },
+    { title: 'Solutions', links: ['Credit Unions', 'Financial Services', 'Healthcare', 'Public Sector'] },
+    { title: 'Company', links: ['About', 'Career', 'Press', 'Contact'] },
+    { title: 'Resources', links: ['Blog', 'Documentation', 'Case Studies', 'Trust Center'] },
   ];
   return (
     <footer style={{ background: WHITE, color: MUTED, padding: '96px 24px 48px', borderTop: '1px solid #E4E7EC' }}>
@@ -859,8 +1206,8 @@ function GlobalFooter() {
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {c.links.map(l => (
                   <li key={l}>
-                    <a 
-                      href={l === 'Contact' ? '#contact' : '#'} 
+                    <a
+                      href={l === 'Contact' ? '#contact' : '#'}
                       className={l === 'Contact' ? '' : 'footer-link-placeholder'}
                       style={{ color: MUTED, textDecoration: 'none', fontSize: 13, fontWeight: 500, transition: 'color 0.2s' }}
                     >
@@ -872,9 +1219,9 @@ function GlobalFooter() {
             </div>
           ))}
         </div>
-        <div style={{ 
-          paddingTop: 32, borderTop: '1px solid #E4E7EC', 
-          display: 'flex', justifyContent: 'space-between', 
+        <div style={{
+          paddingTop: 32, borderTop: '1px solid #E4E7EC',
+          display: 'flex', justifyContent: 'space-between',
           fontSize: 12, color: MUTED, fontWeight: 500
         }}>
           <span>© 2026 D8TAOPS. All rights reserved.</span>
@@ -889,12 +1236,341 @@ function GlobalFooter() {
   );
 }
 
+// ============================================================
+// WHAT WE DO GRID — 3-column card grid
+// ============================================================
+const WHAT_WE_DO_GRID_CSS = `
+  .d8-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 400ms cubic-bezier(0.0, 0, 0.2, 1),
+                transform 400ms cubic-bezier(0.0, 0, 0.2, 1);
+  }
+  .d8-reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .s3-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+`;
+
+const S4_CSS = `
+  .s4-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 12px;
+  }
+  .s4-node {
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+  }
+  .s4-node-inner {
+    background: #ffffff;
+    border: 0.5px solid rgba(8, 31, 92, 0.15);
+    border-left: 3px solid #0477BF;
+    border-radius: 0 12px 12px 0;
+    padding: 14px 12px;
+    height: 100%;
+    box-sizing: border-box;
+    transition: border-left-color 120ms ease, transform 120ms ease;
+  }
+  .s4-node:hover .s4-node-inner {
+    border-left-color: #081F5C;
+    transform: translateY(-2px);
+  }
+  .s4-node.active .s4-node-inner {
+    border-left-color: #081F5C;
+    background: #f0f4f8;
+  }
+  .s4-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #0477BF;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .s4-node.active .s4-badge {
+    background: #081F5C;
+  }
+  .s4-conn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    width: 16px;
+  }
+  .s4-conn-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(8, 31, 92, 0.12);
+    position: relative;
+    overflow: hidden;
+  }
+  .s4-conn-pulse {
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #0477BF, transparent);
+    animation: s4pulse 2s linear infinite;
+  }
+  @keyframes s4pulse { to { left: 140%; } }
+  .s4-conn-arrow {
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid rgba(8, 31, 92, 0.2);
+    flex-shrink: 0;
+  }
+  .s4-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 12px;
+    font-size: 11px;
+    color: rgba(51, 51, 51, 0.4);
+    font-family: IBM Plex Sans, sans-serif;
+  }
+  .s4-divider-line {
+    flex: 1;
+    height: 0.5px;
+    background: rgba(8, 31, 92, 0.1);
+  }
+  .s4-detail {
+    margin-top: 24px;
+    background: #E8F4FD;
+    border: 0.5px solid rgba(4, 119, 191, 0.2);
+    border-left: 3px solid #0477BF;
+    border-radius: 0 12px 12px 0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: default;
+    transition: padding 240ms ease;
+  }
+  .s4-detail.expanded {
+    padding: 20px 24px;
+    display: block;
+  }
+  .s4-detail-prompt {
+    font-size: 13px;
+    color: #0477BF;
+    font-style: italic;
+  }
+  .s4-detail-desig {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0477BF;
+    margin-bottom: 4px;
+  }
+  .s4-detail-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #081F5C;
+    margin-bottom: 8px;
+  }
+  .s4-next-example {
+    background: none;
+    border: none;
+    color: #0477BF;
+    font-size: 12px;
+    font-family: IBM Plex Sans, sans-serif;
+    cursor: pointer;
+    padding: 8px 0 0;
+    display: block;
+    transition: opacity 120ms ease;
+  }
+  .s4-next-example:hover { opacity: 0.7; }
+  .s4-detail-what {
+    font-size: 14px;
+    color: #333333;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 0.5px solid rgba(4, 119, 191, 0.2);
+  }
+  .s4-detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .s4-detail-block-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0477BF;
+    margin-bottom: 6px;
+  }
+  .s4-detail-block-text {
+    font-size: 13px;
+    color: #333333;
+    line-height: 1.6;
+  }
+  @media (max-width: 600px) {
+    .s4-detail-row { grid-template-columns: 1fr; }
+  }
+  .s4-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #0477BF;
+    background: #E8F4FD;
+    border: 0.5px solid rgba(4, 119, 191, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .s4-conn-pulse { display: none; }
+    .s4-node-inner { transition: none; }
+  }
+  @media (max-width: 768px) {
+    .s4-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .s4-conn { display: none; }
+  }
+  @media (max-width: 480px) {
+    .s4-row { grid-template-columns: 1fr; }
+  }
+`;
+
+function WhatWeDoGrid() {
+  React.useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    const elements = document.querySelectorAll('.d8-reveal');
+    elements.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: WHAT_WE_DO_GRID_CSS }} />
+      <section style={{ background: '#ffffff', width: '100%', padding: '96px 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1rem, 5vw, 3rem)' }}>
+          <div style={{ 
+            fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, 
+            letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', 
+            marginBottom: 16 
+          }}>
+            WHAT WE DO
+          </div>
+          <h2 style={{ 
+            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', 
+            color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12, textAlign: 'left' 
+          }}>
+            We send AI agents to your data. You don't move a thing.
+          </h2>
+          <h3 style={{ 
+            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 'clamp(18px, 2vw, 20px)', 
+            color: '#0477BF', marginBottom: 32, textAlign: 'left' 
+          }}>
+            AI is only as good as the data you feed it. We get rid of the AI slop.
+          </h3>
+          
+          <div className="s3-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, alignItems: 'stretch' }}>
+            {/* Card 1 */}
+            <div className="d8-reveal" style={{ 
+              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '0ms',
+              display: 'flex', flexDirection: 'column'
+            }}>
+              <h3 style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
+                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
+              }}>
+                Agents that run in your environment
+              </h3>
+              <p style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
+                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
+              }}>
+                D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.
+              </p>
+            </div>
+            
+            {/* Card 2 */}
+            <div className="d8-reveal" style={{ 
+              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '100ms',
+              display: 'flex', flexDirection: 'column'
+            }}>
+              <h3 style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
+                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
+              }}>
+                Production-ready in 90 days
+              </h3>
+              <p style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
+                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
+              }}>
+                We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 90 days of kickoff.
+              </p>
+            </div>
+            
+            {/* Card 3 */}
+            <div className="d8-reveal" style={{ 
+              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '200ms',
+              display: 'flex', flexDirection: 'column'
+            }}>
+              <h3 style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
+                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
+              }}>
+                You keep control
+              </h3>
+              <p style={{ 
+                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
+                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
+              }}>
+                Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export {
   HeroSection,
   ComparisonSection,
   WhoWeAreSection,
   WhatWeDoSection,
-  AgentOverviewSection,
+  WhatWeDoGrid,
   IngestAgentDemo,
   DashboardShowcase,
   ProofBlockSection,
