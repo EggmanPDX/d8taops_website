@@ -13,6 +13,7 @@ const GREEN     = '#3ecf8e';
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
 
+
   @keyframes d8WordReveal {
     from { filter: blur(8px); opacity: 0; transform: translateY(5px); }
     to   { filter: blur(0);   opacity: 1; transform: translateY(0); }
@@ -202,6 +203,17 @@ const GLOBAL_CSS = `
     .d8-proof-grid { grid-template-columns: 1fr !important; }
     .d8-footer-grid { grid-template-columns: 1fr 1fr !important; }
     .d8-persona-grid { grid-template-columns: 1fr !important; }
+    .d8-view-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  }
+  @keyframes d8-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33%       { transform: translateY(-8px) rotate(0.4deg); }
+    66%       { transform: translateY(-4px) rotate(-0.3deg); }
+  }
+  .d8-view-img-float { animation: d8-float 6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .d8-view-text-col > *, .d8-view-img-wrap { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .d8-view-img-float { animation: none !important; }
   }
   @media (max-width: 600px) {
     .d8-stats-grid { grid-template-columns: 1fr 1fr !important; }
@@ -565,43 +577,16 @@ function HeroSection() {
         >
           {/* ── Left column ── */}
           <div>
-            {/* Tag pills */}
-            <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-              {['Agent orchestration', 'Regulated industries'].map(tag => (
-                <span key={tag} style={{
-                  display: 'inline-block',
-                  padding: '4px 12px',
-                  background: 'rgba(4,119,191,0.12)',
-                  border: '1px solid rgba(4,119,191,0.25)',
-                  borderRadius: 6,
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 9.5, fontWeight: 500,
-                  color: BLUE, letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}>{tag}</span>
-              ))}
-            </div>
-
             <BlurRevealH1 text="We get YOUR data ready for AI." />
 
             <p style={{
-              margin: '0 0 20px',
+              margin: '0 0 32px',
               fontSize: 18, fontWeight: 400,
               color: 'rgba(255,255,255,0.7)',
               lineHeight: 1.55, maxWidth: 480,
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
               Agentic systems tailored to your infrastructure. Governed, auditable outputs — deployed in 90 days.
-            </p>
-
-            {/* Proof line */}
-            <p style={{
-              margin: '0 0 32px',
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 13.5, color: GREEN,
-              lineHeight: 1.5,
-            }}>
-              Most audits take days. Complete audits take minutes.
             </p>
 
             {/* CTAs */}
@@ -619,10 +604,6 @@ function HeroSection() {
               >Get in touch.</a>
             </div>
 
-            {/* Trust badges */}
-            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', rowGap: 4 }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Audit · Operations · Sales · Finance, and more.</span>
-            </div>
           </div>
 
           {/* ── Right column: Dashboard ── */}
@@ -655,15 +636,15 @@ function TickerBar() {
       <span style={{
         fontFamily: "'IBM Plex Mono', monospace",
         fontSize: 9.5, fontWeight: 400,
-        color: item.data ? GREEN : 'rgba(62,207,142,0.65)',
+        color: item.data ? BLUE : NAVY,
         letterSpacing: '0.14em', textTransform: 'uppercase',
         whiteSpace: 'nowrap',
       }}>{item.text}</span>
-      <span style={{ color: 'rgba(62,207,142,0.35)', margin: '0 20px', fontSize: 8 }}>·</span>
+      <span style={{ color: 'rgba(8,31,92,0.25)', margin: '0 20px', fontSize: 8 }}>·</span>
     </React.Fragment>
   ));
   return (
-    <div style={{ background: NAVY_DEEP, padding: '13px 0', overflow: 'hidden' }}>
+    <div style={{ background: '#f0f4f8', borderTop: '1px solid rgba(8,31,92,0.08)', borderBottom: '1px solid rgba(8,31,92,0.08)', padding: '13px 0', overflow: 'hidden' }}>
       <div style={{ display: 'flex', animation: 'd8TickerScroll 30s linear infinite', width: 'max-content' }}>
         {content}{content}
       </div>
@@ -734,12 +715,6 @@ function StatsSection() {
         >
           {STATS_DATA.map((s, i) => <StatCell key={s.label} stat={s} isFirst={i === 0} />)}
         </div>
-        <p style={{
-          textAlign: 'center', margin: '20px 0 0',
-          fontSize: 11, fontStyle: 'italic',
-          color: 'rgba(8,31,92,0.35)',
-          fontFamily: "'IBM Plex Sans', sans-serif",
-        }}>Based on our work with Kitsap Credit Union — 2026</p>
       </div>
     </section>
   );
@@ -750,21 +725,21 @@ function StatsSection() {
 // ═══════════════════════════════════════════════════════════════════════════════
 const PERSONA_CARDS = [
   {
-    num: '01', icon: '⚡', colorClass: 'c1',
+    num: '01', icon: null, colorClass: 'c1',
     role: 'VP / C-SUITE',
     headline: 'The board wants results,\u00a0not\u00a0roadmaps.',
     pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
     change: 'A working system in 90 days with measurable ROI. No infrastructure overhaul required.',
   },
   {
-    num: '02', icon: '🏗', colorClass: 'c2',
+    num: '02', icon: null, colorClass: 'c2',
     role: 'DATA ENGINEER / ARCHITECT',
     headline: "You're asked to add AI. You're not given the foundation.",
     pain: "Asked to 'add AI' to systems not designed for it. Unclear ownership. No governance layer.",
     change: 'Agents that run inside your existing stack. Clean interfaces. Traceable lineage. Governance built in.',
   },
   {
-    num: '03', icon: '⚙️', colorClass: 'c3',
+    num: '03', icon: null, colorClass: 'c3',
     role: 'OPERATIONS LEADER',
     headline: "Manual volume is the ceiling. It doesn't scale.",
     pain: "Manual, high-volume work that doesn't scale. Audit coverage gaps. Human error at scale.",
@@ -786,7 +761,7 @@ function WhoItIsSection() {
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div className="d8-reveal" style={{
           fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: 12, letterSpacing: '0.2em',
+          fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
           color: BLUE, textTransform: 'uppercase', marginBottom: 16,
         }}>WHO IT'S FOR</div>
         <h2 className="d8-reveal" style={{
@@ -823,8 +798,13 @@ function WhoItIsSection() {
                   background: 'rgba(255,255,255,0.1)',
                   border: '1px solid rgba(255,255,255,0.18)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, marginBottom: 16,
-                }}>{card.icon}</div>
+                  marginBottom: 16,
+                }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="6" fill="#0477BF"/>
+                    <circle cx="12" cy="12" r="4" fill="#FFFFFF"/>
+                  </svg>
+                </div>
                 <div style={{
                   position: 'relative', zIndex: 1,
                   fontFamily: "'IBM Plex Mono', monospace",
@@ -867,113 +847,20 @@ function WhoItIsSection() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// WHAT WE DO — off-white bg, 2-col header, numbered cards
-// ═══════════════════════════════════════════════════════════════════════════════
-const WHAT_WE_DO_CARDS = [
-  {
-    num: '01',
-    title: 'Agents that run in your environment',
-    body: 'D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.',
-  },
-  {
-    num: '02',
-    title: 'Production-ready in 90 days',
-    body: 'We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 90 days of kickoff.',
-  },
-  {
-    num: '03',
-    title: 'You keep control',
-    body: 'Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.',
-  },
-];
-
-function WhatWeDoGrid() {
-  React.useEffect(() => {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.d8-reveal').forEach(el => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <section style={{ background: '#f0f4f8', width: '100%', padding: '80px 0' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
-        {/* 2-column header */}
-        <div
-          className="d8-what-header-grid"
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginBottom: 56, alignItems: 'end' }}
-        >
-          <div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
-              WHAT WE DO
-            </div>
-            <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0 }}>
-              We send AI agents to your data. You don't move a thing.
-            </h2>
-          </div>
-          <div style={{ paddingBottom: 4 }}>
-            <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 17, color: BODY, lineHeight: 1.65, margin: 0, maxWidth: 'none' }}>
-              D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.
-            </p>
-          </div>
-        </div>
-
-        {/* Card grid */}
-        <div
-          className="d8-what-card-grid"
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, alignItems: 'stretch' }}
-        >
-          {WHAT_WE_DO_CARDS.map((card, i) => (
-            <div
-              key={card.num}
-              className="d8-what-card d8-reveal"
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, color: BLUE, letterSpacing: '0.1em', marginBottom: 16 }}>{card.num}</div>
-              <h3 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 18, color: NAVY, marginBottom: 14, lineHeight: 1.25, flexShrink: 0 }}>
-                {card.title}
-              </h3>
-              <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.65, margin: 0, maxWidth: 'none', flexGrow: 1 }}>
-                {card.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+function WhatWeDoGrid() { return null; }
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // AGENT PIPELINE — horizontal scroll
 // ═══════════════════════════════════════════════════════════════════════════════
 const s4Agents = [
-  { num: 1, d: 'D8:INGEST',  n: 'Ingest',     r: 'Collect & normalize',
-    what: 'Connects to your existing data sources — core systems, cloud storage, APIs — and normalizes everything into a unified layer automatically.',
-    why: 'Most organizations have data spread across five or more systems that don\'t talk to each other. D8:INGEST replaces manual exports and one-off scripts with a governed, repeatable pipeline.'},
-  { num: 2, d: 'D8:CAT',     n: 'Categorize', r: 'Classify & catalog',
-    what: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin to current state.',
-    why: 'You can\'t govern what you can\'t see. Without a catalog, teams don\'t know what data exists or whether they\'re allowed to use it.'},
-  { num: 3, d: 'D8:CURATE',  n: 'Curate',     r: 'Validate & clean',
-    what: 'Validates and cleans your data before it reaches AI models — catching wrong formats, missing fields, and inconsistent values at the source.',
-    why: 'Garbage in, garbage out. AI output is only as reliable as the data it runs on.'},
-  { num: 4, d: 'D8:SEC',     n: 'Secure',     r: 'Enforce governance',
-    what: 'Enforces role-based access controls, masks sensitive fields, and logs every action across the pipeline for compliance review.',
-    why: 'Governance bolted on after the fact creates gaps. D8:SEC builds access control and audit logging directly into the pipeline.'},
-  { num: 5, d: 'D8:FLOW',    n: 'Flow',       r: 'Orchestrate workflow',
-    what: 'Orchestrates the entire workflow. A supervisor agent coordinates task routing, policy checks, and handoffs between agents and human reviewers.',
-    why: 'Without orchestration, complex pipelines break down at handoff points.'},
-  { num: 6, d: 'D8:OBSERVE', n: 'Observe',    r: 'Monitor & trace',
-    what: 'Monitors pipeline health in real time. Tracks every decision, override, and approval with full traceability for regulatory review.',
-    why: 'Regulators don\'t just want results — they want to see how you got there.'},
-  { num: 7, d: 'D8:STAGE',   n: 'Stage',      r: 'Package output',
-    what: 'Delivers production-ready data products. Validates and prepares output before it reaches its final destination — dashboard, downstream system, or human reviewer.',
-    why: 'Raw pipeline output isn\'t usable output. D8:STAGE ensures what comes out the other end is complete, validated, and formatted for immediate use.'},
-  { num: 8, d: 'D8:VIEW',    n: 'View',       r: 'Surface to humans',
-    what: 'Connects curated, validated data to your dashboard. The human-facing layer that gives operators and decision-makers exactly what they need to act.',
-    why: 'The best pipeline in the world fails if the output isn\'t accessible.'},
+  { num: 1, d: 'D8:INGEST',  r: 'Connects to your data sources and normalizes everything into a unified layer.' },
+  { num: 2, d: 'D8:CAT',     r: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin.' },
+  { num: 3, d: 'D8:CURATE',  r: 'Validates and cleans your data before it reaches AI models. Catches problems before they become errors.' },
+  { num: 4, d: 'D8:SEC',     r: 'Enforces access controls, masks sensitive fields, and logs every action. Governance built in.' },
+  { num: 5, d: 'D8:FLOW',    r: 'Orchestrates the entire workflow, coordinating task routing, policy checks, and human handoffs.' },
+  { num: 6, d: 'D8:OBSERVE', r: 'Monitors pipeline health in real time. Tracks every decision and generates reports.' },
+  { num: 7, d: 'D8:STAGE',   r: 'Delivers production-ready data products to the systems and teams that need them.' },
+  { num: 8, d: 'D8:VIEW',    r: 'Clean, validated data delivered as dashboards, reports, and APIs in real time.' },
 ];
 
 function AgentArrow() {
@@ -993,17 +880,16 @@ function AgentArrow() {
 }
 
 function WhatWeDoSection() {
-  const [activeIdx, setActiveIdx] = React.useState(0);
-  const active = s4Agents[activeIdx];
+  const [activeIdx, setActiveIdx] = React.useState(-1);
 
   return (
     <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box' }} id="agents">
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
           THE PLATFORM
         </div>
         <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12 }}>
-          Meet the D8:Agents who get your data ready for AI.
+          Meet the D8:AGENTS
         </h2>
         <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: BODY, maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
           The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
@@ -1018,13 +904,14 @@ function WhatWeDoSection() {
               <button
                 key={agent.d}
                 className={`d8-agent-card${isActive ? ' active' : ''}${isView ? ' d8-agent-card-view' : ''}`}
-                onClick={() => setActiveIdx(i)}
+                onMouseEnter={() => setActiveIdx(i)}
+                onMouseLeave={() => setActiveIdx(-1)}
                 style={{
                   background: isActive ? NAVY : '#f5f8fb',
                   border: isView ? '1px solid rgba(4,119,191,0.35)' : isActive ? `1px solid ${NAVY}` : '1px solid rgba(8,31,92,0.10)',
                   borderRadius: 14,
                   padding: '16px 14px',
-                  cursor: 'pointer',
+                  cursor: 'default',
                   textAlign: 'left',
                   fontFamily: 'inherit',
                   boxSizing: 'border-box',
@@ -1032,43 +919,118 @@ function WhatWeDoSection() {
                   transition: 'background 0.18s ease, transform 0.18s ease',
                 }}
               >
-                <div className="d8-agent-num" style={{
-                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                  width: 20, height: 20, borderRadius: '50%',
-                  background: isActive ? 'rgba(62,207,142,0.25)' : 'rgba(4,119,191,0.15)',
-                  color: isActive ? GREEN : BLUE,
-                  fontSize: 9, fontWeight: 600,
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  marginBottom: 8,
-                }}>{agent.num}</div>
-                <div className="d8-agent-desig" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: isActive ? 'rgba(62,207,142,0.9)' : BLUE, marginBottom: 4 }}>{agent.d}</div>
-                <div className="d8-agent-name" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 13, color: isActive ? WHITE : NAVY, marginBottom: 4 }}>{agent.n}</div>
-                <div className="d8-agent-role" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: isActive ? 'rgba(255,255,255,0.6)' : BODY, lineHeight: 1.3 }}>{agent.r}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <div className="d8-agent-desig" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: isActive ? 'rgba(62,207,142,0.9)' : BLUE }}>{agent.d}</div>
+                  <div className="d8-agent-num" style={{
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    width: 20, height: 20, borderRadius: '50%',
+                    background: isActive ? 'rgba(62,207,142,0.25)' : 'rgba(4,119,191,0.15)',
+                    color: isActive ? GREEN : BLUE,
+                    fontSize: 9, fontWeight: 600,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    flexShrink: 0, marginLeft: 6,
+                  }}>{agent.num}</div>
+                </div>
+                <div className="d8-agent-role" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: isActive ? 'rgba(255,255,255,0.6)' : BODY, lineHeight: 1.4 }}>{agent.r}</div>
               </button>
             );
           })}
         </div>
 
-        {/* Detail card */}
-        <div style={{
-          marginTop: 24,
-          background: '#E8F4FD',
-          border: '0.5px solid rgba(4,119,191,0.2)',
-          borderTop: `2px solid ${BLUE}`,
-          borderLeft: `3px solid ${BLUE}`,
-          borderRadius: '0 12px 12px 0',
-          padding: '20px 24px',
-        }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: BLUE, marginBottom: 4 }}>{active.d}</div>
-          <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 700, color: NAVY, marginBottom: 8 }}>{active.n}</div>
-          <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, color: BODY, lineHeight: 1.65 }}>{active.what}</div>
-        </div>
-
-        <div style={{ marginTop: 20, textAlign: 'right' }}>
-          <a href="/agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: 'none', transition: 'gap 0.15s ease' }}
+        <div style={{ marginTop: '2rem', textAlign: 'right' }}>
+          <a href="/agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: BLUE, textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
             onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
-          >See all 8 agents →</a>
+          >Learn more about our agents →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// D8:VIEW — mid-blue section, text left / image right
+// ═══════════════════════════════════════════════════════════════════════════════
+function D8ViewSection() {
+  const sectionRef = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
+    }, { threshold: 0.15 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const textBase = {
+    transition: 'opacity 600ms ease, transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
+  };
+  const hidden = { opacity: 0, transform: 'translateX(-36px)' };
+  const shown  = { opacity: 1, transform: 'translateX(0)' };
+
+  return (
+    <section
+      ref={sectionRef}
+      style={{ background: '#f0f4f8', padding: 'clamp(64px, 8vw, 96px) clamp(1.5rem, 5vw, 80px)', overflow: 'hidden' }}
+    >
+      <div
+        className="d8-view-grid"
+        style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '45fr 55fr', gap: 64, alignItems: 'center' }}
+      >
+        {/* Text column — staggered slide-in from left */}
+        <div className="d8-view-text-col">
+          <div style={{
+            ...textBase,
+            ...(visible ? shown : hidden),
+            transitionDelay: '0ms',
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
+            textTransform: 'uppercase', color: BLUE, marginBottom: 16,
+          }}>D8:VIEW</div>
+
+          <h2 style={{
+            ...textBase,
+            ...(visible ? shown : hidden),
+            transitionDelay: '80ms',
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontWeight: 700, fontSize: 'clamp(30px, 4vw, 50px)',
+            color: NAVY, lineHeight: 1.1, letterSpacing: '-1px', marginBottom: 24,
+          }}>
+            See <span style={{ color: BLUE }}>YOUR</span> data pipeline.
+          </h2>
+
+          <p style={{
+            ...textBase,
+            ...(visible ? shown : hidden),
+            transitionDelay: '160ms',
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: 17, color: BODY, lineHeight: 1.68, margin: 0,
+          }}>
+            Our agents do the work to orchestrate your data so you can make decisions quickly. Clean, secure data is presented to you the way you want to see it.
+          </p>
+        </div>
+
+        {/* Image column — clip container + slide in from right */}
+        <div style={{ overflow: 'hidden', borderRadius: 12 }}>
+          <div
+            className="d8-view-img-wrap"
+            style={{
+              transform: visible ? 'translateX(0)' : 'translateX(110%)',
+              transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
+              transitionDelay: '200ms',
+            }}
+          >
+            <div className={visible ? 'd8-view-img-float' : ''}>
+              <img
+                src="/images/KCU-dashboard1.png"
+                alt="D8:VIEW — data pipeline dashboard"
+                style={{ width: '100%', display: 'block', borderRadius: 12, boxShadow: '0 20px 60px rgba(8,31,92,0.12)' }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1107,7 +1069,7 @@ function ProofBlockSection() {
       }} />
 
       <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: GREEN, marginBottom: 16 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: GREEN, marginBottom: 16 }}>
           CUSTOMER STORY
         </div>
         <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.25rem)', color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 48 }}>
@@ -1163,24 +1125,6 @@ function ProofBlockSection() {
           </div>
         </div>
 
-        {/* Dashboard screenshot */}
-        <div className="dash-browser">
-          <div className="dash-chrome">
-            <div className="dash-dots">
-              <div className="dash-dot" />
-              <div className="dash-dot" />
-              <div className="dash-dot" />
-            </div>
-            <div className="dash-url">app.d8taops.com / dashboard / loan-requests</div>
-          </div>
-          <div className="dash-img-wrap">
-            <img
-              src="/images/KCU-dashboard.png"
-              alt="D8TAOPS loan audit dashboard — Kitsap Credit Union production deployment"
-              style={{ width: '100%', display: 'block' }}
-            />
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -1218,59 +1162,24 @@ function ClosingCTA() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// FOOTER — dark #040e2e
+// FOOTER — stripped: logo · nav · copyright
 // ═══════════════════════════════════════════════════════════════════════════════
-function GlobalFooter() {
-  const cols = [
-    { title: 'Platform',   links: ['Overview', 'Agents', 'Observability', 'Security', 'Pricing'] },
-    { title: 'Solutions',  links: ['Credit Unions', 'Financial Services', 'Healthcare', 'Public Sector'] },
-    { title: 'Company',    links: ['About', 'Career', 'Press', 'Contact'] },
-    { title: 'Resources',  links: ['Blog', 'Documentation', 'Case Studies', 'Trust Center'] },
-  ];
-  return (
-    <footer style={{ background: NAVY_DEEP, padding: '80px 24px 48px', borderTop: `1px solid rgba(255,255,255,0.055)` }}>
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <div
-          className="d8-footer-grid"
-          style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 1.4fr) repeat(4, 1fr)', gap: 40, marginBottom: 64 }}
-        >
-          <div>
-            <div style={{ marginBottom: 16 }}>
-              <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 20, fontWeight: 800, color: WHITE, letterSpacing: '-0.03em' }}>D8TAOPS</span>
-            </div>
-            <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, color: 'rgba(255,255,255,0.42)', maxWidth: 280, fontFamily: "'IBM Plex Sans', sans-serif" }}>
-              AI agents for regulated industries.
-            </p>
-          </div>
-          {cols.map(col => (
-            <div key={col.title}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 20 }}>
-                {col.title}
-              </div>
-              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {col.links.map(link => (
-                  <li key={link}>
-                    {link === 'Contact'
-                      ? <a href="#contact" className="footer-contact-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{link}</a>
-                      : <span className="footer-placeholder" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{link}</span>
-                    }
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+const FOOTER_NAV = ['Home', 'Platform', 'Agents', 'Use Cases', 'Consulting', 'Contact'];
 
-        <div style={{ paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.055)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500 }}>
-            © 2026 D8TAOPS. All rights reserved.
-          </span>
-          <div style={{ display: 'flex', gap: 24 }}>
-            {['Privacy', 'Terms', 'Security'].map(label => (
-              <span key={label} className="footer-placeholder" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, fontWeight: 500 }}>{label}</span>
-            ))}
-          </div>
-        </div>
+function GlobalFooter() {
+  return (
+    <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '28px clamp(1.5rem, 5vw, 80px)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20 }}>
+        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, fontWeight: 800, color: WHITE, letterSpacing: '-0.03em' }}>D8TAOPS</span>
+        <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {FOOTER_NAV.map(label => (
+            <a key={label} href={label === 'Home' ? '/' : label === 'Contact' ? '#contact' : `/${label.toLowerCase().replace(' ', '-')}`}
+              className="footer-link"
+              style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 500 }}
+            >{label}</a>
+          ))}
+        </nav>
+        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500 }}>© 2026 D8TAOPS. All rights reserved.</span>
       </div>
     </footer>
   );
@@ -1291,6 +1200,7 @@ export {
   WhatWeDoSection,
   WhatWeDoGrid,
   WhoItIsSection,
+  D8ViewSection,
   IngestAgentDemo,
   DashboardShowcase,
   ProofBlockSection,

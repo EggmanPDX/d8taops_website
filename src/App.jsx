@@ -7,6 +7,7 @@ import {
   WhoItIsSection,
   WhatWeDoGrid,
   WhatWeDoSection,
+  D8ViewSection,
   ProofBlockSection,
   ClosingCTA,
   GlobalFooter,
@@ -22,6 +23,7 @@ export default function Homepage() {
       <WhoItIsSection />
       <WhatWeDoGrid />
       <WhatWeDoSection />
+      <D8ViewSection />
       <ProofBlockSection />
       <ClosingCTA />
       <GlobalFooter />
