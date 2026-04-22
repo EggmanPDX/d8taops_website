@@ -1,54 +1,103 @@
 import React from 'react';
 
-// HomepageNav.jsx — flat white top bar, full-width, with wordmark + 7 links + CTA
-function HomepageNav({ onCta }) {
-  const links = [
-    { label: 'Platform', href: '#platform' },
-    { label: 'Agents', href: '#agents' },
-    { label: 'Use Cases', href: '#use-cases' },
-  ];
+export default function HomepageNav() {
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
   return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-      background: '#FFFFFF',
-      borderBottom: '1px solid rgba(8, 31, 92, 0.08)',
-      boxShadow: '0 1px 4px rgba(8, 31, 92, 0.06)',
-      fontFamily: 'var(--font-sans)',
-    }}>
-      <div style={{
-        width: '100%', padding: '0 24px', height: 88,
-        display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, justifySelf: 'start' }}>
-          <a href="#" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <div style={{
-              fontSize: '22px', fontWeight: 800, color: '#081F5C',
-              letterSpacing: '-0.03em', fontFamily: 'var(--font-sans)',
-            }}>
-              D8TAOPS
-            </div>
+    <>
+      <style>{`
+        .d8-nav-link { transition: color 0.15s ease; }
+        .d8-nav-link:hover { color: #ffffff !important; }
+        .d8-nav-link:focus-visible { outline: 2px solid #0477BF; outline-offset: 4px; border-radius: 4px; }
+        .d8-nav-cta { transition: filter 0.15s ease; }
+        .d8-nav-cta:hover { filter: brightness(1.12); }
+        .d8-nav-cta:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; border-radius: 8px; }
+        .d8-nav-pill { transition: background 0.3s ease; }
+        @media (max-width: 768px) {
+          .d8-nav-links-center { display: none !important; }
+        }
+      `}</style>
+      <nav
+        aria-label="Main navigation"
+        style={{
+          position: 'fixed', top: 16, left: 0, right: 0,
+          zIndex: 1000,
+          display: 'flex', justifyContent: 'center',
+          padding: '0 20px',
+          pointerEvents: 'none',
+        }}
+      >
+        <div
+          className="d8-nav-pill"
+          style={{
+            width: '100%', maxWidth: 1200,
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 54, padding: '0 24px 0 28px',
+            background: scrolled ? 'rgba(4,14,46,0.96)' : 'rgba(4,14,46,0.82)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255,255,255,0.09)',
+            borderRadius: 14,
+            pointerEvents: 'all',
+          }}
+        >
+          {/* Logo */}
+          <a href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+            <span style={{
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              fontSize: 20, fontWeight: 800,
+              color: '#ffffff', letterSpacing: '-0.03em',
+            }}>D8TAOPS</span>
           </a>
-        </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <a href="#platform" style={{ color: 'rgba(8,31,92,0.7)', fontSize: 15, fontWeight: 500, textDecoration: 'none' }}>Platform</a>
-          <a href="#agents" style={{ color: 'rgba(8,31,92,0.7)', fontSize: 15, fontWeight: 500, textDecoration: 'none' }}>Agents</a>
-          <a href="#use-cases" style={{ color: 'rgba(8,31,92,0.7)', fontSize: 15, fontWeight: 500, textDecoration: 'none' }}>Use Cases</a>
-        </div>
+          {/* Center links */}
+          <div
+            className="d8-nav-links-center"
+            style={{ display: 'flex', alignItems: 'center', gap: 28 }}
+          >
+            {[
+              { label: 'Platform', href: '#platform' },
+              { label: 'Agents', href: '#agents' },
+              { label: 'Use Cases', href: '#use-cases' },
+              { label: 'Consulting', href: '#consulting' },
+              { label: 'Contact', href: '#contact' },
+            ].map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                className="d8-nav-link"
+                style={{
+                  color: 'rgba(255,255,255,0.72)',
+                  fontSize: 14, fontWeight: 500,
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textDecoration: 'none',
+                }}
+              >{label}</a>
+            ))}
+          </div>
 
-        <div style={{ justifySelf: 'end' }}>
-          <a href="#contact" style={{
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            padding: '8px 20px', fontSize: 13, fontWeight: 600, letterSpacing: '0.01em',
-            background: 'transparent', color: '#081F5C',
-            border: '1.5px solid #1B3A8C', borderRadius: 24,
-            textDecoration: 'none', whiteSpace: 'nowrap',
-          }}>
-            Get in touch.
-          </a>
+          {/* CTA */}
+          <a
+            href="#contact"
+            className="d8-nav-cta"
+            style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '9px 20px',
+              fontSize: 13, fontWeight: 600,
+              background: '#0477BF', color: '#ffffff',
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              borderRadius: 8, textDecoration: 'none',
+              whiteSpace: 'nowrap', flexShrink: 0,
+            }}
+          >Get in touch.</a>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
-export default HomepageNav;

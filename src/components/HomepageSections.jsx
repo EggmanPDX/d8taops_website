@@ -1,312 +1,633 @@
 import React from 'react';
-import { Globe, CheckCircle2, ChevronRight, Activity } from 'lucide-react';
-import { GooeyText } from './GooeyText';
 
-// HomepageSections.jsx — D8TAOPS homepage modeled on the real site, brief colors
+// ── Brand tokens ──────────────────────────────────────────────────────────────
+const NAVY      = '#081F5C';
+const BLUE      = '#0477BF';
+const NAVY_DEEP = '#040e2e';
+const BODY      = '#333333';
+const MUTED     = '#515151';
+const WHITE     = '#FFFFFF';
+const GREEN     = '#3ecf8e';
 
-const NAVY = '#081F5C';
-const BLUE = '#0477BF';
-const BLUE_LIGHT = '#048ABF';
-const BODY = '#333333';
-const MUTED = '#515151';
-const BG_LIGHT = '#F1F5F9';
-const BG = '#FAFBFF';
-const WHITE = '#FFFFFF';
-const SUCCESS = '#22C55E';
-const EASE = 'cubic-bezier(0.23, 1, 0.32, 1)';
+// ── Shared CSS injected once ──────────────────────────────────────────────────
+const GLOBAL_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
 
-// Reusable single-line section eyebrow: `D8:CODE` in grey mono.
-function SectionEyebrow({ code, muted = false }) {
-  return (
-    <span style={{
-      display: 'block', marginBottom: 12,
-      fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700,
-      letterSpacing: '0.14em', textTransform: 'uppercase',
-      color: muted ? 'rgba(255,255,255,0.6)' : 'var(--color-blue)',
-    }}>{code}</span>
-  );
+  @keyframes d8WordReveal {
+    from { filter: blur(8px); opacity: 0; transform: translateY(5px); }
+    to   { filter: blur(0);   opacity: 1; transform: translateY(0); }
+  }
+  @keyframes d8LivePulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.25; }
+  }
+  @keyframes d8CardFloat {
+    0%,  100% { transform: perspective(900px) rotateY(-5deg) rotateX(3deg) translateY(0px);
+                box-shadow: 0 20px 60px rgba(4,14,46,0.45), 0 0 30px rgba(4,119,191,0.08); }
+    50%        { transform: perspective(900px) rotateY(-5deg) rotateX(3deg) translateY(-10px);
+                box-shadow: 0 32px 80px rgba(4,14,46,0.55), 0 0 40px rgba(4,119,191,0.14); }
+  }
+  @keyframes d8TickerScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes s4pulse { to { left: 140%; } }
+
+  .d8-dashboard-tilt {
+    animation: d8CardFloat 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+    border-radius: 16px;
+    height: 100%;
+  }
+  .d8-dashboard-tilt:hover {
+    animation: none;
+    transform: perspective(900px) rotateY(0deg) rotateX(0deg) !important;
+    transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .d8-pipeline-scroll::-webkit-scrollbar { height: 3px; }
+  .d8-pipeline-scroll::-webkit-scrollbar-track { background: rgba(8,31,92,0.08); }
+  .d8-pipeline-scroll::-webkit-scrollbar-thumb { background: #0477BF; border-radius: 3px; }
+
+  .d8-agent-card {
+    width: 155px; flex-shrink: 0;
+    background: #f5f8fb;
+    border-radius: 14px;
+    padding: 16px 14px;
+    cursor: pointer;
+    border: 1px solid rgba(8,31,92,0.10);
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    box-sizing: border-box;
+  }
+  .d8-agent-card:hover { background: #081F5C; transform: translateY(-2px); }
+  .d8-agent-card:hover .d8-agent-desig { color: rgba(62,207,142,0.9); }
+  .d8-agent-card:hover .d8-agent-name  { color: #ffffff; }
+  .d8-agent-card:hover .d8-agent-role  { color: rgba(255,255,255,0.6); }
+  .d8-agent-card:hover .d8-agent-num   { background: rgba(62,207,142,0.25); color: #3ecf8e; }
+  .d8-agent-card.active { background: #081F5C; transform: translateY(-2px); }
+  .d8-agent-card.active .d8-agent-desig { color: rgba(62,207,142,0.9); }
+  .d8-agent-card.active .d8-agent-name  { color: #ffffff; }
+  .d8-agent-card.active .d8-agent-role  { color: rgba(255,255,255,0.6); }
+  .d8-agent-card.active .d8-agent-num   { background: rgba(62,207,142,0.25); color: #3ecf8e; }
+  .d8-agent-card-view { border: 1px solid rgba(4,119,191,0.35); }
+
+  .d8-who-card {
+    background: #f5f8fb;
+    border-radius: 20px;
+    padding: 36px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    display: flex; flex-direction: column;
+  }
+  .d8-who-card:hover {
+    background: #edf4fc;
+    transform: translateY(-3px);
+    border-color: rgba(4,119,191,0.2);
+  }
+
+  .d8-stat-line {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, #0477BF, #048ABF);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .d8-stat-cell.in .d8-stat-line { transform: scaleX(1); }
+
+  .d8-reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.72s cubic-bezier(0.22,1,0.36,1),
+                transform 0.72s cubic-bezier(0.22,1,0.36,1);
+  }
+  .d8-reveal.in { opacity: 1; transform: translateY(0); }
+
+  .d8-what-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 36px 32px;
+    border: 1px solid rgba(8,31,92,0.07);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: flex; flex-direction: column;
+  }
+  .d8-what-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(8,31,92,0.1); }
+
+  .footer-placeholder { color: rgba(255,255,255,0.42); cursor: default; pointer-events: none; }
+  .footer-link { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s ease; }
+  .footer-link:hover { color: rgba(255,255,255,0.75); }
+  .footer-contact-link { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s ease; }
+  .footer-contact-link:hover { color: #0477BF; }
+
+  .d8-portrait-card {
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 40px rgba(8,31,92,0.1);
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
+  }
+  .d8-portrait-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 64px rgba(8,31,92,0.18);
+  }
+  .d8-portrait-top {
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px 32px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .d8-portrait-top::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .d8-portrait-top::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(62,207,142,0.1);
+    top: -50px; right: -50px; pointer-events: none;
+  }
+  .d8-portrait-top.c1 { background: linear-gradient(145deg, #040e2e 0%, #081F5C 100%); }
+  .d8-portrait-top.c2 { background: linear-gradient(145deg, #023d74 0%, #0477BF 100%); }
+  .d8-portrait-top.c3 { background: linear-gradient(145deg, #062242 0%, #0a3366 100%); }
+
+  .dash-browser {
+    margin-top: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .dash-chrome {
+    background: #1e2330;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .dash-dots { display: flex; gap: 6px; flex-shrink: 0; }
+  .dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dash-dot:nth-child(1) { background: #ff5f57; }
+  .dash-dot:nth-child(2) { background: #febc2e; }
+  .dash-dot:nth-child(3) { background: #28c840; }
+  .dash-url {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.02em;
+  }
+  .dash-img-wrap { position: relative; overflow: hidden; line-height: 0; }
+  .dash-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(8,31,92,0.85) 100%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .d8-hero-grid { grid-template-columns: 1fr !important; }
+    .d8-what-header-grid { grid-template-columns: 1fr !important; }
+    .d8-what-card-grid { grid-template-columns: 1fr !important; }
+    .d8-stats-grid { grid-template-columns: repeat(2,1fr) !important; }
+    .d8-proof-grid { grid-template-columns: 1fr !important; }
+    .d8-footer-grid { grid-template-columns: 1fr 1fr !important; }
+    .d8-persona-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 600px) {
+    .d8-stats-grid { grid-template-columns: 1fr 1fr !important; }
+    .d8-who-bento-right { flex-direction: row !important; flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .d8-dashboard-tilt { animation: none; transform: none !important; }
+    .d8-reveal { opacity: 1; transform: none; }
+  }
+`;
+
+// ── Utility: scroll-triggered counter ────────────────────────────────────────
+function AnimatedNumber({ target, decimals = 0, prefix = '', suffix = '', duration = 1400 }) {
+  const [val, setVal] = React.useState(0);
+  const ref = React.useRef(null);
+  const started = React.useRef(false);
+  const start = React.useCallback(() => {
+    if (started.current) return;
+    started.current = true;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - t0) / duration, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      setVal(e * target);
+      if (p < 1) requestAnimationFrame(tick);
+      else setVal(target);
+    };
+    requestAnimationFrame(tick);
+  }, [target, duration]);
+  React.useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) start(); }, { threshold: 0.18 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [start]);
+  return <span ref={ref}>{prefix}{val.toFixed(decimals)}{suffix}</span>;
 }
 
-const HERO_MORPH_TEXTS = [
-  'No Rip-and-tear systems.',
-  'No New platforms.',
-  'No External data slop.',
-  'No Security risks.',
-  'No High-paid consultants.',
-  'No IT migrations.',
-  'No Manual audits necessary.',
-  'No Unorganized data.',
-];
+// ── Utility: mount-triggered counter (for dashboard) ─────────────────────────
+function useMountCounter(target, duration = 2000, delay = 0) {
+  const [val, setVal] = React.useState(0);
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        setVal(Math.round(e * target));
+        if (p < 1) requestAnimationFrame(tick);
+        else setVal(target);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+    return () => clearTimeout(t);
+  }, [target, duration, delay]);
+  return val;
+}
 
-// ============================================================
-// HERO — particle canvas + typewriter on navy→blue gradient
-// ============================================================
-const rotatingPhrases = [
-  'No migration.', 'No new tech.', 'No rip-and-tear.', 'No hallucinating.',
-  'No bad data.', 'No external data.', 'No connecting outside the org.',
-  'No generic results.', 'No costly software.', 'No foreign data.',
-];
+// ── Utility: IntersectionObserver reveal ─────────────────────────────────────
+function useReveal(threshold = 0.18) {
+  const ref = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
+    }, { threshold });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+}
 
+// ── Particle canvas ───────────────────────────────────────────────────────────
 function ParticleCanvas() {
   const ref = React.useRef(null);
   React.useEffect(() => {
     const canvas = ref.current; if (!canvas) return;
     const ctx = canvas.getContext('2d'); if (!ctx) return;
-    const COLORS = ['rgba(4,119,191,', 'rgba(4,138,191,', 'rgba(180,210,245,', 'rgba(255,255,255,'];
-    let particles = [];
-    let raf, t = 0;
+    let particles = [], raf;
     const resize = () => {
-      const r = canvas.getBoundingClientRect();
+      const p = canvas.parentElement;
+      const r = p.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+      canvas.width  = r.width  * dpr;
+      canvas.height = r.height * dpr;
+      canvas.style.width  = r.width  + 'px';
       canvas.style.height = r.height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = Array.from({ length: 280 }, () => ({
+      particles = Array.from({ length: 85 }, () => ({
         x: Math.random() * r.width,
         y: Math.random() * r.height,
-        size: Math.random() * 1 + 0.3,
-        opacity: Math.random() * 0.7 + 0.3,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.25,
-        phase: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.008 + 0.003,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.18,
+        size: Math.random() * 1.5 + 0.4,
+        opacity: Math.random() * 0.45 + 0.15,
+        w: r.width, h: r.height,
       }));
     };
     resize();
-    const ro = new ResizeObserver(resize); ro.observe(canvas.parentElement);
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas.parentElement);
     const animate = () => {
-      const r = canvas.getBoundingClientRect();
-      const w = r.width, h = r.height;
-      ctx.clearRect(0, 0, w, h); t += 1;
+      const w = canvas.width  / (window.devicePixelRatio || 1);
+      const h = canvas.height / (window.devicePixelRatio || 1);
+      ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
-        p.x += p.vx + Math.sin(t * p.speed + p.phase) * 0.25;
-        p.y += p.vy + Math.cos(t * p.speed * 1.3 + p.phase) * 0.15;
-        if (p.x < -20) p.x = w + 10; if (p.x > w + 20) p.x = -10;
-        if (p.y < -20) p.y = h + 10; if (p.y > h + 20) p.y = -10;
-        const sparkle = 0.5 + 0.5 * Math.sin(t * p.speed * 2 + p.phase);
-        const alpha = p.opacity * (0.6 + sparkle * 0.4);
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
-        g.addColorStop(0, p.color + (alpha * 0.9) + ')');
-        g.addColorStop(0.4, p.color + (alpha * 0.3) + ')');
-        g.addColorStop(1, p.color + '0)');
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(220,235,250,${alpha})`; ctx.fill();
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      }
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < 140) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(4,119,191,${(1 - d / 140) * 0.18})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(4,119,191,${p.opacity})`;
+        ctx.fill();
       }
       raf = requestAnimationFrame(animate);
     };
     raf = requestAnimationFrame(animate);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
-  return <canvas ref={ref} aria-hidden="true" style={{
-    position: 'absolute', inset: 0, width: '100%', height: '100%',
-    pointerEvents: 'none', zIndex: 0,
-  }} />;
-}
-
-function TextScramble({ text, duration = 800, speed = 40, characterSet, style }) {
-  const defaults = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const chars = characterSet || defaults;
-  const [display, setDisplay] = React.useState(text);
-  React.useEffect(() => {
-    const steps = duration / speed;
-    let step = 0;
-    const id = setInterval(() => {
-      let out = '';
-      const progress = step / steps;
-      for (let i = 0; i < text.length; i++) {
-        if (text[i] === ' ') { out += ' '; continue; }
-        if (progress * text.length > i) out += text[i];
-        else out += chars[Math.floor(Math.random() * chars.length)];
-      }
-      setDisplay(out);
-      step++;
-      if (step > steps) { clearInterval(id); setDisplay(text); }
-    }, speed);
-    return () => clearInterval(id);
-  }, [text, duration, speed]);
-  return <span style={style}>{display}</span>;
-}
-
-function ScrambleRotator() {
-  const [idx, setIdx] = React.useState(0);
-  React.useEffect(() => {
-    const id = setInterval(() => setIdx(p => (p + 1) % rotatingPhrases.length), 2400);
-    return () => clearInterval(id);
-  }, []);
   return (
-    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(28px, 3.6vw, 44px)', fontWeight: 400, color: 'rgba(255,255,255,0.9)' }}>
-      <TextScramble key={idx} text={rotatingPhrases[idx]} duration={900} speed={35} />
-    </span>
+    <canvas
+      ref={ref}
+      aria-hidden="true"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}
+    />
   );
 }
 
+// ── H1 with staggered blur-to-focus ──────────────────────────────────────────
+function BlurRevealH1({ text }) {
+  const words = text.split(' ');
+  return (
+    <h1 style={{
+      margin: '0 0 24px',
+      fontSize: 'clamp(40px, 5vw, 68px)',
+      fontWeight: 700,
+      color: WHITE,
+      lineHeight: 1.08,
+      letterSpacing: '-0.02em',
+      fontFamily: "'IBM Plex Sans', sans-serif",
+    }}>
+      {words.map((word, i) => (
+        <React.Fragment key={i}>
+          <span style={{
+            display: 'inline-block',
+            color: word === 'YOUR' ? BLUE : WHITE,
+            animation: `d8WordReveal 0.6s cubic-bezier(0.22,1,0.36,1) both`,
+            animationDelay: `${i * 80}ms`,
+          }}>{word}</span>
+          {i < words.length - 1 ? ' ' : ''}
+        </React.Fragment>
+      ))}
+    </h1>
+  );
+}
+
+// ── Dashboard widget ──────────────────────────────────────────────────────────
 const PANEL_ITEMS = [
-  { strong: 'Runs on top of your stack.', muted: '' },
-  { strong: 'Your data stays put.', muted: 'On-premise, in the cloud, SaaS platforms.' },
-  { strong: 'Governed by design.', muted: 'Auditable outputs. Human-in-the-loop.' },
-  { strong: 'Live in 90 days.', muted: 'Not multi-year migrations.' },
+  { strong: 'Runs on top of your stack.',  muted: '' },
+  { strong: 'Your data stays put.',         muted: 'On-premise, in the cloud, SaaS platforms.' },
+  { strong: 'Governed by design.',          muted: 'Auditable outputs. Human-in-the-loop.' },
+  { strong: 'Live in 90 days.',             muted: 'Not multi-year migrations.' },
 ];
 
+const ACTIVITY_POOL = [
+  { id: 'LN-487291', check: 'DTI ratio check',     status: 'PASS' },
+  { id: 'LN-487290', check: 'Income verification', status: 'PASS' },
+  { id: 'LN-487289', check: 'Flood cert required', status: 'REVIEW' },
+  { id: 'LN-487288', check: 'Property value',      status: 'PASS' },
+  { id: 'LN-487287', check: 'Credit score gate',   status: 'PASS' },
+  { id: 'LN-487286', check: 'LTV threshold',       status: 'PASS' },
+  { id: 'LN-487285', check: 'Title search',        status: 'PASS' },
+  { id: 'LN-487284', check: 'Appraisal gap',       status: 'REVIEW' },
+  { id: 'LN-487283', check: 'Policy version match', status: 'PASS' },
+  { id: 'LN-487282', check: 'Escrow calculation',  status: 'PASS' },
+];
+
+const LIVE_STAGES = ['D8:INGEST', 'D8:CAT', 'D8:CURATE', 'D8:SEC', 'D8:FLOW', 'D8:STAGE'];
+
+function DashboardWidget() {
+  const loans  = useMountCounter(575,  2000, 700);
+  const [progress, setProgress] = React.useState(0);
+  const [stage, setStage]       = React.useState(2);
+  const [feedIdx, setFeedIdx]   = React.useState(0);
+
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / 2200, 1);
+        setProgress((1 - Math.pow(1 - p, 3)) * 73);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  React.useEffect(() => {
+    const s = setInterval(() => setStage(p => (p + 1) % LIVE_STAGES.length), 1800);
+    const f = setInterval(() => setFeedIdx(p => (p + 1) % ACTIVITY_POOL.length), 3200);
+    return () => { clearInterval(s); clearInterval(f); };
+  }, []);
+
+  const rows = [0, 1, 2, 3].map(off => ACTIVITY_POOL[(feedIdx + off) % ACTIVITY_POOL.length]);
+
+  return (
+    <div className="d8-dashboard-tilt">
+      <div style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.11)',
+        borderRadius: 16, padding: '20px 24px',
+        height: '100%', boxSizing: 'border-box',
+        display: 'flex', flexDirection: 'column', gap: 0,
+        fontFamily: "'IBM Plex Mono', monospace",
+      }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: GREEN, flexShrink: 0, animation: 'd8LivePulse 2s ease-in-out infinite' }} />
+          <span style={{ fontSize: 10, color: GREEN, letterSpacing: '0.12em' }}>LIVE</span>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', marginLeft: 6 }}>D8:VIEW DASHBOARD</span>
+        </div>
+
+        {/* Stage track */}
+        <div style={{ display: 'flex', gap: 3, marginBottom: 6 }}>
+          {LIVE_STAGES.map((s, i) => (
+            <div key={s} style={{
+              flex: 1, height: 3, borderRadius: 2,
+              background: i <= stage ? BLUE : 'rgba(255,255,255,0.1)',
+              transition: 'background 0.4s ease',
+            }} />
+          ))}
+        </div>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', marginBottom: 14 }}>
+          ACTIVE: {LIVE_STAGES[stage]}
+        </div>
+
+        {/* Progress bar → 73% */}
+        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 3, height: 5, marginBottom: 14 }}>
+          <div style={{
+            width: `${progress}%`, height: '100%', borderRadius: 3,
+            background: 'linear-gradient(90deg, #0477BF, #26D07C)',
+            transition: 'width 0.2s ease',
+          }} />
+        </div>
+
+        {/* Counters */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 26, fontWeight: 700, color: WHITE, fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: 1 }}>
+              {loans.toLocaleString()}
+            </div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.1em', marginTop: 4 }}>LOANS PROCESSED</div>
+          </div>
+          <div>
+            <div style={{ fontSize: 26, fontWeight: 700, color: '#e8a838', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: 1 }}>31</div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.1em', marginTop: 4 }}>EXCEPTIONS FLAGGED</div>
+          </div>
+        </div>
+
+        <div style={{ height: '0.5px', background: 'rgba(255,255,255,0.1)', margin: '0 0 14px' }} />
+
+        {/* Checklist */}
+        <div style={{ marginBottom: 16 }}>
+          {PANEL_ITEMS.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: 9, marginBottom: i < PANEL_ITEMS.length - 1 ? 9 : 0 }}>
+              <div style={{
+                width: 15, height: 15, flexShrink: 0, marginTop: 1,
+                background: 'rgba(46,160,98,0.18)', border: '1px solid rgba(46,160,98,0.4)',
+                borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <svg width="7" height="6" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                  <path d="M1 4l3 3 5-6" stroke="#2ea062" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div style={{ fontSize: 12, lineHeight: 1.4, fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                <strong style={{ color: WHITE, fontWeight: 600 }}>{item.strong}</strong>
+                {item.muted && <span style={{ color: 'rgba(255,255,255,0.38)' }}> {item.muted}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ height: '0.5px', background: 'rgba(255,255,255,0.1)', margin: '0 0 12px' }} />
+
+        {/* Live feed */}
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginBottom: 10 }}>RECENT ACTIVITY</div>
+          {rows.map((row, i) => (
+            <div key={row.id + feedIdx + i} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '6px 0',
+              borderBottom: i < rows.length - 1 ? '0.5px solid rgba(255,255,255,0.06)' : 'none',
+              opacity: 1 - i * 0.18,
+            }}>
+              <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', minWidth: 52, flexShrink: 0 }}>{row.id}</span>
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.check}</span>
+              <span style={{
+                fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4, flexShrink: 0,
+                background: row.status === 'PASS' ? 'rgba(38,208,124,0.15)' : 'rgba(232,168,56,0.15)',
+                color: row.status === 'PASS' ? GREEN : '#e8a838',
+                letterSpacing: '0.06em',
+              }}>{row.status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// S1 — HERO
+// ═══════════════════════════════════════════════════════════════════════════════
 function HeroSection() {
   return (
     <section style={{ position: 'relative', overflow: 'hidden' }}>
-      {/* Background — untouched */}
+      <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />
       <div style={{
-        position: 'relative', width: '100%',
-        minHeight: 'max(680px, 90vh)',
+        position: 'relative',
+        width: '100%',
+        minHeight: 'max(680px, 92vh)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0c1428 0%, #0f2560 40%, #0477BF 100%)',
+        background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)',
       }}>
         <ParticleCanvas />
 
-        {/* Two-column content grid */}
         <div
-          className="hero-grid"
+          className="d8-hero-grid"
           style={{
             position: 'relative', zIndex: 1,
             width: '100%', maxWidth: 1200,
-            padding: '80px clamp(2rem, 5%, 64px)',
+            padding: '100px clamp(2rem, 5%, 64px) 80px',
             display: 'grid',
-            gridTemplateColumns: '1.15fr 0.85fr',
-            gap: 80,
+            gridTemplateColumns: '1.05fr 0.95fr',
+            gap: 56,
             alignItems: 'center',
           }}
         >
-          {/* ── LEFT COLUMN ── */}
+          {/* ── Left column ── */}
           <div>
-            <p className="hero-eyebrow" style={{
-              margin: '0 0 14px', fontSize: 12, color: '#2ea062',
-              fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase',
-            }}>
-              Agent orchestration · Regulated industries
-            </p>
+            {/* Tag pills */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+              {['Agent orchestration', 'Regulated industries'].map(tag => (
+                <span key={tag} style={{
+                  display: 'inline-block',
+                  padding: '4px 12px',
+                  background: 'rgba(4,119,191,0.12)',
+                  border: '1px solid rgba(4,119,191,0.25)',
+                  borderRadius: 6,
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 9.5, fontWeight: 500,
+                  color: BLUE, letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}>{tag}</span>
+              ))}
+            </div>
 
-            <h1
-              className="hero-h1"
-              style={{
-                margin: '0 0 20px', fontSize: 'clamp(40px, 5vw, 68px)', fontWeight: 700,
-                color: '#ffffff', lineHeight: 1.08, letterSpacing: '-0.02em',
-              }}
-            >
-              We get <span style={{ color: '#2ea062' }}>YOUR</span> data ready for AI.
-            </h1>
+            <BlurRevealH1 text="We get YOUR data ready for AI." />
 
-            <h2 style={{
-              margin: '0 0 22px', fontSize: 20, fontWeight: 400,
-              color: 'rgba(255,255,255,0.65)', lineHeight: 1.5, maxWidth: 480,
-              letterSpacing: '-0.01em',
+            <p style={{
+              margin: '0 0 20px',
+              fontSize: 18, fontWeight: 400,
+              color: 'rgba(255,255,255,0.7)',
+              lineHeight: 1.55, maxWidth: 480,
+              fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
               Agentic systems tailored to your infrastructure. Governed, auditable outputs — deployed in 90 days.
-            </h2>
+            </p>
 
-            {/* Morphing "No [word]" line */}
-            <div style={{ margin: '0 0 32px', height: 36 }}>
-              <GooeyText
-                texts={HERO_MORPH_TEXTS}
-                morphTime={1.1}
-                cooldownTime={2.2}
-                style={{ height: '100%', justifyContent: 'flex-start' }}
-                textStyle={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(14px, 1.4vw, 17px)',
-                  fontWeight: 500,
-                  color: '#2ea062',
-                  letterSpacing: '0.01em',
-                  textAlign: 'left',
-                }}
-              />
-            </div>
+            {/* Proof line */}
+            <p style={{
+              margin: '0 0 32px',
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: 13.5, color: GREEN,
+              lineHeight: 1.5,
+            }}>
+              Most audits take days. Complete audits take minutes.
+            </p>
 
-            {/* CTA row */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
               <a href="#contact" style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                padding: '14px 30px', fontSize: 15, fontWeight: 600,
-                background: '#ffffff', color: '#08183a', borderRadius: 24,
+                padding: '14px 32px', fontSize: 15, fontWeight: 600,
+                background: WHITE, color: '#08183a', borderRadius: 24,
                 textDecoration: 'none', whiteSpace: 'nowrap',
-              }}>
-                Get in touch.
-              </a>
-              <a href="#ingest" style={{
-                fontSize: 14, color: 'rgba(255,255,255,0.6)',
-                textDecoration: 'none', whiteSpace: 'nowrap',
-              }}>
-                See how it works →
-              </a>
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                transition: 'filter 0.15s ease',
+              }}
+              onMouseEnter={e => e.currentTarget.style.filter = 'brightness(0.94)'}
+              onMouseLeave={e => e.currentTarget.style.filter = 'brightness(1)'}
+              >Get in touch.</a>
             </div>
 
-            <div style={{ margin: '24px 0 0' }}>
-              <p style={{
-                margin: '0',
-                fontSize: 10, color: 'rgba(255,255,255,0.4)',
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: 'var(--font-sans)',
-              }}>
-                Deployed at Kitsap Credit Union and leading financial institutions.
-              </p>
-            </div>
-
-            {/* NVIDIA badge */}
-            <div style={{ marginTop: 28 }}>
-              <img
-                src="/assets/nvidia-inception.png"
-                alt="NVIDIA Inception Program"
-                style={{ height: 36, opacity: 0.75 }}
-                onError={e => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextSibling.style.display = 'block';
-                }}
-              />
-              <p style={{
-                display: 'none', margin: 0,
-                fontSize: 10, color: 'rgba(255,255,255,0.4)',
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: 'var(--font-sans)',
-              }}>
-                NVIDIA INCEPTION MEMBER
-              </p>
+            {/* Trust badges */}
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', rowGap: 4 }}>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Audit · Operations · Sales · Finance, and more.</span>
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN ── */}
-          <div style={{
-            background: 'rgba(255,255,255,0.19)',
-            border: '0.5px solid rgba(255,255,255,0.1)',
-            borderRadius: 10,
-            padding: '28px 32px',
-          }}>
-            <p style={{
-              margin: '0 0 16px', fontFamily: 'var(--font-mono)', fontSize: 'clamp(14px, 1.4vw, 17px)', color: '#2ea062',
-              fontWeight: 500, letterSpacing: '0.01em', textTransform: 'uppercase',
-            }}>
-              HOW WE'RE DIFFERENT
-            </p>
-
-            {PANEL_ITEMS.map((item, i) => (
-              <div key={i} style={{
-                display: 'flex', gap: 12,
-                marginBottom: i === PANEL_ITEMS.length - 1 ? 0 : 14,
-              }}>
-                <div style={{
-                  width: 18, height: 18, flexShrink: 0, marginTop: 1,
-                  background: 'rgba(46,160,98,0.18)',
-                  border: '1px solid rgba(46,160,98,0.4)',
-                  borderRadius: '50%',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-                    <path d="M1 4l3 3 5-6" stroke="#2ea062" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <div style={{ fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 1.4 }}>
-                  <strong style={{ color: '#fff', fontWeight: 600 }}>{item.strong}</strong>
-                  {' '}
-                  <span style={{ color: 'rgba(255,255,255,0.45)' }}>{item.muted}</span>
-                </div>
-              </div>
-            ))}
+          {/* ── Right column: Dashboard ── */}
+          <div style={{ alignSelf: 'stretch', minHeight: 520 }}>
+            <DashboardWidget />
           </div>
         </div>
       </div>
@@ -314,970 +635,657 @@ function HeroSection() {
   );
 }
 
-// ============================================================
-function ComparisonSection() { return null; }
-function WhoWeAreSection() { return null; }
-
-// ============================================================
-// WHAT WE DO — full-width audit widget
-// ============================================================
-const D8_AUDIT_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-
-  /* ── Outer section wrapper ── */
-  .d8-audit-section {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: #eef2f7;
-    padding: 4.5rem 3rem;
-  }
-  .d8-audit-inner { max-width: 1200px; margin: 0 auto; }
-
-  /* ── Inner navy card ── */
-  .d8-audit-card {
-    background: #081F5C;
-    border-radius: 18px;
-    padding: 36px;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-  }
-  .d8-audit-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 85% 10%, rgba(4,119,191,.18) 0%, transparent 50%),
-                radial-gradient(circle at 10% 90%, rgba(255,255,255,.03) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  /* ── Zone 1: Header ── */
-  .d8-audit-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 24px; margin-bottom: 28px; position: relative;
-  }
-  .d8-audit-left { flex: 1; }
-  .d8-audit-h2 {
-    font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
-    margin: 0 0 8px 0; line-height: 1.2; color: #fff;
-  }
-  .d8-audit-subhead {
-    font-size: 14px; color: rgba(255,255,255,0.52);
-    line-height: 1.6; max-width: 580px; margin: 0;
-  }
-  .d8-audit-pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px;
-  }
-  .d8-audit-pill {
-    background: rgba(255,255,255,0.09); border-radius: 20px;
-    padding: 5px 16px; font-size: 12px; color: rgba(255,255,255,0.75);
-  }
-  .d8-audit-shield {
-    width: 48px; height: 48px; background: rgba(255,255,255,0.07);
-    border-radius: 12px; display: flex; align-items: center;
-    justify-content: center; flex-shrink: 0; position: relative;
-  }
-
-  /* ── Divider ── */
-  .d8-audit-divider {
-    border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 0 0 24px 0;
-  }
-
-  /* ── Zone 2: Live feed ── */
-  .d8-audit-feed-hdr {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-  }
-  .d8-audit-live-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: #26D07C;
-    animation: d8AuditPulse 2s ease-in-out infinite; flex-shrink: 0;
-  }
-  @keyframes d8AuditPulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
-  }
-  .d8-audit-feed-label {
-    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
-    letter-spacing: 0.12em; color: rgba(255,255,255,0.38); text-transform: uppercase;
-  }
-  .d8-audit-viewport {
-    overflow: hidden; position: relative; height: 294px; margin-bottom: 28px;
-  }
-  .d8-audit-feed-inner { position: absolute; width: 100%; bottom: 0; }
-  .d8-audit-row {
-    display: flex; align-items: center; padding: 13px 0; gap: 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
-  .d8-audit-row:last-child { border-bottom: none; }
-  .d8-audit-row__ts {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
-    color: rgba(255,255,255,0.28); min-width: 40px; flex-shrink: 0;
-  }
-  .d8-audit-row__text {
-    font-size: 14px; color: rgba(255,255,255,0.85); flex: 1; line-height: 1.4;
-  }
-  .d8-audit-row__badge {
-    padding: 3px 12px; border-radius: 6px; font-size: 11px;
-    font-weight: 500; white-space: nowrap;
-  }
-  .d8-audit-badge--done    { background: rgba(38,208,124,0.15);  color: #26D07C; }
-  .d8-audit-badge--review  { background: rgba(232,168,56,0.15);   color: #e8a838; }
-  .d8-audit-badge--running { background: rgba(79,180,245,0.15);   color: #4fb4f5; }
-  .d8-audit-badge--queued  { background: rgba(255,255,255,0.07);  color: rgba(255,255,255,0.30); }
-  @keyframes d8SlideIn  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes d8SlideOut { from { opacity: 1; transform: translateY(0); }   to { opacity: 0; transform: translateY(-10px); } }
-  .d8-audit-row.entering { animation: d8SlideIn  0.4s  ease forwards; }
-  .d8-audit-row.leaving  { animation: d8SlideOut 0.35s ease forwards; }
-
-  /* ── Zone 3: Metrics grid ── */
-  .d8-audit-metrics {
-    display: grid; grid-template-columns: auto 1fr 1fr 1fr;
-    align-items: start;
-    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px;
-  }
-  .d8-audit-metric { padding-right: 32px; }
-  .d8-audit-metric + .d8-audit-metric {
-    padding-left: 32px; border-left: 1px solid rgba(255,255,255,0.07);
-  }
-  .d8-audit-metric:last-child { padding-right: 0; }
-  .d8-audit-metric-lbl {
-    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
-    letter-spacing: 0.12em; color: rgba(255,255,255,0.32);
-    text-transform: uppercase; margin: 0 0 12px 0;
-  }
-  .d8-audit-big { font-size: 34px; font-weight: 600; color: #fff; margin: 0 0 6px 0; line-height: 1; }
-  .d8-audit-big--blue { color: #4fb4f5; }
-  .d8-audit-sub  { font-size: 12px; color: rgba(255,255,255,0.36); margin: 0; }
-  /* bar rows */
-  .d8-audit-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .d8-audit-bar-row:last-of-type { margin-bottom: 0; }
-  .d8-audit-bar-track {
-    flex: 1; height: 5px; background: rgba(255,255,255,0.08);
-    border-radius: 3px; overflow: hidden;
-  }
-  .d8-audit-bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1s ease; }
-  .d8-audit-bar-val {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
-    color: rgba(255,255,255,0.45); min-width: 30px; text-align: right;
-  }
-  .d8-audit-bars-sub { margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.36); }
-
-  /* ── Reveal animation ── */
-  .d8-audit-reveal {
-    opacity: 0; transform: translateY(16px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-  .d8-audit-reveal.in { opacity: 1; transform: translateY(0); }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .d8-audit-metrics { grid-template-columns: 1fr 1fr; gap: 24px; }
-    .d8-audit-metric + .d8-audit-metric { padding-left: 0; border-left: none; }
-    .d8-audit-metric { padding-right: 0; border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 20px; }
-    .d8-audit-metric:last-child { border-bottom: none; padding-bottom: 0; }
-  }
-  @media (max-width: 600px) {
-    .d8-audit-section { padding: 3rem 1.25rem; }
-    .d8-audit-card { padding: 24px; }
-    .d8-audit-metrics { grid-template-columns: 1fr; }
-    .d8-audit-h2 { font-size: 18px; }
-  }
-
-  /* ── Reduced motion ── */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-`;
-
-const s4Agents = [
-  { num: 1, d: 'D8:INGEST',  n: 'Ingest',     r: 'Collect & normalize',
-    what: 'Connects to your existing data sources — core systems, cloud storage, APIs — and normalizes everything into a unified layer automatically.',
-    why: 'Most organizations have data spread across five or more systems that don\'t talk to each other. D8:INGEST replaces manual exports and one-off scripts with a governed, repeatable pipeline.',
-    examples: [
-      'Financial services: Connected to Kitsap Credit Union\'s core banking system and LOS overnight. Every loan record normalized and ready — no manual pull, no missing fields.',
-      'Media & operations: Connected to billboard lease contract data by facility ID across hundreds of locations. All contract records pulled into a single normalized layer per billing cycle.',
-      'Healthcare: Connected to EHR, insurance verification, and clinical research systems simultaneously. Patient records assembled from three siloed sources without manual export.',
-      'Real estate: Normalized property data across MLS, internal portfolio systems, and financial platforms. One unified layer — no IT involvement required.',
-    ]},
-  { num: 2, d: 'D8:CAT',     n: 'Categorize', r: 'Classify & catalog',
-    what: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin to current state.',
-    why: 'You can\'t govern what you can\'t see. Without a catalog, teams don\'t know what data exists or whether they\'re allowed to use it. Shadow data creates compliance exposure and duplicated work.',
-    examples: [
-      'Financial services: Cataloged every loan record by type, origination date, and applicable policy version. Auditors traced any data point back to its source system in seconds.',
-      'Media & operations: Classified lease contracts by property type, billing period, and calculation method. Every record tagged before the calculation pipeline ran.',
-      'Healthcare: Cataloged patient records across EHR, billing, and lab systems. Every dataset tagged with origin, access permissions, and clinical context.',
-      'Real estate: Classified portfolio properties by asset class, ownership structure, and market region. Full lineage from acquisition record to current valuation.',
-    ]},
-  { num: 3, d: 'D8:CURATE',  n: 'Curate',     r: 'Validate & clean',
-    what: 'Validates and cleans your data before it reaches AI models — catching wrong formats, missing fields, and inconsistent values at the source.',
-    why: 'Garbage in, garbage out. AI output is only as reliable as the data it runs on. D8:CURATE ensures models work with clean, structured data every time.',
-    examples: [
-      'Financial services: Flagged 84 loan records with missing or inconsistent fields before the audit ran. 100% coverage confirmed with no bad data reaching the policy check layer.',
-      'Media & operations: Identified mismatched billing periods and duplicate facility records before the percent rent calculation ran. Zero calculation errors on output.',
-      'Healthcare: Normalized patient records across EHR, billing, and lab systems — ensuring every field was complete and consistent before clinical recommendations were generated.',
-      'Real estate: Cleaned stale comparable data and flagged properties with incomplete ownership records before the portfolio intelligence dashboard populated.',
-    ]},
-  { num: 4, d: 'D8:SEC',     n: 'Secure',     r: 'Enforce governance',
-    what: 'Enforces role-based access controls, masks sensitive fields, and logs every action across the pipeline for compliance review.',
-    why: 'Governance bolted on after the fact creates gaps. D8:SEC builds access control and audit logging directly into the pipeline — not as a separate layer.',
-    examples: [
-      'Financial services: Applied PII masking to borrower data. Enforced role-based access so only credentialed reviewers saw exception findings. Every action timestamped and logged.',
-      'Media & operations: Enforced contract data access by billing team role. Sensitive lease terms masked from operations staff without clearance. Full change log maintained.',
-      'Healthcare: Enforced HIPAA-compliant access controls on patient records. Masked sensitive clinical fields from non-treating staff. Every access event logged for audit.',
-      'Real estate: Applied role-based access to financial performance data. Acquisition team saw full portfolio metrics. External advisors saw anonymized comparables only.',
-    ]},
-  { num: 5, d: 'D8:FLOW',    n: 'Flow',       r: 'Orchestrate workflow',
-    what: 'Orchestrates the entire workflow. A supervisor agent coordinates task routing, policy checks, and handoffs between agents and human reviewers.',
-    why: 'Without orchestration, complex pipelines break down at handoff points. D8:FLOW keeps every step in sequence and routes exceptions to humans at exactly the right moment.',
-    examples: [
-      'Financial services: Ran policy checks across all loan records. Automatically routed 31 exception findings to the compliance team. No manual triage required.',
-      'Media & operations: Orchestrated the full percent rent calculation — Type A and Type B formulas applied in correct sequence, payment restriction rules enforced, payee splits separated automatically.',
-      'Healthcare: Routed patient intake data through eligibility verification, prior authorization check, and clinical protocol matching — in sequence, without human coordination between steps.',
-      'Real estate: Coordinated portfolio data refresh across four source systems. Flagged properties with stale valuations and routed them to the analyst team for manual review.',
-    ]},
-  { num: 6, d: 'D8:OBSERVE', n: 'Observe',    r: 'Monitor & trace',
-    what: 'Monitors pipeline health in real time. Tracks every decision, override, and approval with full traceability for regulatory review.',
-    why: 'Regulators don\'t just want results — they want to see how you got there. D8:OBSERVE generates a complete, explainable audit trail on every run.',
-    examples: [
-      'Financial services: Monitored the full audit run in real time. Produced a complete trail showing every policy decision, agent handoff, and human override. 99.4% accuracy confirmed.',
-      'Media & operations: Logged every calculation step and IMS error classification decision. Full traceability from raw contract data to Tririga-ready output — every run.',
-      'Healthcare: Tracked every clinical recommendation against the source data that informed it. Any override by a physician logged with rationale for compliance review.',
-      'Real estate: Monitored portfolio dashboard refresh cycles. Flagged data latency issues before they reached the reporting layer. Every analyst override recorded.',
-    ]},
-  { num: 7, d: 'D8:STAGE',   n: 'Stage',      r: 'Package output',
-    what: 'Delivers production-ready data products. Validates and prepares output before it reaches its final destination — dashboard, downstream system, or human reviewer.',
-    why: 'Raw pipeline output isn\'t usable output. D8:STAGE ensures what comes out the other end is complete, validated, and formatted for immediate use.',
-    examples: [
-      'Financial services: Packaged all exception findings into a structured audit report. Validated completeness before handoff — zero manual reformatting by the compliance team.',
-      'Media & operations: Validated ownership splits, separated payees, and delivered output in Tririga-ready format. Direct system entry — no manual reformatting.',
-      'Healthcare: Formatted clinical recommendations into a structured patient summary for physician review. Complete, validated, ready to act on during the appointment.',
-      'Real estate: Packaged portfolio intelligence into the standard board reporting format. Leadership received the deck-ready output — no analyst reformatting required.',
-    ]},
-  { num: 8, d: 'D8:VIEW',    n: 'View',       r: 'Surface to humans',
-    what: 'Connects curated, validated data to your dashboard. The human-facing layer that gives operators and decision-makers exactly what they need to act.',
-    why: 'The best pipeline in the world fails if the output isn\'t accessible. D8:VIEW closes the loop — turning agent work into visible, actionable intelligence.',
-    examples: [
-      'Financial services: Delivered the exception dashboard to the compliance team. Flagged loans, policy violations, and recommended actions — ready to review without opening a raw data file.',
-      'Media & operations: Surfaced the completed billing run to the finance team. Payment totals, payee splits, and error classifications visible in one view — no spreadsheet required.',
-      'Healthcare: Delivered a unified patient dashboard to the physician — EHR, insurance status, and clinical research in one view, available while the doctor was still in the room.',
-      'Real estate: Delivered a live portfolio dashboard to leadership. Every property, current market comparables, and performance metrics — updated in real time, no IT request needed.',
-    ]},
+// ═══════════════════════════════════════════════════════════════════════════════
+// TICKER BAR
+// ═══════════════════════════════════════════════════════════════════════════════
+const TICKER_ITEMS = [
+  { text: 'Deployed at local credit unions',        data: false },
+  { text: 'Leading financial institutions',          data: false },
+  { text: 'NVIDIA Inception Member',                 data: false },
+  { text: 'Global 100 — Best Data Infrastructure 2026', data: false },
+  { text: '97% faster audits',                      data: true  },
+  { text: '$1.2M+ projected savings',               data: true  },
+  { text: '100% loan coverage',                     data: true  },
+  { text: 'Production-ready in 90 days',            data: true  },
 ];
 
-function S4Node({ agent, idx, activeIdx, setActiveIdx }) {
+function TickerBar() {
+  const content = TICKER_ITEMS.map((item, i) => (
+    <React.Fragment key={i}>
+      <span style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 9.5, fontWeight: 400,
+        color: item.data ? GREEN : 'rgba(62,207,142,0.65)',
+        letterSpacing: '0.14em', textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+      }}>{item.text}</span>
+      <span style={{ color: 'rgba(62,207,142,0.35)', margin: '0 20px', fontSize: 8 }}>·</span>
+    </React.Fragment>
+  ));
   return (
-    <div
-      className={`s4-node${activeIdx === idx ? ' active' : ''}`}
-      onClick={() => setActiveIdx(idx)}
-    >
-      <div className="s4-node-inner">
-        <div className="s4-badge">{agent.num}</div>
-        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 9, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 3 }}>{agent.d}</div>
-        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 13, color: '#081F5C', marginBottom: 3 }}>{agent.n}</div>
-        <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 11, color: '#333333', lineHeight: 1.3 }}>{agent.r}</div>
+    <div style={{ background: NAVY_DEEP, padding: '13px 0', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', animation: 'd8TickerScroll 30s linear infinite', width: 'max-content' }}>
+        {content}{content}
       </div>
     </div>
   );
 }
 
-function S4Connector() {
+// ═══════════════════════════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════════════════════════
+const STATS_DATA = [
+  { target: 97,  decimals: 0, suffix: '%',    label: 'FASTER AUDITS',      source: 'vs. manual audit cycles' },
+  { target: 1.2, decimals: 1, prefix: '$', suffix: 'M+', label: 'PROJECTED SAVINGS', source: 'Over 3-year deployment' },
+  { target: 100, decimals: 0, suffix: '%',    label: 'LOAN COVERAGE',      source: 'Every loan, every night' },
+  { target: 90,  decimals: 0, suffix: ' Days', label: 'TO PRODUCTION',     source: 'Micro-MVP to go-live' },
+];
+
+function StatCell({ stat, isFirst }) {
+  const [ref, visible] = useReveal(0.18);
   return (
-    <div className="s4-conn">
-      <div className="s4-conn-line">
-        <div className="s4-conn-pulse" />
+    <div
+      ref={ref}
+      className={`d8-stat-cell${visible ? ' in' : ''}`}
+      style={{
+        padding: '40px 36px',
+        borderLeft: isFirst ? 'none' : '1px solid rgba(8,31,92,0.08)',
+        position: 'relative',
+        textAlign: 'center',
+      }}
+    >
+      <div className="d8-stat-line" />
+      <div style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 'clamp(40px, 4vw, 52px)',
+        fontWeight: 700, color: BLUE,
+        letterSpacing: '-2px', lineHeight: 1, marginBottom: 10,
+      }}>
+        <AnimatedNumber target={stat.target} decimals={stat.decimals} prefix={stat.prefix || ''} suffix={stat.suffix} duration={1400} />
       </div>
-      <div className="s4-conn-arrow" />
+      <div style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: 9.5, fontWeight: 500,
+        textTransform: 'uppercase', letterSpacing: '0.12em',
+        color: 'rgba(8,31,92,0.5)', marginBottom: 8,
+      }}>{stat.label}</div>
+      <div style={{
+        fontSize: 11, fontStyle: 'italic',
+        color: 'rgba(8,31,92,0.35)',
+        fontFamily: "'IBM Plex Sans', sans-serif",
+      }}>{stat.source}</div>
+    </div>
+  );
+}
+
+function StatsSection() {
+  return (
+    <section style={{ background: WHITE, padding: '72px clamp(1.5rem, 5vw, 80px)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div
+          className="d8-stats-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            borderRadius: 18,
+            overflow: 'hidden',
+            border: '1px solid rgba(8,31,92,0.08)',
+          }}
+        >
+          {STATS_DATA.map((s, i) => <StatCell key={s.label} stat={s} isFirst={i === 0} />)}
+        </div>
+        <p style={{
+          textAlign: 'center', margin: '20px 0 0',
+          fontSize: 11, fontStyle: 'italic',
+          color: 'rgba(8,31,92,0.35)',
+          fontFamily: "'IBM Plex Sans', sans-serif",
+        }}>Based on our work with Kitsap Credit Union — 2026</p>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WHO IT'S FOR — portrait cards
+// ═══════════════════════════════════════════════════════════════════════════════
+const PERSONA_CARDS = [
+  {
+    num: '01', icon: '⚡', colorClass: 'c1',
+    role: 'VP / C-SUITE',
+    headline: 'The board wants results,\u00a0not\u00a0roadmaps.',
+    pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
+    change: 'A working system in 90 days with measurable ROI. No infrastructure overhaul required.',
+  },
+  {
+    num: '02', icon: '🏗', colorClass: 'c2',
+    role: 'DATA ENGINEER / ARCHITECT',
+    headline: "You're asked to add AI. You're not given the foundation.",
+    pain: "Asked to 'add AI' to systems not designed for it. Unclear ownership. No governance layer.",
+    change: 'Agents that run inside your existing stack. Clean interfaces. Traceable lineage. Governance built in.',
+  },
+  {
+    num: '03', icon: '⚙️', colorClass: 'c3',
+    role: 'OPERATIONS LEADER',
+    headline: "Manual volume is the ceiling. It doesn't scale.",
+    pain: "Manual, high-volume work that doesn't scale. Audit coverage gaps. Human error at scale.",
+    change: 'Automated workflows with human-in-the-loop controls. Complete coverage without headcount growth.',
+  },
+];
+
+function WhoItIsSection() {
+  React.useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('.d8-reveal').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section style={{ background: '#f0f4f8', width: '100%', padding: '88px clamp(1.5rem, 5vw, 80px)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div className="d8-reveal" style={{
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: 12, letterSpacing: '0.2em',
+          color: BLUE, textTransform: 'uppercase', marginBottom: 16,
+        }}>WHO IT'S FOR</div>
+        <h2 className="d8-reveal" style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontWeight: 700, fontSize: 'clamp(30px, 4vw, 50px)',
+          color: NAVY, lineHeight: 1.1, letterSpacing: '-1px',
+          marginBottom: 16, transitionDelay: '80ms',
+        }}>Built for the teams that own the data and the outcomes.</h2>
+        <p className="d8-reveal" style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: 18, color: BODY, lineHeight: 1.68,
+          maxWidth: 580, marginBottom: 48, transitionDelay: '160ms',
+        }}>D8TAOPS is built for the people who sit at the intersection of AI pressure and data reality. If that's you — this is what changes.</p>
+
+        <div
+          className="d8-persona-grid"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}
+        >
+          {PERSONA_CARDS.map((card, i) => (
+            <div
+              key={card.num}
+              className="d8-portrait-card d8-reveal"
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <div className={`d8-portrait-top ${card.colorClass}`}>
+                <div style={{
+                  position: 'absolute', top: 24, left: 32,
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.14em',
+                }}>{card.num}</div>
+                <div style={{
+                  position: 'relative', zIndex: 1,
+                  width: 52, height: 52, borderRadius: 16,
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 22, marginBottom: 16,
+                }}>{card.icon}</div>
+                <div style={{
+                  position: 'relative', zIndex: 1,
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 11, color: GREEN, textTransform: 'uppercase',
+                  letterSpacing: '0.16em', fontWeight: 500, marginBottom: 10,
+                }}>{card.role}</div>
+                <div style={{
+                  position: 'relative', zIndex: 1,
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  fontSize: 19, fontWeight: 700, color: '#fff', lineHeight: 1.28,
+                }}>{card.headline}</div>
+              </div>
+              <div style={{ padding: '28px 32px 36px' }}>
+                <div style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 11, color: 'rgba(0,0,0,0.38)',
+                  textTransform: 'uppercase', letterSpacing: '0.14em',
+                  fontWeight: 500, marginBottom: 10,
+                }}>THE PROBLEM</div>
+                <p style={{
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  fontSize: 15, color: BODY, lineHeight: 1.68, margin: 0,
+                }}>{card.pain}</p>
+                <div style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 11, color: BLUE,
+                  textTransform: 'uppercase', letterSpacing: '0.14em',
+                  fontWeight: 500, marginTop: 22, marginBottom: 10,
+                }}>WHAT CHANGES</div>
+                <p style={{
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  fontSize: 15, color: BLUE, lineHeight: 1.68, margin: 0,
+                }}>{card.change}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WHAT WE DO — off-white bg, 2-col header, numbered cards
+// ═══════════════════════════════════════════════════════════════════════════════
+const WHAT_WE_DO_CARDS = [
+  {
+    num: '01',
+    title: 'Agents that run in your environment',
+    body: 'D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.',
+  },
+  {
+    num: '02',
+    title: 'Production-ready in 90 days',
+    body: 'We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 90 days of kickoff.',
+  },
+  {
+    num: '03',
+    title: 'You keep control',
+    body: 'Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.',
+  },
+];
+
+function WhatWeDoGrid() {
+  React.useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.d8-reveal').forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section style={{ background: '#f0f4f8', width: '100%', padding: '80px 0' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
+        {/* 2-column header */}
+        <div
+          className="d8-what-header-grid"
+          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginBottom: 56, alignItems: 'end' }}
+        >
+          <div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
+              WHAT WE DO
+            </div>
+            <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0 }}>
+              We send AI agents to your data. You don't move a thing.
+            </h2>
+          </div>
+          <div style={{ paddingBottom: 4 }}>
+            <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 17, color: BODY, lineHeight: 1.65, margin: 0, maxWidth: 'none' }}>
+              D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.
+            </p>
+          </div>
+        </div>
+
+        {/* Card grid */}
+        <div
+          className="d8-what-card-grid"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, alignItems: 'stretch' }}
+        >
+          {WHAT_WE_DO_CARDS.map((card, i) => (
+            <div
+              key={card.num}
+              className="d8-what-card d8-reveal"
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, color: BLUE, letterSpacing: '0.1em', marginBottom: 16 }}>{card.num}</div>
+              <h3 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 18, color: NAVY, marginBottom: 14, lineHeight: 1.25, flexShrink: 0 }}>
+                {card.title}
+              </h3>
+              <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.65, margin: 0, maxWidth: 'none', flexGrow: 1 }}>
+                {card.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// AGENT PIPELINE — horizontal scroll
+// ═══════════════════════════════════════════════════════════════════════════════
+const s4Agents = [
+  { num: 1, d: 'D8:INGEST',  n: 'Ingest',     r: 'Collect & normalize',
+    what: 'Connects to your existing data sources — core systems, cloud storage, APIs — and normalizes everything into a unified layer automatically.',
+    why: 'Most organizations have data spread across five or more systems that don\'t talk to each other. D8:INGEST replaces manual exports and one-off scripts with a governed, repeatable pipeline.'},
+  { num: 2, d: 'D8:CAT',     n: 'Categorize', r: 'Classify & catalog',
+    what: 'Discovers, classifies, and catalogs your data with full lineage tracking. Every dataset traceable from origin to current state.',
+    why: 'You can\'t govern what you can\'t see. Without a catalog, teams don\'t know what data exists or whether they\'re allowed to use it.'},
+  { num: 3, d: 'D8:CURATE',  n: 'Curate',     r: 'Validate & clean',
+    what: 'Validates and cleans your data before it reaches AI models — catching wrong formats, missing fields, and inconsistent values at the source.',
+    why: 'Garbage in, garbage out. AI output is only as reliable as the data it runs on.'},
+  { num: 4, d: 'D8:SEC',     n: 'Secure',     r: 'Enforce governance',
+    what: 'Enforces role-based access controls, masks sensitive fields, and logs every action across the pipeline for compliance review.',
+    why: 'Governance bolted on after the fact creates gaps. D8:SEC builds access control and audit logging directly into the pipeline.'},
+  { num: 5, d: 'D8:FLOW',    n: 'Flow',       r: 'Orchestrate workflow',
+    what: 'Orchestrates the entire workflow. A supervisor agent coordinates task routing, policy checks, and handoffs between agents and human reviewers.',
+    why: 'Without orchestration, complex pipelines break down at handoff points.'},
+  { num: 6, d: 'D8:OBSERVE', n: 'Observe',    r: 'Monitor & trace',
+    what: 'Monitors pipeline health in real time. Tracks every decision, override, and approval with full traceability for regulatory review.',
+    why: 'Regulators don\'t just want results — they want to see how you got there.'},
+  { num: 7, d: 'D8:STAGE',   n: 'Stage',      r: 'Package output',
+    what: 'Delivers production-ready data products. Validates and prepares output before it reaches its final destination — dashboard, downstream system, or human reviewer.',
+    why: 'Raw pipeline output isn\'t usable output. D8:STAGE ensures what comes out the other end is complete, validated, and formatted for immediate use.'},
+  { num: 8, d: 'D8:VIEW',    n: 'View',       r: 'Surface to humans',
+    what: 'Connects curated, validated data to your dashboard. The human-facing layer that gives operators and decision-makers exactly what they need to act.',
+    why: 'The best pipeline in the world fails if the output isn\'t accessible.'},
+];
+
+function AgentArrow() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', width: 28, flexShrink: 0 }}>
+      <div style={{ flex: 1, height: 1.5, background: 'linear-gradient(90deg, #0477BF, #048ABF)', position: 'relative', overflow: 'visible' }}>
+        <div style={{
+          position: 'absolute', top: 0, left: '-40%',
+          width: '40%', height: '100%',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+          animation: 's4pulse 2s linear infinite',
+        }} />
+      </div>
+      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderLeft: '5px solid #0477BF', flexShrink: 0 }} />
     </div>
   );
 }
 
 function WhatWeDoSection() {
-  const [activeIdx, setActiveIdx] = React.useState(null);
-
-  const row1 = s4Agents.slice(0, 4);
-  const row2 = s4Agents.slice(4, 8);
-
-  const renderRow = (rowAgents, startIdx) => (
-    <div className="s4-row">
-      {rowAgents.map((agent, i) => (
-        <React.Fragment key={agent.d}>
-          <S4Node agent={agent} idx={startIdx + i} activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
-          {i < rowAgents.length - 1 && <S4Connector />}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-
-  const active = activeIdx !== null ? s4Agents[activeIdx] : null;
+  const [activeIdx, setActiveIdx] = React.useState(0);
+  const active = s4Agents[activeIdx];
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: S4_CSS }} />
-      <section style={{ background: '#f5f7fa', width: '100%', padding: '96px clamp(1rem, 5vw, 3rem)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 16 }}>
-            THE PLATFORM
-          </div>
-          <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12, textAlign: 'left' }}>
-            Meet the D8:Agents who get your data ready for AI.
-          </h2>
-          <p style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 18, color: '#333333', maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px 0' }}>
-            The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
-          </p>
-
-          {renderRow(row1, 0)}
-
-          <div className="s4-divider">
-            <div className="s4-divider-line" />
-            <span>continues →</span>
-            <div className="s4-divider-line" />
-          </div>
-
-          {renderRow(row2, 4)}
-
-          {active === null ? (
-            <div className="s4-detail">
-              <div className="s4-detail-prompt">Select an agent above to see what it does, why it matters, and a real-world example.</div>
-            </div>
-          ) : (
-            <div className="s4-detail expanded">
-              <div className="s4-detail-desig">{active.d}</div>
-              <div className="s4-detail-name">{active.n}</div>
-              <div className="s4-detail-what">{active.what}</div>
-              <div className="s4-detail-row">
-                <div className="s4-detail-block">
-                  <div className="s4-detail-block-label">Why it matters</div>
-                  <div className="s4-detail-block-text">{active.why}</div>
-                </div>
-                <div className="s4-detail-block">
-                  <div className="s4-detail-block-label">Example</div>
-                  <div className="s4-detail-block-text">{active.examples[0]}</div>
-                </div>
-              </div>
-            </div>
-          )}
-
+    <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box' }} id="agents">
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
+          THE PLATFORM
         </div>
-      </section>
-    </>
+        <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12 }}>
+          Meet the D8:Agents who get your data ready for AI.
+        </h2>
+        <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: BODY, maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
+          The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
+        </p>
+
+        {/* 4×2 grid pipeline */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 0 }}>
+          {s4Agents.map((agent, i) => {
+            const isActive = activeIdx === i;
+            const isView = i === 7;
+            return (
+              <button
+                key={agent.d}
+                className={`d8-agent-card${isActive ? ' active' : ''}${isView ? ' d8-agent-card-view' : ''}`}
+                onClick={() => setActiveIdx(i)}
+                style={{
+                  background: isActive ? NAVY : '#f5f8fb',
+                  border: isView ? '1px solid rgba(4,119,191,0.35)' : isActive ? `1px solid ${NAVY}` : '1px solid rgba(8,31,92,0.10)',
+                  borderRadius: 14,
+                  padding: '16px 14px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  fontFamily: 'inherit',
+                  boxSizing: 'border-box',
+                  width: '100%',
+                  transition: 'background 0.18s ease, transform 0.18s ease',
+                }}
+              >
+                <div className="d8-agent-num" style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: 20, height: 20, borderRadius: '50%',
+                  background: isActive ? 'rgba(62,207,142,0.25)' : 'rgba(4,119,191,0.15)',
+                  color: isActive ? GREEN : BLUE,
+                  fontSize: 9, fontWeight: 600,
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  marginBottom: 8,
+                }}>{agent.num}</div>
+                <div className="d8-agent-desig" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: isActive ? 'rgba(62,207,142,0.9)' : BLUE, marginBottom: 4 }}>{agent.d}</div>
+                <div className="d8-agent-name" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 13, color: isActive ? WHITE : NAVY, marginBottom: 4 }}>{agent.n}</div>
+                <div className="d8-agent-role" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: isActive ? 'rgba(255,255,255,0.6)' : BODY, lineHeight: 1.3 }}>{agent.r}</div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Detail card */}
+        <div style={{
+          marginTop: 24,
+          background: '#E8F4FD',
+          border: '0.5px solid rgba(4,119,191,0.2)',
+          borderTop: `2px solid ${BLUE}`,
+          borderLeft: `3px solid ${BLUE}`,
+          borderRadius: '0 12px 12px 0',
+          padding: '20px 24px',
+        }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: BLUE, marginBottom: 4 }}>{active.d}</div>
+          <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 700, color: NAVY, marginBottom: 8 }}>{active.n}</div>
+          <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, color: BODY, lineHeight: 1.65 }}>{active.what}</div>
+        </div>
+
+        <div style={{ marginTop: 20, textAlign: 'right' }}>
+          <a href="/agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 600, color: BLUE, textDecoration: 'none', transition: 'gap 0.15s ease' }}
+            onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+            onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+          >See all 8 agents →</a>
+        </div>
+      </div>
+    </section>
   );
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// CASE STUDY — 5fr / 7fr, ghost watermark
+// ═══════════════════════════════════════════════════════════════════════════════
+const PROOF_METRICS = [
+  { target: 97,   decimals: 0, suffix: '%',    label: 'FASTER',            sub: 'Audit time per loan. Manual cycles replaced by agentic validation in under one minute.' },
+  { target: 100,  decimals: 0, suffix: '%',    label: 'COVERAGE',          sub: 'Every loan audited, every night. Not sampled.' },
+  { target: 99.5, decimals: 1, suffix: '%',    label: 'ACCURACY',          sub: 'Consistent policy interpretation across every audit.' },
+  { target: 1.2,  decimals: 1, prefix: '$', suffix: 'M+', label: 'PROJECTED SAVINGS', sub: 'Over 3 years through labor avoidance and improved compliance efficiency.' },
+  { target: 90,   decimals: 0, suffix: ' Days', label: 'DEPLOYED',         sub: 'Micro-MVP to production. Break-even under 12 months.', wide: true },
+];
 
-
-function IngestAgentDemo() { return null; }
-function DashboardChrome() { return null; }
-function FakeDashboard() { return null; }
-function DashboardShowcase() { return null; }
-// ============================================================
-// PROOF BLOCK — 3:2 split, quote left, metrics bento right
-// ============================================================
 function ProofBlockSection() {
-  const metrics = [
-    { v: '97%', l: 'Faster' },
-    { v: '100%', l: 'Coverage' },
-    { v: '99.5%', l: 'Accuracy' },
-    { v: '$1.2M+', l: 'Projected Savings' },
-    { v: '90 Days', l: 'Deployed', wide: true },
-  ];
   return (
-    <section style={{ padding: '96px 24px', background: BG_LIGHT }}>
-      <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16 }}>
-          <div style={{ borderRadius: 12, background: WHITE, padding: 32 }}>
-            <div style={{ marginBottom: 16 }}>
-              <SectionEyebrow code="D8:STORY" />
-            </div>
-            <h2 style={{ margin: '0 0 24px', fontSize: 'clamp(24px, 2.4vw, 32px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-              What this looks like in production.
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontSize: 14, lineHeight: 1.7, color: '#1F1F1F' }}>
-              <div>
-                <span style={{ display: 'block', marginBottom: 4, fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: MUTED }}>Challenge</span>
-                <p style={{ margin: 0 }}>A regional credit union was conducting loan audits manually, relying on static policy checklists and multiple siloed systems. Underwriting rules were interpreted inconsistently, creating compliance gaps and regulatory risk.</p>
-              </div>
-              <div>
-                <span style={{ display: 'block', marginBottom: 4, fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: MUTED }}>The Solution</span>
-                <p style={{ margin: 0 }}>D8TAOPS co-designed an agentic audit platform running entirely inside the credit union's Azure environment. The system ingests loan data, applies policy and risk checks, generates explainable audit reports, and routes findings to human reviewers. No data leaves the credit union's cloud.</p>
-              </div>
-            </div>
+    <section style={{
+      padding: '96px clamp(1.5rem, 5vw, 80px)',
+      background: NAVY, position: 'relative', overflow: 'hidden',
+      backgroundImage: 'radial-gradient(rgba(62,207,142,0.04) 1px, transparent 1px)',
+      backgroundSize: '22px 22px',
+    }}>
+      {/* Radial glows */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', width: 380, height: 380, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(62,207,142,0.08) 0%, transparent 70%)',
+        top: '-5%', right: '8%', pointerEvents: 'none', zIndex: 0,
+      }} />
+      <div aria-hidden="true" style={{
+        position: 'absolute', width: 240, height: 240, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(62,207,142,0.06) 0%, transparent 70%)',
+        bottom: '10%', left: '18%', pointerEvents: 'none', zIndex: 0,
+      }} />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: GREEN, marginBottom: 16 }}>
+          CUSTOMER STORY
+        </div>
+        <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.25rem)', color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 48 }}>
+          What this looks like in production.
+        </h2>
+
+        <div
+          className="d8-proof-grid"
+          style={{ display: 'grid', gridTemplateColumns: '5fr 7fr', gap: 56, alignItems: 'start' }}
+        >
+          {/* Left — narrative copy */}
+          <div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: GREEN, marginBottom: 8 }}>CHALLENGE</div>
+            <p style={{ margin: 0, fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 15, lineHeight: 1.75, color: 'rgba(255,255,255,0.8)', maxWidth: 'none' }}>
+              A regional credit union was conducting loan audits manually, relying on static policy checklists and multiple siloed systems. Underwriting rules were interpreted inconsistently, creating compliance gaps and regulatory risk. Each audit was time-intensive and labor-heavy, limiting how many loans could be reviewed. Leadership needed more coverage and more confidence — without growing headcount.
+            </p>
+            <div style={{ height: 1, background: 'rgba(255,255,255,0.12)', margin: '24px 0' }} />
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: GREEN, marginBottom: 8 }}>THE SOLUTION</div>
+            <p style={{ margin: 0, fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 15, lineHeight: 1.75, color: 'rgba(255,255,255,0.8)', maxWidth: 'none' }}>
+              D8TAOPS co-designed an agentic audit platform running entirely inside the credit union's Azure environment. The system ingests loan data from internal systems, applies policy and risk checks, generates explainable audit reports, and routes findings to human reviewers. No data leaves the credit union's cloud. No migration. No infrastructure replacement. Human-in-the-loop controls allow compliance teams to review, override, and approve findings.
+            </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
-            {metrics.map((m, i) => (
-              <div key={m.l} style={{
-                borderRadius: 12, background: NAVY, padding: 20,
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                textAlign: 'center', gridColumn: m.wide ? 'span 2' : 'auto',
+
+          {/* Right — stat grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            {PROOF_METRICS.map((m) => (
+              <div key={m.label} style={{
+                gridColumn: m.wide ? 'span 2' : 'auto',
+                background: 'rgba(255,255,255,0.05)',
+                borderTop: `2px solid rgba(62,207,142,0.32)`,
+                borderRadius: 12, padding: 20,
+                display: 'flex', flexDirection: 'column',
+                position: 'relative', overflow: 'hidden',
               }}>
-                <span style={{ fontSize: 'var(--text-4xl)', fontWeight: 700, color: '#FFFFFF', fontVariantNumeric: 'tabular-nums' }}>{m.v}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.7)', marginTop: 4 }}>{m.l}</span>
+                {/* Per-cell ghost watermark */}
+                <div aria-hidden="true" style={{
+                  position: 'absolute', right: '-4%', bottom: '-8%',
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '4.5rem', fontWeight: 700,
+                  color: 'rgba(62,207,142,0.07)',
+                  lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+                  zIndex: 0,
+                }}>{m.target}{m.suffix}</div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 700, color: GREEN, lineHeight: 1, letterSpacing: '-0.02em' }}>
+                    <AnimatedNumber target={m.target} decimals={m.decimals} prefix={m.prefix || ''} suffix={m.suffix} duration={1000} />
+                  </div>
+                  <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: WHITE, marginTop: 6 }}>{m.label}</div>
+                  <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.55)', lineHeight: 1.5, marginTop: 6 }}>{m.sub}</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Dashboard screenshot */}
+        <div className="dash-browser">
+          <div className="dash-chrome">
+            <div className="dash-dots">
+              <div className="dash-dot" />
+              <div className="dash-dot" />
+              <div className="dash-dot" />
+            </div>
+            <div className="dash-url">app.d8taops.com / dashboard / loan-requests</div>
+          </div>
+          <div className="dash-img-wrap">
+            <img
+              src="/images/KCU-dashboard.png"
+              alt="D8TAOPS loan audit dashboard — Kitsap Credit Union production deployment"
+              style={{ width: '100%', display: 'block' }}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ============================================================
+// ═══════════════════════════════════════════════════════════════════════════════
 // CLOSING CTA
-// ============================================================
+// ═══════════════════════════════════════════════════════════════════════════════
 function ClosingCTA() {
   return (
-    <section id="contact" style={{
-      padding: '88px 24px 72px',
-      scrollMarginTop: '88px',
-      background: 'linear-gradient(135deg, #0c1428 0%, #0f2560 40%, #0477BF 100%)',
-      color: WHITE,
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <ParticleCanvas />
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        maxWidth: 960,
-        margin: '0 auto',
-        textAlign: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}>
-        <h2 style={{
-          margin: '0 0 16px',
-          fontSize: 'clamp(28px, 3.5vw, 44px)',
-          fontWeight: 700,
-          color: '#FFFFFF',
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1
-        }}>
-          Ready to see what your data can do?
+    <section id="contact" style={{ padding: '96px clamp(1.5rem, 5vw, 3rem)', background: WHITE, borderTop: '1px solid #E4E7EC', scrollMarginTop: 80 }}>
+      <div style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h2 style={{ margin: '0 0 20px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+          Ready to see what's possible with your data?
         </h2>
-        <p style={{ margin: '20px 0 36px', fontSize: 17, lineHeight: 1.7, color: 'rgba(255,255,255,0.8)' }}>
-          Book a discovery call. We'll show you what your data can do in 90 days.
+        <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
+          We'll show you what a 90-day deployment looks like for your environment — no pitch, no pressure.
         </p>
-        <a href="#contact" style={{
-          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          padding: '12px 24px', fontSize: 14, fontWeight: 700, letterSpacing: '0.02em',
-          background: WHITE, color: NAVY, borderRadius: 9999, textDecoration: 'none',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.2)',
-        }}>Get in touch.</a>
+        <a
+          href="mailto:hello@d8taops.com"
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            padding: '17px 40px', fontSize: 16, fontWeight: 600,
+            background: BLUE, color: WHITE,
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            borderRadius: 8, textDecoration: 'none',
+            transition: 'filter 0.15s ease',
+          }}
+          onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.08)'}
+          onMouseLeave={e => e.currentTarget.style.filter = 'brightness(1)'}
+        >Get in touch.</a>
       </div>
     </section>
   );
 }
 
-// ============================================================
-// FOOTER
-// ============================================================
+// ═══════════════════════════════════════════════════════════════════════════════
+// FOOTER — dark #040e2e
+// ═══════════════════════════════════════════════════════════════════════════════
 function GlobalFooter() {
   const cols = [
-    { title: 'Platform', links: ['Overview', 'Agents', 'Observability', 'Security', 'Pricing'] },
-    { title: 'Solutions', links: ['Credit Unions', 'Financial Services', 'Healthcare', 'Public Sector'] },
-    { title: 'Company', links: ['About', 'Career', 'Press', 'Contact'] },
-    { title: 'Resources', links: ['Blog', 'Documentation', 'Case Studies', 'Trust Center'] },
+    { title: 'Platform',   links: ['Overview', 'Agents', 'Observability', 'Security', 'Pricing'] },
+    { title: 'Solutions',  links: ['Credit Unions', 'Financial Services', 'Healthcare', 'Public Sector'] },
+    { title: 'Company',    links: ['About', 'Career', 'Press', 'Contact'] },
+    { title: 'Resources',  links: ['Blog', 'Documentation', 'Case Studies', 'Trust Center'] },
   ];
   return (
-    <footer style={{ background: WHITE, color: MUTED, padding: '96px 24px 48px', borderTop: '1px solid #E4E7EC' }}>
-      <style>{`
-        .footer-link-placeholder {
-          color: #6B7280;
-          cursor: default;
-          pointer-events: none;
-          opacity: 1;
-        }
-      `}</style>
+    <footer style={{ background: NAVY_DEEP, padding: '80px 24px 48px', borderTop: `1px solid rgba(255,255,255,0.055)` }}>
       <div style={{ maxWidth: 1152, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1.5fr) repeat(4, 1fr)', gap: 40, marginBottom: 64 }}>
+        <div
+          className="d8-footer-grid"
+          style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 1.4fr) repeat(4, 1fr)', gap: 40, marginBottom: 64 }}
+        >
           <div>
-            <div style={{ marginBottom: 20, display: 'flex', alignItems: 'center' }}>
-              <div style={{
-                fontSize: '22px',
-                fontWeight: 800,
-                color: '#081F5C',
-                letterSpacing: '-0.03em',
-                fontFamily: 'var(--font-sans)'
-              }}>
-                D8TAOPS
-              </div>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 20, fontWeight: 800, color: WHITE, letterSpacing: '-0.03em' }}>D8TAOPS</span>
             </div>
-            <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, maxWidth: 300, color: MUTED }}>
+            <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, color: 'rgba(255,255,255,0.42)', maxWidth: 280, fontFamily: "'IBM Plex Sans', sans-serif" }}>
               AI agents for regulated industries.
             </p>
           </div>
-          {cols.map(c => (
-            <div key={c.title}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: NAVY, marginBottom: 20 }}>{c.title}</div>
+          {cols.map(col => (
+            <div key={col.title}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 20 }}>
+                {col.title}
+              </div>
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {c.links.map(l => (
-                  <li key={l}>
-                    <a
-                      href={l === 'Contact' ? '#contact' : '#'}
-                      className={l === 'Contact' ? '' : 'footer-link-placeholder'}
-                      style={{ color: MUTED, textDecoration: 'none', fontSize: 13, fontWeight: 500, transition: 'color 0.2s' }}
-                    >
-                      {l}
-                    </a>
+                {col.links.map(link => (
+                  <li key={link}>
+                    {link === 'Contact'
+                      ? <a href="#contact" className="footer-contact-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{link}</a>
+                      : <span className="footer-placeholder" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 500 }}>{link}</span>
+                    }
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div style={{
-          paddingTop: 32, borderTop: '1px solid #E4E7EC',
-          display: 'flex', justifyContent: 'space-between',
-          fontSize: 12, color: MUTED, fontWeight: 500
-        }}>
-          <span>© 2026 D8TAOPS. All rights reserved.</span>
-          <span style={{ display: 'flex', gap: 24 }}>
-            <span className="footer-link-placeholder">Privacy</span>
-            <span className="footer-link-placeholder">Terms</span>
-            <span className="footer-link-placeholder">Security</span>
+
+        <div style={{ paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.055)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+          <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500 }}>
+            © 2026 D8TAOPS. All rights reserved.
           </span>
+          <div style={{ display: 'flex', gap: 24 }}>
+            {['Privacy', 'Terms', 'Security'].map(label => (
+              <span key={label} className="footer-placeholder" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, fontWeight: 500 }}>{label}</span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
   );
 }
 
-// ============================================================
-// WHAT WE DO GRID — 3-column card grid
-// ============================================================
-const WHAT_WE_DO_GRID_CSS = `
-  .d8-reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 400ms cubic-bezier(0.0, 0, 0.2, 1),
-                transform 400ms cubic-bezier(0.0, 0, 0.2, 1);
-  }
-  .d8-reveal.in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-  @media (max-width: 768px) {
-    .s3-grid {
-      grid-template-columns: 1fr !important;
-    }
-  }
-`;
-
-const S4_CSS = `
-  .s4-row {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    margin-bottom: 12px;
-  }
-  .s4-node {
-    flex: 1;
-    min-width: 0;
-    cursor: pointer;
-  }
-  .s4-node-inner {
-    background: #ffffff;
-    border: 0.5px solid rgba(8, 31, 92, 0.15);
-    border-left: 3px solid #0477BF;
-    border-radius: 0 12px 12px 0;
-    padding: 14px 12px;
-    height: 100%;
-    box-sizing: border-box;
-    transition: border-left-color 120ms ease, transform 120ms ease;
-  }
-  .s4-node:hover .s4-node-inner {
-    border-left-color: #081F5C;
-    transform: translateY(-2px);
-  }
-  .s4-node.active .s4-node-inner {
-    border-left-color: #081F5C;
-    border-left-width: 4px;
-    background: #E8F4FD;
-  }
-  .s4-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: rgba(4, 119, 191, 0.15);
-    color: #0477BF;
-    font-size: 9px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .s4-node.active .s4-badge {
-    background: #081F5C;
-    color: #ffffff;
-  }
-  .s4-conn {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    width: 16px;
-  }
-  .s4-conn-line {
-    flex: 1;
-    height: 2px;
-    background: rgba(8, 31, 92, 0.12);
-    position: relative;
-    overflow: hidden;
-  }
-  .s4-conn-pulse {
-    position: absolute;
-    top: 0;
-    left: -40%;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, #0477BF, transparent);
-    animation: s4pulse 2s linear infinite;
-  }
-  @keyframes s4pulse { to { left: 140%; } }
-  .s4-conn-arrow {
-    width: 0;
-    height: 0;
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid transparent;
-    border-left: 5px solid rgba(8, 31, 92, 0.2);
-    flex-shrink: 0;
-  }
-  .s4-divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 4px 0 12px;
-    font-size: 11px;
-    color: rgba(51, 51, 51, 0.4);
-    font-family: IBM Plex Sans, sans-serif;
-  }
-  .s4-divider-line {
-    flex: 1;
-    height: 0.5px;
-    background: rgba(8, 31, 92, 0.1);
-  }
-  .s4-detail {
-    margin-top: 24px;
-    background: #E8F4FD;
-    border: 0.5px solid rgba(4, 119, 191, 0.2);
-    border-left: 3px solid #0477BF;
-    border-radius: 0 12px 12px 0;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: default;
-    transition: padding 240ms ease;
-  }
-  .s4-detail.expanded {
-    padding: 20px 24px;
-    display: block;
-    border-top: 2px solid #0477BF;
-    border-left: 3px solid #0477BF;
-  }
-  .s4-detail-prompt {
-    font-size: 13px;
-    color: #0477BF;
-    font-style: italic;
-  }
-  .s4-detail-desig {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #0477BF;
-    margin-bottom: 4px;
-  }
-  .s4-detail-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: #081F5C;
-    margin-bottom: 8px;
-  }
-  .s4-detail-what {
-    font-size: 14px;
-    color: #333333;
-    line-height: 1.6;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 0.5px solid rgba(4, 119, 191, 0.2);
-  }
-  .s4-detail-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .s4-detail-block-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #0477BF;
-    margin-bottom: 6px;
-  }
-  .s4-detail-block-text {
-    font-size: 13px;
-    color: #333333;
-    line-height: 1.6;
-  }
-  @media (max-width: 600px) {
-    .s4-detail-row { grid-template-columns: 1fr; }
-  }
-  .s4-tag {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: #0477BF;
-    background: #E8F4FD;
-    border: 0.5px solid rgba(4, 119, 191, 0.3);
-    padding: 2px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .s4-conn-pulse { display: none; }
-    .s4-node-inner { transition: none; }
-  }
-  @media (max-width: 768px) {
-    .s4-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .s4-conn { display: none; }
-  }
-  @media (max-width: 480px) {
-    .s4-row { grid-template-columns: 1fr; }
-  }
-`;
-
-function WhatWeDoGrid() {
-  React.useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    const elements = document.querySelectorAll('.d8-reveal');
-    elements.forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: WHAT_WE_DO_GRID_CSS }} />
-      <section style={{ background: '#ffffff', width: '100%', padding: '96px 0' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1rem, 5vw, 3rem)' }}>
-          <div style={{ 
-            fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, 
-            letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', 
-            marginBottom: 16 
-          }}>
-            WHAT WE DO
-          </div>
-          <h2 style={{ 
-            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', 
-            color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12, textAlign: 'left' 
-          }}>
-            We send AI agents to your data. You don't move a thing.
-          </h2>
-          <h3 style={{ 
-            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 'clamp(18px, 2vw, 20px)', 
-            color: '#0477BF', marginBottom: 32, textAlign: 'left' 
-          }}>
-            AI is only as good as the data you feed it. We get rid of the AI slop.
-          </h3>
-          
-          <div className="s3-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, alignItems: 'stretch' }}>
-            {/* Card 1 */}
-            <div className="d8-reveal" style={{ 
-              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '0ms',
-              display: 'flex', flexDirection: 'column'
-            }}>
-              <h3 style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
-                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
-              }}>
-                Agents that run in your environment
-              </h3>
-              <p style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
-                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
-              }}>
-                D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.
-              </p>
-            </div>
-            
-            {/* Card 2 */}
-            <div className="d8-reveal" style={{ 
-              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '100ms',
-              display: 'flex', flexDirection: 'column'
-            }}>
-              <h3 style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
-                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
-              }}>
-                Production-ready in 90 days
-              </h3>
-              <p style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
-                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
-              }}>
-                We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 90 days of kickoff.
-              </p>
-            </div>
-            
-            {/* Card 3 */}
-            <div className="d8-reveal" style={{ 
-              background: '#f5f7fa', borderRadius: 16, padding: 32, transitionDelay: '200ms',
-              display: 'flex', flexDirection: 'column'
-            }}>
-              <h3 style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 18, 
-                color: '#081F5C', marginBottom: 12, lineHeight: 1.2, flexShrink: 0
-              }}>
-                You keep control
-              </h3>
-              <p style={{ 
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 400, fontSize: 16, 
-                color: '#333333', lineHeight: 1.6, margin: 0, flexGrow: 1
-              }}>
-                Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-// ============================================================
-// S5 — WHO IT'S FOR — persona card grid
-// ============================================================
-const S5_CSS = `
-  .s5-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .s5-card {
-    background: #f5f7fa;
-    border-radius: 16px;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .s5-pain-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #333333;
-    margin-bottom: 6px;
-  }
-  .s5-pain-text {
-    font-size: 15px;
-    color: #333333;
-    line-height: 1.6;
-  }
-  .s5-solves-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #0477BF;
-    margin-bottom: 6px;
-  }
-  .s5-solves-text {
-    font-size: 15px;
-    color: #0477BF;
-    line-height: 1.6;
-  }
-  .s5-divider {
-    height: 0.5px;
-    background: rgba(8, 31, 92, 0.1);
-  }
-  @media (max-width: 768px) {
-    .s5-grid { grid-template-columns: 1fr; }
-  }
-`;
-
-const s5Personas = [
-  {
-    label: 'VP / C-Suite',
-    pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
-    solves: 'A working system in 90 days with measurable ROI. No infrastructure overhaul required.',
-    delay: 0,
-  },
-  {
-    label: 'Data Engineer / Architect',
-    pain: 'Asked to \u2018add AI\u2019 to systems not designed for it. Unclear ownership. No governance layer.',
-    solves: 'Agents that run inside your existing stack. Clean interfaces. Traceable lineage. Governance built in.',
-    delay: 100,
-  },
-  {
-    label: 'Operations Leader',
-    pain: 'Manual, high-volume work that doesn\u2019t scale. Audit coverage gaps. Human error at scale.',
-    solves: 'Automated workflows with human-in-the-loop controls. Complete coverage without headcount growth.',
-    delay: 200,
-  },
-];
-
-function WhoItIsSection() {
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: S5_CSS }} />
-      <section style={{ background: '#ffffff', width: '100%', padding: '96px 0' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1rem, 5vw, 3rem)' }}>
-          <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0477BF', marginBottom: 16 }}>
-            WHO IT'S FOR
-          </div>
-          <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: '#081F5C', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 48 }}>
-            Built for the teams that own the data and the outcomes.
-          </h2>
-          <div className="s5-grid">
-            {s5Personas.map((p) => (
-              <div
-                key={p.label}
-                className="s5-card d8-reveal"
-                style={{ transitionDelay: `${p.delay}ms` }}
-              >
-                <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: 16, color: '#081F5C' }}>
-                  {p.label}
-                </div>
-                <div>
-                  <div className="s5-pain-label">Pain</div>
-                  <div className="s5-pain-text">{p.pain}</div>
-                </div>
-                <div className="s5-divider" />
-                <div>
-                  <div className="s5-solves-label">D8TAOPS solves</div>
-                  <div className="s5-solves-text">{p.solves}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
+// ── Null stubs for backward compatibility ─────────────────────────────────────
+function ComparisonSection() { return null; }
+function WhoWeAreSection()   { return null; }
+function IngestAgentDemo()   { return null; }
+function DashboardShowcase() { return null; }
 
 export {
   HeroSection,
+  TickerBar,
+  StatsSection,
   ComparisonSection,
   WhoWeAreSection,
   WhatWeDoSection,
@@ -1287,5 +1295,5 @@ export {
   DashboardShowcase,
   ProofBlockSection,
   ClosingCTA,
-  GlobalFooter
+  GlobalFooter,
 };
