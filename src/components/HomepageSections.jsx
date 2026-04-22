@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const NAVY      = '#081F5C';
@@ -9,51 +8,6 @@ const BODY      = '#333333';
 const MUTED     = '#515151';
 const WHITE     = '#FFFFFF';
 const GREEN     = '#3ecf8e';
-
-// ── Animated gradient-dots background ────────────────────────────────────────
-function GradientDots({
-  dotSize = 6,
-  spacing = 12,
-  duration = 30,
-  colorCycleDuration = 8,
-  backgroundColor = '#040e2e',
-}) {
-  const hexSpacing = spacing * 1.732;
-  return (
-    <motion.div
-      aria-hidden="true"
-      style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundColor,
-        backgroundImage: `
-          radial-gradient(circle at 50% 50%, transparent 1.5px, ${backgroundColor} 0 ${dotSize}px, transparent ${dotSize}px),
-          radial-gradient(circle at 50% 50%, transparent 1.5px, ${backgroundColor} 0 ${dotSize}px, transparent ${dotSize}px),
-          radial-gradient(circle at 50% 50%, #f00, transparent 60%),
-          radial-gradient(circle at 50% 50%, #ff0, transparent 60%),
-          radial-gradient(circle at 50% 50%, #0f0, transparent 60%),
-          radial-gradient(ellipse at 50% 50%, #00f, transparent 60%)
-        `,
-        backgroundSize: `
-          ${spacing}px ${hexSpacing}px,
-          ${spacing}px ${hexSpacing}px,
-          200% 200%, 200% 200%, 200% 200%, 200% ${hexSpacing}px
-        `,
-        backgroundPosition: `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 0% 0%, 0% 0%, 0% 0%, 0% 0%`,
-      }}
-      animate={{
-        backgroundPosition: [
-          `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 800% 400%, 1000% -400%, -1200% -600%, 400% ${hexSpacing}px`,
-          `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 0% 0%, 0% 0%, 0% 0%, 0% 0%`,
-        ],
-        filter: ['hue-rotate(0deg)', 'hue-rotate(360deg)'],
-      }}
-      transition={{
-        backgroundPosition: { duration, ease: 'linear', repeat: Infinity },
-        filter: { duration: colorCycleDuration, ease: 'linear', repeat: Infinity },
-      }}
-    />
-  );
-}
 
 // ── Shared CSS injected once ──────────────────────────────────────────────────
 const GLOBAL_CSS = `
@@ -151,6 +105,34 @@ const GLOBAL_CSS = `
   }
   .d8-what-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(8,31,92,0.1); }
 
+  .d8-stat-cell { opacity: 0; transform: translateY(22px); transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1); }
+  .d8-stat-cell.in { opacity: 1; transform: translateY(0); }
+
+  .d8-btn-colorful {
+    position: relative; overflow: hidden;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600; color: #ffffff !important;
+    border-radius: 24px; background: #081F5C;
+    transition: transform 0.18s ease;
+    text-decoration: none !important;
+    white-space: nowrap;
+  }
+  .d8-btn-colorful:hover { transform: translateY(-2px); }
+  .d8-btn-glow {
+    position: absolute; inset: -4px;
+    background: linear-gradient(135deg, #0477BF 0%, #3ecf8e 50%, #0477BF 100%);
+    opacity: 0.28; filter: blur(12px);
+    transition: opacity 0.45s ease;
+    pointer-events: none; border-radius: 24px;
+  }
+  .d8-btn-colorful:hover .d8-btn-glow { opacity: 0.88; }
+  .d8-btn-inner {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 6px;
+  }
+
   .footer-placeholder { color: rgba(255,255,255,0.42); cursor: default; pointer-events: none; }
   .footer-link { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s ease; }
   .footer-link:hover { color: rgba(255,255,255,0.75); }
@@ -163,6 +145,10 @@ const GLOBAL_CSS = `
     background: #fff;
     box-shadow: 0 8px 40px rgba(8,31,92,0.1);
     transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
   }
   .d8-portrait-card:hover {
     transform: translateY(-6px);
@@ -176,14 +162,6 @@ const GLOBAL_CSS = `
     padding: 40px 32px 32px;
     position: relative;
     overflow: hidden;
-  }
-  .d8-portrait-top::before {
-    content: '';
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-    background-size: 28px 28px;
   }
   .d8-portrait-top::after {
     content: '';
@@ -327,7 +305,7 @@ function useReveal(threshold = 0.18) {
 }
 
 // ── Particle canvas ───────────────────────────────────────────────────────────
-function ParticleCanvas() {
+function ParticleCanvas({ count = 85 }) {
   const ref = React.useRef(null);
   React.useEffect(() => {
     const canvas = ref.current; if (!canvas) return;
@@ -342,7 +320,7 @@ function ParticleCanvas() {
       canvas.style.width  = r.width  + 'px';
       canvas.style.height = r.height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = Array.from({ length: 85 }, () => ({
+      particles = Array.from({ length: count }, () => ({
         x: Math.random() * r.width,
         y: Math.random() * r.height,
         vx: (Math.random() - 0.5) * 0.28,
@@ -594,9 +572,8 @@ function HeroSection() {
         width: '100%',
         minHeight: 'max(680px, 92vh)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: NAVY_DEEP,
+        background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)',
       }}>
-        <GradientDots />
         <ParticleCanvas />
 
         <div
@@ -627,17 +604,10 @@ function HeroSection() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
-              <a href="#contact" style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                padding: '14px 32px', fontSize: 15, fontWeight: 600,
-                background: WHITE, color: '#08183a', borderRadius: 24,
-                textDecoration: 'none', whiteSpace: 'nowrap',
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                transition: 'filter 0.15s ease',
-              }}
-              onMouseEnter={e => e.currentTarget.style.filter = 'brightness(0.94)'}
-              onMouseLeave={e => e.currentTarget.style.filter = 'brightness(1)'}
-              >Get in touch.</a>
+              <a href="#contact" className="d8-btn-colorful" style={{ fontSize: 15, padding: '14px 32px' }}>
+                <div className="d8-btn-glow" aria-hidden="true" />
+                <span className="d8-btn-inner">Get in touch.</span>
+              </a>
             </div>
 
           </div>
@@ -671,16 +641,16 @@ function TickerBar() {
     <React.Fragment key={i}>
       <span style={{
         fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 9.5, fontWeight: 400,
+        fontSize: 13, fontWeight: 400,
         color: item.data ? BLUE : NAVY,
-        letterSpacing: '0.14em', textTransform: 'uppercase',
+        letterSpacing: '0.12em', textTransform: 'uppercase',
         whiteSpace: 'nowrap',
       }}>{item.text}</span>
-      <span style={{ color: 'rgba(8,31,92,0.25)', margin: '0 20px', fontSize: 8 }}>·</span>
+      <span style={{ color: 'rgba(8,31,92,0.25)', margin: '0 24px', fontSize: 10 }}>·</span>
     </React.Fragment>
   ));
   return (
-    <div style={{ background: '#f0f4f8', borderTop: '1px solid rgba(8,31,92,0.08)', borderBottom: '1px solid rgba(8,31,92,0.08)', padding: '13px 0', overflow: 'hidden' }}>
+    <div style={{ background: '#f0f4f8', borderTop: '1px solid rgba(8,31,92,0.08)', borderBottom: '1px solid rgba(8,31,92,0.08)', padding: '16px 0', overflow: 'hidden' }}>
       <div style={{ display: 'flex', animation: 'd8TickerScroll 30s linear infinite', width: 'max-content' }}>
         {content}{content}
       </div>
@@ -810,8 +780,8 @@ function WhoItIsSection() {
               className="d8-portrait-card d8-reveal"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className="d8-portrait-top" style={{ background: NAVY_DEEP }}>
-                <GradientDots dotSize={5} spacing={10} />
+              <div className="d8-portrait-top" style={{ background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)' }}>
+                <ParticleCanvas count={28} />
                 <div style={{
                   position: 'absolute', top: 24, left: 32,
                   fontFamily: "'IBM Plex Mono', monospace",
@@ -835,7 +805,7 @@ function WhoItIsSection() {
                   fontSize: 19, fontWeight: 700, color: '#fff', lineHeight: 1.28,
                 }}>{card.headline}</div>
               </div>
-              <div style={{ padding: '28px 32px 36px' }}>
+              <div style={{ padding: '28px 32px 36px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: 11, color: 'rgba(0,0,0,0.38)',
@@ -845,6 +815,7 @@ function WhoItIsSection() {
                 <p style={{
                   fontFamily: "'IBM Plex Sans', sans-serif",
                   fontSize: 15, color: BODY, lineHeight: 1.68, margin: 0,
+                  minHeight: 100,
                 }}>{card.pain}</p>
                 <div style={{
                   fontFamily: "'IBM Plex Mono', monospace",
@@ -974,6 +945,7 @@ function D8ViewSection() {
   const imgRef     = React.useRef(null);
   const [textVisible, setTextVisible] = React.useState(false);
   const [imgVisible,  setImgVisible]  = React.useState(false);
+  const [lightbox,    setLightbox]    = React.useState(false);
 
   React.useEffect(() => {
     const section = sectionRef.current;
@@ -1043,7 +1015,7 @@ function D8ViewSection() {
           </p>
         </div>
 
-        {/* Image column — scale+fade on scroll, fires once at 25% threshold */}
+        {/* Image column — scale+fade on scroll, click to expand */}
         <div
           ref={imgRef}
           className="d8-view-img"
@@ -1051,7 +1023,9 @@ function D8ViewSection() {
             opacity: imgVisible ? 1 : 0,
             transform: imgVisible ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(24px)',
             transition: 'transform 600ms cubic-bezier(0.0, 0, 0.2, 1), opacity 600ms cubic-bezier(0.0, 0, 0.2, 1)',
+            cursor: 'zoom-in', position: 'relative',
           }}
+          onClick={() => setLightbox(true)}
         >
           <img
             src="/images/KCU-dashboard1.png"
@@ -1060,6 +1034,42 @@ function D8ViewSection() {
           />
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 2000,
+            background: 'rgba(4,14,46,0.92)', backdropFilter: 'blur(12px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '40px 24px', cursor: 'zoom-out',
+            animation: 'lightboxIn 0.22s ease',
+          }}
+        >
+          <style>{`@keyframes lightboxIn { from { opacity:0; } to { opacity:1; } }`}</style>
+          <button
+            onClick={() => setLightbox(false)}
+            style={{
+              position: 'absolute', top: 20, right: 24,
+              background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: 8,
+              color: 'white', fontSize: 20, width: 36, height: 36,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+            aria-label="Close"
+          >×</button>
+          <img
+            src="/images/KCU-dashboard1.png"
+            alt="D8:VIEW — data pipeline dashboard"
+            style={{
+              maxWidth: '92vw', maxHeight: '88vh', borderRadius: 14,
+              boxShadow: '0 40px 120px rgba(0,0,0,0.6)',
+              display: 'block',
+            }}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   );
 }
@@ -1079,9 +1089,9 @@ function ProofBlockSection() {
   return (
     <section style={{
       padding: '96px clamp(1.5rem, 5vw, 80px)',
-      background: NAVY_DEEP, position: 'relative', overflow: 'hidden',
+      background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)', position: 'relative', overflow: 'hidden',
     }}>
-      <GradientDots />
+      <ParticleCanvas />
       {/* Radial glows */}
       <div aria-hidden="true" style={{
         position: 'absolute', width: 380, height: 380, borderRadius: '50%',
@@ -1169,19 +1179,10 @@ function ClosingCTA() {
         <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
           We'll show you what a 90-day deployment looks like for your environment — no pitch, no pressure.
         </p>
-        <a
-          href="mailto:hello@d8taops.com"
-          style={{
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            padding: '17px 40px', fontSize: 16, fontWeight: 600,
-            background: BLUE, color: WHITE,
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            borderRadius: 8, textDecoration: 'none',
-            transition: 'filter 0.15s ease',
-          }}
-          onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.08)'}
-          onMouseLeave={e => e.currentTarget.style.filter = 'brightness(1)'}
-        >Get in touch.</a>
+        <a href="mailto:hello@d8taops.com" className="d8-btn-colorful" style={{ fontSize: 16, padding: '17px 40px' }}>
+          <div className="d8-btn-glow" aria-hidden="true" />
+          <span className="d8-btn-inner">Get in touch.</span>
+        </a>
       </div>
     </section>
   );
@@ -1190,22 +1191,22 @@ function ClosingCTA() {
 // ═══════════════════════════════════════════════════════════════════════════════
 // FOOTER — stripped: logo · nav · copyright
 // ═══════════════════════════════════════════════════════════════════════════════
-const FOOTER_NAV = ['Home', 'Platform', 'Agents', 'Use Cases', 'Consulting', 'Contact'];
+const FOOTER_NAV = ['Platform', 'Agents', 'Use Cases', 'D8:LAB', 'About Us'];
 
 function GlobalFooter() {
   return (
     <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '28px clamp(1.5rem, 5vw, 80px)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20 }}>
-        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, fontWeight: 800, color: WHITE, letterSpacing: '-0.03em' }}>D8TAOPS</span>
+      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20 }}>
+        <img src="/images/Loop logo stacked.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
         <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
           {FOOTER_NAV.map(label => (
-            <a key={label} href={label === 'Home' ? '/' : label === 'Contact' ? '#contact' : `/${label.toLowerCase().replace(' ', '-')}`}
+            <a key={label} href={label === 'About Us' ? '#contact' : label === 'D8:LAB' ? '#lab' : `#${label.toLowerCase().replace(' ', '-')}`}
               className="footer-link"
               style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 500 }}
             >{label}</a>
           ))}
         </nav>
-        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500 }}>© 2026 D8TAOPS. All rights reserved.</span>
+        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500, textAlign: 'right' }}>© 2026 D8TAOPS. All rights reserved.</span>
       </div>
     </footer>
   );
