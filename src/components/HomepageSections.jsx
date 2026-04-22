@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const NAVY      = '#081F5C';
@@ -8,6 +9,51 @@ const BODY      = '#333333';
 const MUTED     = '#515151';
 const WHITE     = '#FFFFFF';
 const GREEN     = '#3ecf8e';
+
+// ── Animated gradient-dots background ────────────────────────────────────────
+function GradientDots({
+  dotSize = 6,
+  spacing = 12,
+  duration = 30,
+  colorCycleDuration = 8,
+  backgroundColor = '#040e2e',
+}) {
+  const hexSpacing = spacing * 1.732;
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{
+        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        backgroundColor,
+        backgroundImage: `
+          radial-gradient(circle at 50% 50%, transparent 1.5px, ${backgroundColor} 0 ${dotSize}px, transparent ${dotSize}px),
+          radial-gradient(circle at 50% 50%, transparent 1.5px, ${backgroundColor} 0 ${dotSize}px, transparent ${dotSize}px),
+          radial-gradient(circle at 50% 50%, #f00, transparent 60%),
+          radial-gradient(circle at 50% 50%, #ff0, transparent 60%),
+          radial-gradient(circle at 50% 50%, #0f0, transparent 60%),
+          radial-gradient(ellipse at 50% 50%, #00f, transparent 60%)
+        `,
+        backgroundSize: `
+          ${spacing}px ${hexSpacing}px,
+          ${spacing}px ${hexSpacing}px,
+          200% 200%, 200% 200%, 200% 200%, 200% ${hexSpacing}px
+        `,
+        backgroundPosition: `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 0% 0%, 0% 0%, 0% 0%, 0% 0%`,
+      }}
+      animate={{
+        backgroundPosition: [
+          `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 800% 400%, 1000% -400%, -1200% -600%, 400% ${hexSpacing}px`,
+          `0px 0px, ${spacing / 2}px ${hexSpacing / 2}px, 0% 0%, 0% 0%, 0% 0%, 0% 0%`,
+        ],
+        filter: ['hue-rotate(0deg)', 'hue-rotate(360deg)'],
+      }}
+      transition={{
+        backgroundPosition: { duration, ease: 'linear', repeat: Infinity },
+        filter: { duration: colorCycleDuration, ease: 'linear', repeat: Infinity },
+      }}
+    />
+  );
+}
 
 // ── Shared CSS injected once ──────────────────────────────────────────────────
 const GLOBAL_CSS = `
@@ -87,13 +133,6 @@ const GLOBAL_CSS = `
     border-color: rgba(4,119,191,0.2);
   }
 
-  .d8-stat-line {
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, #0477BF, #048ABF);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
-  }
-  .d8-stat-cell.in .d8-stat-line { transform: scaleX(1); }
 
   .d8-reveal {
     opacity: 0; transform: translateY(28px);
@@ -199,24 +238,20 @@ const GLOBAL_CSS = `
     .d8-hero-grid { grid-template-columns: 1fr !important; }
     .d8-what-header-grid { grid-template-columns: 1fr !important; }
     .d8-what-card-grid { grid-template-columns: 1fr !important; }
-    .d8-stats-grid { grid-template-columns: repeat(2,1fr) !important; }
     .d8-proof-grid { grid-template-columns: 1fr !important; }
     .d8-footer-grid { grid-template-columns: 1fr 1fr !important; }
     .d8-persona-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 768px) {
+    .d8-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 32px !important; }
     .d8-view-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
   }
-  @keyframes d8-float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33%       { transform: translateY(-8px) rotate(0.4deg); }
-    66%       { transform: translateY(-4px) rotate(-0.3deg); }
-  }
-  .d8-view-img-float { animation: d8-float 6s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) {
-    .d8-view-text-col > *, .d8-view-img-wrap { opacity: 1 !important; transform: none !important; transition: none !important; }
-    .d8-view-img-float { animation: none !important; }
+    .d8-view-text-col > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .d8-view-img { opacity: 1 !important; transform: none !important; transition: none !important; }
   }
-  @media (max-width: 600px) {
-    .d8-stats-grid { grid-template-columns: 1fr 1fr !important; }
+  @media (max-width: 480px) {
+    .d8-stats-grid { grid-template-columns: 1fr !important; }
     .d8-who-bento-right { flex-direction: row !important; flex-wrap: wrap; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -559,8 +594,9 @@ function HeroSection() {
         width: '100%',
         minHeight: 'max(680px, 92vh)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)',
+        background: NAVY_DEEP,
       }}>
+        <GradientDots />
         <ParticleCanvas />
 
         <div
@@ -623,7 +659,7 @@ const TICKER_ITEMS = [
   { text: 'Deployed at local credit unions',        data: false },
   { text: 'Leading financial institutions',          data: false },
   { text: 'NVIDIA Inception Member',                 data: false },
-  { text: 'Global 100 — Best Data Infrastructure 2026', data: false },
+  { text: 'Global 100 — Best Data Infrastructure & Analytics Business of the Year 2026', data: false },
   { text: '97% faster audits',                      data: true  },
   { text: '$1.2M+ projected savings',               data: true  },
   { text: '100% loan coverage',                     data: true  },
@@ -662,22 +698,12 @@ const STATS_DATA = [
   { target: 90,  decimals: 0, suffix: ' Days', label: 'TO PRODUCTION',     source: 'Micro-MVP to go-live' },
 ];
 
-function StatCell({ stat, isFirst }) {
+function StatCell({ stat }) {
   const [ref, visible] = useReveal(0.18);
   return (
-    <div
-      ref={ref}
-      className={`d8-stat-cell${visible ? ' in' : ''}`}
-      style={{
-        padding: '40px 36px',
-        borderLeft: isFirst ? 'none' : '1px solid rgba(8,31,92,0.08)',
-        position: 'relative',
-        textAlign: 'center',
-      }}
-    >
-      <div className="d8-stat-line" />
+    <div ref={ref} className={`d8-stat-cell${visible ? ' in' : ''}`}>
       <div style={{
-        fontFamily: "'IBM Plex Mono', monospace",
+        fontFamily: "'IBM Plex Sans', sans-serif",
         fontSize: 'clamp(40px, 4vw, 52px)',
         fontWeight: 700, color: BLUE,
         letterSpacing: '-2px', lineHeight: 1, marginBottom: 10,
@@ -685,15 +711,15 @@ function StatCell({ stat, isFirst }) {
         <AnimatedNumber target={stat.target} decimals={stat.decimals} prefix={stat.prefix || ''} suffix={stat.suffix} duration={1400} />
       </div>
       <div style={{
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 9.5, fontWeight: 500,
+        fontFamily: "'IBM Plex Sans', sans-serif",
+        fontSize: '0.75rem', fontWeight: 600,
         textTransform: 'uppercase', letterSpacing: '0.12em',
-        color: 'rgba(8,31,92,0.5)', marginBottom: 8,
+        color: NAVY, marginBottom: 8,
       }}>{stat.label}</div>
       <div style={{
-        fontSize: 11, fontStyle: 'italic',
-        color: 'rgba(8,31,92,0.35)',
         fontFamily: "'IBM Plex Sans', sans-serif",
+        fontSize: '0.875rem', fontStyle: 'italic',
+        color: BODY,
       }}>{stat.source}</div>
     </div>
   );
@@ -708,12 +734,10 @@ function StatsSection() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            borderRadius: 18,
-            overflow: 'hidden',
-            border: '1px solid rgba(8,31,92,0.08)',
+            gap: 48,
           }}
         >
-          {STATS_DATA.map((s, i) => <StatCell key={s.label} stat={s} isFirst={i === 0} />)}
+          {STATS_DATA.map((s) => <StatCell key={s.label} stat={s} />)}
         </div>
       </div>
     </section>
@@ -786,23 +810,17 @@ function WhoItIsSection() {
               className="d8-portrait-card d8-reveal"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className={`d8-portrait-top ${card.colorClass}`}>
+              <div className="d8-portrait-top" style={{ background: NAVY_DEEP }}>
+                <GradientDots dotSize={5} spacing={10} />
                 <div style={{
                   position: 'absolute', top: 24, left: 32,
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.14em',
                 }}>{card.num}</div>
-                <div style={{
-                  position: 'relative', zIndex: 1,
-                  width: 52, height: 52, borderRadius: 16,
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  marginBottom: 16,
-                }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="24" height="24" rx="6" fill="#0477BF"/>
-                    <circle cx="12" cy="12" r="4" fill="#FFFFFF"/>
+                <div style={{ position: 'relative', zIndex: 1, marginBottom: 16 }}>
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="10" fill="#0477BF"/>
+                    <circle cx="20" cy="20" r="7" fill="#FFFFFF"/>
                   </svg>
                 </div>
                 <div style={{
@@ -889,7 +907,7 @@ function WhatWeDoSection() {
           THE PLATFORM
         </div>
         <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12 }}>
-          Meet the D8:AGENTS
+          Meet the D8:Agents who get your data ready for AI.
         </h2>
         <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: BODY, maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
           The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
@@ -953,15 +971,27 @@ function WhatWeDoSection() {
 // ═══════════════════════════════════════════════════════════════════════════════
 function D8ViewSection() {
   const sectionRef = React.useRef(null);
-  const [visible, setVisible] = React.useState(false);
+  const imgRef     = React.useRef(null);
+  const [textVisible, setTextVisible] = React.useState(false);
+  const [imgVisible,  setImgVisible]  = React.useState(false);
 
   React.useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+    const section = sectionRef.current;
+    if (!section) return;
     const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
+      if (entry.isIntersecting) { setTextVisible(true); io.disconnect(); }
     }, { threshold: 0.15 });
-    io.observe(el);
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setImgVisible(true); io.disconnect(); }
+    }, { threshold: 0.25 });
+    io.observe(img);
     return () => io.disconnect();
   }, []);
 
@@ -984,7 +1014,7 @@ function D8ViewSection() {
         <div className="d8-view-text-col">
           <div style={{
             ...textBase,
-            ...(visible ? shown : hidden),
+            ...(textVisible ? shown : hidden),
             transitionDelay: '0ms',
             fontFamily: "'IBM Plex Mono', monospace",
             fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
@@ -993,7 +1023,7 @@ function D8ViewSection() {
 
           <h2 style={{
             ...textBase,
-            ...(visible ? shown : hidden),
+            ...(textVisible ? shown : hidden),
             transitionDelay: '80ms',
             fontFamily: "'IBM Plex Sans', sans-serif",
             fontWeight: 700, fontSize: 'clamp(30px, 4vw, 50px)',
@@ -1004,7 +1034,7 @@ function D8ViewSection() {
 
           <p style={{
             ...textBase,
-            ...(visible ? shown : hidden),
+            ...(textVisible ? shown : hidden),
             transitionDelay: '160ms',
             fontFamily: "'IBM Plex Sans', sans-serif",
             fontSize: 17, color: BODY, lineHeight: 1.68, margin: 0,
@@ -1013,24 +1043,21 @@ function D8ViewSection() {
           </p>
         </div>
 
-        {/* Image column — clip container + slide in from right */}
-        <div style={{ overflow: 'hidden', borderRadius: 12 }}>
-          <div
-            className="d8-view-img-wrap"
-            style={{
-              transform: visible ? 'translateX(0)' : 'translateX(110%)',
-              transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
-              transitionDelay: '200ms',
-            }}
-          >
-            <div className={visible ? 'd8-view-img-float' : ''}>
-              <img
-                src="/images/KCU-dashboard1.png"
-                alt="D8:VIEW — data pipeline dashboard"
-                style={{ width: '100%', display: 'block', borderRadius: 12, boxShadow: '0 20px 60px rgba(8,31,92,0.12)' }}
-              />
-            </div>
-          </div>
+        {/* Image column — scale+fade on scroll, fires once at 25% threshold */}
+        <div
+          ref={imgRef}
+          className="d8-view-img"
+          style={{
+            opacity: imgVisible ? 1 : 0,
+            transform: imgVisible ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(24px)',
+            transition: 'transform 600ms cubic-bezier(0.0, 0, 0.2, 1), opacity 600ms cubic-bezier(0.0, 0, 0.2, 1)',
+          }}
+        >
+          <img
+            src="/images/KCU-dashboard1.png"
+            alt="D8:VIEW — data pipeline dashboard"
+            style={{ width: '100%', display: 'block', borderRadius: 12, boxShadow: '0 20px 60px rgba(8,31,92,0.12)' }}
+          />
         </div>
       </div>
     </section>
@@ -1052,10 +1079,9 @@ function ProofBlockSection() {
   return (
     <section style={{
       padding: '96px clamp(1.5rem, 5vw, 80px)',
-      background: NAVY, position: 'relative', overflow: 'hidden',
-      backgroundImage: 'radial-gradient(rgba(62,207,142,0.04) 1px, transparent 1px)',
-      backgroundSize: '22px 22px',
+      background: NAVY_DEEP, position: 'relative', overflow: 'hidden',
     }}>
+      <GradientDots />
       {/* Radial glows */}
       <div aria-hidden="true" style={{
         position: 'absolute', width: 380, height: 380, borderRadius: '50%',
@@ -1136,7 +1162,7 @@ function ProofBlockSection() {
 function ClosingCTA() {
   return (
     <section id="contact" style={{ padding: '96px clamp(1.5rem, 5vw, 3rem)', background: WHITE, borderTop: '1px solid #E4E7EC', scrollMarginTop: 80 }}>
-      <div style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ maxWidth: 620, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <h2 style={{ margin: '0 0 20px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
           Ready to see what's possible with your data?
         </h2>
