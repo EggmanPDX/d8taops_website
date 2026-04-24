@@ -4,6 +4,7 @@ import {
   HeroSection,
   TickerBar,
   StatsSection,
+  WhatD8TAOPSDoes,
   WhoItIsSection,
   WhatWeDoGrid,
   WhatWeDoSection,
@@ -20,6 +21,7 @@ export default function Homepage() {
       <HeroSection />
       <TickerBar />
       <StatsSection />
+      <WhatD8TAOPSDoes />
       <WhoItIsSection />
       <WhatWeDoGrid />
       <WhatWeDoSection />

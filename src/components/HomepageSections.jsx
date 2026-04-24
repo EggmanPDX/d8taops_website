@@ -410,7 +410,7 @@ const PANEL_ITEMS = [
   { strong: 'Runs on top of your stack.',  muted: '' },
   { strong: 'Your data stays put.',         muted: 'On-premise, in the cloud, SaaS platforms.' },
   { strong: 'Governed by design.',          muted: 'Auditable outputs. Human-in-the-loop.' },
-  { strong: 'Live in 90 days.',             muted: 'Not multi-year migrations.' },
+  { strong: 'Live in 6 weeks.',              muted: 'Not multi-year migrations.' },
 ];
 
 const ACTIVITY_POOL = [
@@ -599,14 +599,24 @@ function HeroSection() {
               lineHeight: 1.55, maxWidth: 480,
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
-              Agentic systems tailored to your infrastructure. Governed, auditable outputs — deployed in 90 days.
+              D8TAOPS deploys AI agents directly into your existing data environment. No migration. No infrastructure rebuild. You get working AI in 6 weeks — without moving a thing.
             </p>
+
+            <h3 style={{
+              margin: '0 0 32px',
+              fontSize: 18, fontWeight: 600,
+              color: '#0477BF',
+              lineHeight: 1.4, maxWidth: 480,
+              fontFamily: "'IBM Plex Sans', sans-serif",
+            }}>
+              Most audits take days. Complete audits take minutes. See what's possible.
+            </h3>
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
               <a href="#contact" className="d8-btn-colorful" style={{ fontSize: 15, padding: '14px 32px' }}>
                 <div className="d8-btn-glow" aria-hidden="true" />
-                <span className="d8-btn-inner">Get in touch.</span>
+                <span className="d8-btn-inner">Get in touch</span>
               </a>
             </div>
 
@@ -623,36 +633,64 @@ function HeroSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// TICKER BAR
+// PARTNER BADGES — static trust badges below hero
 // ═══════════════════════════════════════════════════════════════════════════════
-const TICKER_ITEMS = [
-  { text: 'Deployed at local credit unions',        data: false },
-  { text: 'Leading financial institutions',          data: false },
-  { text: 'NVIDIA Inception Member',                 data: false },
-  { text: 'Global 100 — Best Data Infrastructure & Analytics Business of the Year 2026', data: false },
-  { text: '97% faster audits',                      data: true  },
-  { text: '$1.2M+ projected savings',               data: true  },
-  { text: '100% loan coverage',                     data: true  },
-  { text: 'Production-ready in 90 days',            data: true  },
-];
-
 function TickerBar() {
-  const content = TICKER_ITEMS.map((item, i) => (
-    <React.Fragment key={i}>
-      <span style={{
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 13, fontWeight: 400,
-        color: item.data ? BLUE : NAVY,
-        letterSpacing: '0.12em', textTransform: 'uppercase',
-        whiteSpace: 'nowrap',
-      }}>{item.text}</span>
-      <span style={{ color: 'rgba(8,31,92,0.25)', margin: '0 24px', fontSize: 10 }}>·</span>
-    </React.Fragment>
-  ));
   return (
-    <div style={{ background: '#f0f4f8', borderTop: '1px solid rgba(8,31,92,0.08)', borderBottom: '1px solid rgba(8,31,92,0.08)', padding: '16px 0', overflow: 'hidden' }}>
-      <div style={{ display: 'flex', animation: 'd8TickerScroll 30s linear infinite', width: 'max-content' }}>
-        {content}{content}
+    <div style={{
+      background: '#f0f4f8',
+      borderTop: '1px solid rgba(8,31,92,0.08)',
+      borderBottom: '1px solid rgba(8,31,92,0.08)',
+      padding: '20px clamp(1.5rem, 5vw, 80px)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 40,
+    }}>
+      {/* Nvidia Partner */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 10,
+        opacity: 0.52,
+      }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: 4,
+          background: 'rgba(8,31,92,0.12)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect width="14" height="14" rx="2" fill="#76B900" opacity="0.7" />
+          </svg>
+        </div>
+        <span style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: 12, fontWeight: 500,
+          color: MUTED, letterSpacing: '0.04em',
+        }}>Nvidia Partner</span>
+      </div>
+
+      <div style={{ width: 1, height: 24, background: 'rgba(8,31,92,0.12)' }} />
+
+      {/* Trail Blazers Small Business Partner */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 10,
+        opacity: 0.52,
+      }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: 4,
+          background: 'rgba(8,31,92,0.12)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect width="14" height="14" rx="2" fill="#E03A3E" opacity="0.7" />
+          </svg>
+        </div>
+        <span style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: 12, fontWeight: 500,
+          color: MUTED, letterSpacing: '0.04em',
+        }}>Trail Blazers Small Business Partner</span>
       </div>
     </div>
   );
@@ -664,8 +702,7 @@ function TickerBar() {
 const STATS_DATA = [
   { target: 97,  decimals: 0, suffix: '%',    label: 'FASTER AUDITS',      source: 'vs. manual audit cycles' },
   { target: 1.2, decimals: 1, prefix: '$', suffix: 'M+', label: 'PROJECTED SAVINGS', source: 'Over 3-year deployment' },
-  { target: 100, decimals: 0, suffix: '%',    label: 'LOAN COVERAGE',      source: 'Every loan, every night' },
-  { target: 90,  decimals: 0, suffix: ' Days', label: 'TO PRODUCTION',     source: 'Micro-MVP to go-live' },
+  { target: 100, decimals: 0, suffix: '%',    label: 'COMPLETE COVERAGE',  source: 'Every loan, every night' },
 ];
 
 function StatCell({ stat }) {
@@ -703,7 +740,7 @@ function StatsSection() {
           className="d8-stats-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 48,
           }}
         >
@@ -723,7 +760,7 @@ const PERSONA_CARDS = [
     role: 'VP / C-SUITE',
     headline: 'The board wants results,\u00a0not\u00a0roadmaps.',
     pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
-    change: 'A working system in 90 days with measurable ROI. No infrastructure overhaul required.',
+    change: 'A working system in 6 weeks with measurable ROI. No infrastructure overhaul required.',
   },
   {
     num: '02', icon: null, colorClass: 'c2',
@@ -782,11 +819,6 @@ function WhoItIsSection() {
             >
               <div className="d8-portrait-top" style={{ background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)' }}>
                 <ParticleCanvas count={28} />
-                <div style={{
-                  position: 'absolute', top: 24, left: 32,
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.14em',
-                }}>{card.num}</div>
                 <div style={{ position: 'relative', zIndex: 1, marginBottom: 16 }}>
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="10" fill="#0477BF"/>
@@ -881,7 +913,7 @@ function WhatWeDoSection() {
           Meet the D8:Agents who get your data ready for AI.
         </h2>
         <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: BODY, maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
-          The D8TAOPS Data Nervous System. Each agent handles a distinct job. Together, they take raw data from your systems to secure, governed, AI-ready output.
+          Each agent handles a distinct job. Together, they take raw data from your systems to governed, AI-ready output — without touching your infrastructure.
         </p>
 
         {/* 4×2 grid pipeline */}
@@ -1082,7 +1114,7 @@ const PROOF_METRICS = [
   { target: 100,  decimals: 0, suffix: '%',    label: 'COVERAGE',          sub: 'Every loan audited, every night. Not sampled.' },
   { target: 99.5, decimals: 1, suffix: '%',    label: 'ACCURACY',          sub: 'Consistent policy interpretation across every audit.' },
   { target: 1.2,  decimals: 1, prefix: '$', suffix: 'M+', label: 'PROJECTED SAVINGS', sub: 'Over 3 years through labor avoidance and improved compliance efficiency.' },
-  { target: 90,   decimals: 0, suffix: ' Days', label: 'DEPLOYED',         sub: 'Micro-MVP to production. Break-even under 12 months.', wide: true },
+  { target: 6,    decimals: 0, suffix: ' Weeks', label: 'DEPLOYED',        sub: 'Micro-MVP to production. Break-even under 12 months.', wide: true },
 ];
 
 function ProofBlockSection() {
@@ -1177,11 +1209,11 @@ function ClosingCTA() {
           Ready to see what's possible with your data?
         </h2>
         <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
-          We'll show you what a 90-day deployment looks like for your environment — no pitch, no pressure.
+          We'll show you what a 6-week deployment looks like for your environment — no pitch, no pressure.
         </p>
         <a href="mailto:hello@d8taops.com" className="d8-btn-colorful" style={{ fontSize: 16, padding: '17px 40px' }}>
           <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Get in touch.</span>
+          <span className="d8-btn-inner">Get in touch</span>
         </a>
       </div>
     </section>
@@ -1189,26 +1221,119 @@ function ClosingCTA() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// FOOTER — stripped: logo · nav · copyright
+// FOOTER — logo · nav · copyright · address · social · legal
 // ═══════════════════════════════════════════════════════════════════════════════
-const FOOTER_NAV = ['Platform', 'Agents', 'Use Cases', 'D8:LAB', 'About Us'];
+const FOOTER_NAV = ['Home', 'Platform', 'Agents', 'Use Cases', 'Consulting', 'Contact'];
 
 function GlobalFooter() {
   return (
-    <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '28px clamp(1.5rem, 5vw, 80px)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20 }}>
-        <img src="/images/Loop logo stacked.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
-        <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {FOOTER_NAV.map(label => (
-            <a key={label} href={label === 'About Us' ? '#contact' : label === 'D8:LAB' ? '#lab' : `#${label.toLowerCase().replace(' ', '-')}`}
-              className="footer-link"
-              style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 500 }}
-            >{label}</a>
-          ))}
-        </nav>
-        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500, textAlign: 'right' }}>© 2026 D8TAOPS. All rights reserved.</span>
+    <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '40px clamp(1.5rem, 5vw, 80px) 28px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        {/* Top row: logo · nav · copyright */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20, marginBottom: 28 }}>
+          <img src="/images/Loop logo stacked.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
+          <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {FOOTER_NAV.map(label => (
+              <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`}
+                className="footer-link"
+                style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 500 }}
+              >{label}</a>
+            ))}
+          </nav>
+          <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.28)', fontWeight: 500, textAlign: 'right' }}>© 2026 D8TAOPS. All rights reserved.</span>
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 24 }} />
+
+        {/* Bottom row: address · social icons · legal links */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+          {/* Address */}
+          <address style={{
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: 12, color: 'rgba(255,255,255,0.32)',
+            fontStyle: 'normal', lineHeight: 1.6,
+          }}>
+            123 Placeholder Street, Suite 100<br />
+            Portland, OR 97201
+          </address>
+
+          {/* Social icons */}
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            {/* LinkedIn */}
+            <a href="#linkedin" className="footer-link" aria-label="LinkedIn" style={{ display: 'flex', alignItems: 'center' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            {/* YouTube */}
+            <a href="#youtube" className="footer-link" aria-label="YouTube" style={{ display: 'flex', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          </div>
+
+          {/* Legal links */}
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+            <a href="#privacy" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Privacy Policy</a>
+            <a href="#terms" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Terms of Use</a>
+          </div>
+        </div>
       </div>
     </footer>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WHAT D8TAOPS DOES — white section, 3-card grid
+// ═══════════════════════════════════════════════════════════════════════════════
+const WHAT_CARDS = [
+  {
+    h3: 'Agents that run in your environment',
+    body: 'D8TAOPS agents deploy inside your existing cloud or on-prem infrastructure. No new vendors. No data leaving your perimeter.',
+  },
+  {
+    h3: 'Production-ready in 6 weeks',
+    body: 'We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 6 weeks of kickoff.',
+  },
+  {
+    h3: 'You keep control',
+    body: 'Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.',
+  },
+];
+
+function WhatD8TAOPSDoes() {
+  return (
+    <section style={{ background: WHITE, padding: '88px clamp(1.5rem, 5vw, 80px)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <h2 style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+          color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1,
+          marginBottom: 48,
+        }}>
+          We send AI agents to your data. You don't move a thing.
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+          {WHAT_CARDS.map((card) => (
+            <div key={card.h3} className="d8-what-card">
+              <h3 style={{
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                fontWeight: 600, fontSize: 18,
+                color: NAVY, lineHeight: 1.3,
+                margin: '0 0 16px',
+              }}>{card.h3}</h3>
+              <p style={{
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                fontSize: 15, color: BODY, lineHeight: 1.68,
+                margin: 0,
+              }}>{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1226,6 +1351,7 @@ export {
   WhoWeAreSection,
   WhatWeDoSection,
   WhatWeDoGrid,
+  WhatD8TAOPSDoes,
   WhoItIsSection,
   D8ViewSection,
   IngestAgentDemo,
