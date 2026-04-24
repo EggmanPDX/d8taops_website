@@ -82,7 +82,7 @@ export default function HomepageNav() {
           {/* Logo */}
           <a href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
             <img
-              src="/images/Loop logo stacked.png"
+              src="/images/d8taops-logo.png"
               alt="Loop"
               style={{ height: 36, width: 'auto', display: 'block' }}
             />

@@ -1060,7 +1060,7 @@ function D8ViewSection() {
           onClick={() => setLightbox(true)}
         >
           <img
-            src="/images/KCU-dashboard1.png"
+            src="/images/dashboard-preview.png"
             alt="D8:VIEW — data pipeline dashboard"
             style={{ width: '100%', display: 'block', borderRadius: 12, boxShadow: '0 20px 60px rgba(8,31,92,0.12)' }}
           />
@@ -1091,7 +1091,7 @@ function D8ViewSection() {
             aria-label="Close"
           >×</button>
           <img
-            src="/images/KCU-dashboard1.png"
+            src="/images/dashboard-preview.png"
             alt="D8:VIEW — data pipeline dashboard"
             style={{
               maxWidth: '92vw', maxHeight: '88vh', borderRadius: 14,
@@ -1231,7 +1231,7 @@ function GlobalFooter() {
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Top row: logo · nav · copyright */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20, marginBottom: 28 }}>
-          <img src="/images/Loop logo stacked.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
+          <img src="/images/d8taops-logo.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
           <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
             {FOOTER_NAV.map(label => (
               <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`}
