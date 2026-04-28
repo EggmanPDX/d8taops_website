@@ -94,12 +94,10 @@ export default function HomepageNav() {
             style={{ display: 'flex', alignItems: 'center', gap: 28 }}
           >
             {[
-              { label: 'Home', href: '#home' },
-              { label: 'Platform', href: '#platform' },
-              { label: 'Agents', href: '#agents' },
-              { label: 'Use Cases', href: '#use-cases' },
-              { label: 'Consulting', href: '#consulting' },
-              { label: 'Contact', href: '#contact' },
+              { label: 'PLATFORM',     href: '/platform' },
+              { label: 'CASE STUDIES', href: '/case-studies' },
+              { label: 'ABOUT',        href: '/about' },
+              { label: 'LAB',          href: '/lab' },
             ].map(({ label, href }) => (
               <a
                 key={label}
@@ -118,7 +116,7 @@ export default function HomepageNav() {
           {/* CTA */}
           <a href="#contact" className="d8-btn-colorful" style={{ fontSize: 13, padding: '9px 22px' }}>
             <div className="d8-btn-glow" aria-hidden="true" />
-            <span className="d8-btn-inner">Get in touch</span>
+            <span className="d8-btn-inner">Book a demo</span>
           </a>
         </div>
       </nav>
