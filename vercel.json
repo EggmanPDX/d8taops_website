@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/case-studies", "destination": "/use-cases.html" }
+  ]
+}

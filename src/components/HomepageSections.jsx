@@ -212,6 +212,11 @@ const GLOBAL_CSS = `
     pointer-events: none;
   }
 
+  .d8-stats-grid .d8-stat-cell:not(:last-child) { border-right: 1px solid rgba(8,31,92,0.1); padding-right: 48px; }
+  @media (max-width: 768px) { .d8-stats-grid .d8-stat-cell { border-right: none !important; padding-right: 0 !important; } }
+  .d8-section-label { display: block; }
+  @media (max-width: 900px) { .d8-section-label { display: none !important; } }
+
   @media (max-width: 900px) {
     .d8-hero-grid { grid-template-columns: 1fr !important; }
     .d8-what-header-grid { grid-template-columns: 1fr !important; }
@@ -232,6 +237,9 @@ const GLOBAL_CSS = `
     .d8-stats-grid { grid-template-columns: 1fr !important; }
     .d8-who-bento-right { flex-direction: row !important; flex-wrap: wrap; }
   }
+  h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -305,7 +313,7 @@ function useReveal(threshold = 0.18) {
 }
 
 // ── Particle canvas ───────────────────────────────────────────────────────────
-function ParticleCanvas({ count = 85 }) {
+function ParticleCanvas({ count = 85, scale = 1 }) {
   const ref = React.useRef(null);
   React.useEffect(() => {
     const canvas = ref.current; if (!canvas) return;
@@ -326,7 +334,7 @@ function ParticleCanvas({ count = 85 }) {
         vx: (Math.random() - 0.5) * 0.28,
         vy: (Math.random() - 0.5) * 0.18,
         size: Math.random() * 1.5 + 0.4,
-        opacity: Math.random() * 0.45 + 0.15,
+        opacity: Math.min(1, (Math.random() * 0.45 + 0.15) * scale),
         w: r.width, h: r.height,
       }));
     };
@@ -351,7 +359,7 @@ function ParticleCanvas({ count = 85 }) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(4,119,191,${(1 - d / 140) * 0.18})`;
+            ctx.strokeStyle = `rgba(4,119,191,${Math.min(1, (1 - d / 140) * 0.18 * scale)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }
@@ -573,8 +581,10 @@ function HeroSection() {
         minHeight: 'max(680px, 92vh)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)',
+        backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)`,
+        backgroundSize: '24px 24px, 100% 100%',
       }}>
-        <ParticleCanvas />
+        <ParticleCanvas scale={2} />
 
         <div
           className="d8-hero-grid"
@@ -711,7 +721,7 @@ function StatCell({ stat }) {
     <div ref={ref} className={`d8-stat-cell${visible ? ' in' : ''}`}>
       <div style={{
         fontFamily: "'IBM Plex Sans', sans-serif",
-        fontSize: 'clamp(40px, 4vw, 52px)',
+        fontSize: 'clamp(52px, 6vw, 80px)',
         fontWeight: 700, color: BLUE,
         letterSpacing: '-2px', lineHeight: 1, marginBottom: 10,
       }}>
@@ -904,7 +914,15 @@ function WhatWeDoSection() {
   const [activeIdx, setActiveIdx] = React.useState(-1);
 
   return (
-    <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box' }} id="agents">
+    <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box', position: 'relative' }} id="agents">
+      <div aria-hidden="true" className="d8-section-label" style={{
+        position: 'absolute', left: 'clamp(4px, 1.5vw, 18px)', top: '50%',
+        transform: 'translateY(-50%) rotate(180deg)',
+        writingMode: 'vertical-rl',
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600,
+        letterSpacing: '0.18em', textTransform: 'uppercase',
+        color: 'rgba(4,119,191,0.35)', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap',
+      }}>THE PLATFORM</div>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
           THE PLATFORM
@@ -1121,8 +1139,19 @@ function ProofBlockSection() {
   return (
     <section style={{
       padding: '96px clamp(1.5rem, 5vw, 80px)',
-      background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)', position: 'relative', overflow: 'hidden',
+      backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)`,
+      backgroundSize: '24px 24px, 100% 100%',
+      position: 'relative', overflow: 'hidden',
     }}>
+      <div aria-hidden="true" className="d8-section-label" style={{
+        position: 'absolute', left: 'clamp(4px, 1.5vw, 18px)', top: '50%',
+        transform: 'translateY(-50%) rotate(180deg)',
+        writingMode: 'vertical-rl',
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600,
+        letterSpacing: '0.18em', textTransform: 'uppercase',
+        color: 'rgba(255,255,255,0.18)', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap',
+        zIndex: 1,
+      }}>CUSTOMER STORY</div>
       <ParticleCanvas />
       {/* Radial glows */}
       <div aria-hidden="true" style={{
@@ -1206,7 +1235,8 @@ function ClosingCTA() {
     <section id="contact" style={{ padding: '96px clamp(1.5rem, 5vw, 3rem)', background: WHITE, borderTop: '1px solid #E4E7EC', scrollMarginTop: 80 }}>
       <div style={{ maxWidth: 620, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <h2 style={{ margin: '0 0 20px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-          Ready to see what's possible with your data?
+          <span style={{ color: NAVY, fontStyle: 'normal' }}>Ready to see what's possible </span>
+          <span style={{ color: BLUE, fontStyle: 'italic' }}>with your data?</span>
         </h2>
         <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
           We'll show you what a 6-week deployment looks like for your environment — no pitch, no pressure.
@@ -1223,18 +1253,36 @@ function ClosingCTA() {
 // ═══════════════════════════════════════════════════════════════════════════════
 // FOOTER — logo · nav · copyright · address · social · legal
 // ═══════════════════════════════════════════════════════════════════════════════
-const FOOTER_NAV = ['Home', 'Platform', 'Agents', 'Use Cases', 'Consulting', 'Contact'];
+const FOOTER_NAV = [
+  { label: 'PLATFORM',     href: '/platform' },
+  { label: 'CASE STUDIES', href: '/case-studies' },
+  { label: 'ABOUT',        href: '/about' },
+  { label: 'LAB',          href: '/lab' },
+];
 
 function GlobalFooter() {
   return (
-    <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '40px clamp(1.5rem, 5vw, 80px) 28px' }}>
+    <footer style={{ background: NAVY_DEEP, borderTop: `1px solid rgba(255,255,255,0.055)`, padding: '40px clamp(1.5rem, 5vw, 80px) 28px', position: 'relative', overflow: 'hidden' }}>
+      <svg aria-hidden="true" style={{ position: 'absolute', right: -30, bottom: -20, width: 300, height: 300, opacity: 0.07, pointerEvents: 'none', zIndex: 0 }} viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="300" cy="300" r="80"  stroke="white" strokeWidth="1"/>
+        <circle cx="300" cy="300" r="140" stroke="white" strokeWidth="1"/>
+        <circle cx="300" cy="300" r="200" stroke="white" strokeWidth="1"/>
+        <line x1="260" y1="300" x2="300" y2="300" stroke="white" strokeWidth="1"/>
+        <line x1="300" y1="260" x2="300" y2="300" stroke="white" strokeWidth="1"/>
+        <line x1="300" y1="300" x2="195" y2="155" stroke="white" strokeWidth="0.75"/>
+        <line x1="300" y1="300" x2="115" y2="218" stroke="white" strokeWidth="0.75"/>
+        <circle cx="220" cy="300" r="2.5" fill="white"/>
+        <circle cx="160" cy="300" r="2.5" fill="white"/>
+        <circle cx="300" cy="220" r="2.5" fill="white"/>
+        <circle cx="300" cy="160" r="2.5" fill="white"/>
+      </svg>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Top row: logo · nav · copyright */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20, marginBottom: 28 }}>
           <img src="/images/d8taops-logo.png" alt="Loop" style={{ height: 32, width: 'auto', display: 'block' }} />
           <nav style={{ display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {FOOTER_NAV.map(label => (
-              <a key={label} href={`#${label.toLowerCase().replace(/\s+/g, '-')}`}
+            {FOOTER_NAV.map(({ label, href }) => (
+              <a key={label} href={href}
                 className="footer-link"
                 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, fontWeight: 500 }}
               >{label}</a>
@@ -1313,7 +1361,8 @@ function WhatD8TAOPSDoes() {
           color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1,
           marginBottom: 48,
         }}>
-          We send AI agents to your data. You don't move a thing.
+          <span style={{ color: NAVY, fontStyle: 'normal' }}>We send AI agents to your data. </span>
+          <span style={{ color: BLUE, fontStyle: 'italic' }}>You don't move a thing.</span>
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
           {WHAT_CARDS.map((card) => (
@@ -1344,6 +1393,7 @@ function IngestAgentDemo()   { return null; }
 function DashboardShowcase() { return null; }
 
 export {
+  GLOBAL_CSS,
   HeroSection,
   TickerBar,
   StatsSection,
@@ -1360,3 +1410,260 @@ export {
   ClosingCTA,
   GlobalFooter,
 };
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DATA FLOW STRIP — for platform page
+// ═══════════════════════════════════════════════════════════════════════════════
+const DF_NODES = [
+  { name: 'D8:INGEST', role: 'Connect'     },
+  { name: 'D8:CAT',    role: 'Catalog'     },
+  { name: 'D8:CURATE', role: 'Clean'       },
+  { name: 'D8:SEC',    role: 'Secure'      },
+  { name: 'D8:FLOW',   role: 'Orchestrate' },
+];
+const DF_TARGET = 4200000;
+
+function DataFlowStrip() {
+  const wrapRef   = React.useRef(null);
+  const playedRef = React.useRef(false);
+
+  const [count,       setCount]       = React.useState(0);
+  const [activeNodes, setActiveNodes] = React.useState(0);
+  const [statsIn,     setStatsIn]     = React.useState(false);
+  const [dashIn,      setDashIn]      = React.useState(false);
+  const [ctaIn,       setCtaIn]       = React.useState(false);
+
+  React.useEffect(() => {
+    const el = wrapRef.current; if (!el) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || playedRef.current) return;
+      playedRef.current = true;
+      io.disconnect();
+
+      if (reduced) {
+        setCount(DF_TARGET); setActiveNodes(DF_NODES.length);
+        setStatsIn(true); setDashIn(true); setCtaIn(true);
+        return;
+      }
+
+      // Beat 1 — counter easeOut cubic over 1400ms
+      const t0 = performance.now();
+      const tick = (now) => {
+        const t    = Math.min((now - t0) / 1400, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        setCount(Math.round(ease * DF_TARGET));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+
+      // Beat 2 — nodes stagger (150ms apart, starting at 200ms)
+      DF_NODES.forEach((_, i) =>
+        setTimeout(() => setActiveNodes(n => n + 1), 200 + i * 150)
+      );
+
+      // Beat 3 — stats after node 3 lights up
+      setTimeout(() => setStatsIn(true), 200 + 2 * 150 + 120);
+
+      // Beat 4 — dashboard after all nodes + 300ms
+      const allNodesMs = 200 + (DF_NODES.length - 1) * 150;
+      setTimeout(() => setDashIn(true), allNodesMs + 300);
+      setTimeout(() => setCtaIn(true),  allNodesMs + 680);
+    }, { threshold: 0.25 });
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const fmtCount = (n) =>
+    n >= 1000000 ? (n / 1000000).toFixed(1) + 'M'
+    : n >= 1000  ? Math.round(n / 1000) + 'K'
+    : String(n);
+
+  return (
+    <section style={{
+      background: NAVY,
+      backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px)`,
+      backgroundSize: '24px 24px',
+      padding: '72px clamp(1.5rem, 5vw, 64px)',
+      overflow: 'hidden', position: 'relative', boxSizing: 'border-box',
+    }}>
+      <style>{`
+        @keyframes dfDot {
+          0%   { left: -6%; opacity: 0; }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { left: 106%; opacity: 0; }
+        }
+      `}</style>
+
+      <div ref={wrapRef} style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+
+        {/* Eyebrow */}
+        <div style={{
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: 11, fontWeight: 600, letterSpacing: '0.18em',
+          color: 'rgba(4,119,191,0.65)', textTransform: 'uppercase',
+          textAlign: 'center', marginBottom: 40,
+        }}>THE PLATFORM IN ACTION</div>
+
+        {/* ── Main row ── */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+
+          {/* Counter */}
+          <div style={{ flexShrink: 0, width: 120, textAlign: 'right' }}>
+            <div style={{
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              fontSize: 'clamp(30px, 3.2vw, 50px)', fontWeight: 700,
+              color: GREEN, lineHeight: 1, letterSpacing: '-0.02em',
+              fontVariantNumeric: 'tabular-nums',
+            }}>{fmtCount(count)}</div>
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, fontWeight: 600,
+              letterSpacing: '0.14em', color: 'rgba(255,255,255,0.35)',
+              textTransform: 'uppercase', marginTop: 5,
+            }}>records</div>
+          </div>
+
+          {/* Entry arrow */}
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+            <line x1="0" y1="6" x2="13" y2="6" stroke="rgba(4,119,191,0.4)" strokeWidth="1.5"/>
+            <path d="M11 3L17 6L11 9" stroke="rgba(4,119,191,0.4)" strokeWidth="1.5" fill="none"/>
+          </svg>
+
+          {/* Pipeline nodes */}
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
+            {DF_NODES.map((node, i) => (
+              <React.Fragment key={node.name}>
+                <div style={{
+                  flexShrink: 0, width: 90, height: 52,
+                  background: activeNodes > i ? WHITE : 'rgba(255,255,255,0.05)',
+                  border: `1px solid ${activeNodes > i ? BLUE : 'rgba(4,119,191,0.18)'}`,
+                  borderRadius: 10,
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', justifyContent: 'center', gap: 3,
+                  boxShadow: activeNodes > i ? '0 0 18px rgba(4,119,191,0.28)' : 'none',
+                  transition: 'background 280ms ease, border-color 280ms ease, box-shadow 280ms ease',
+                }}>
+                  <span style={{
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    fontSize: 10, fontWeight: 700,
+                    color: activeNodes > i ? NAVY : 'rgba(255,255,255,0.25)',
+                    lineHeight: 1, transition: 'color 280ms ease',
+                  }}>{node.name}</span>
+                  <span style={{
+                    fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 8.5,
+                    color: activeNodes > i ? BLUE : 'rgba(255,255,255,0.18)',
+                    lineHeight: 1, transition: 'color 280ms ease',
+                  }}>{node.role}</span>
+                </div>
+
+                {i < DF_NODES.length - 1 && (
+                  <div style={{
+                    flex: 1, minWidth: 8, height: 52,
+                    display: 'flex', alignItems: 'center', position: 'relative',
+                  }}>
+                    <div style={{
+                      position: 'absolute', left: 0, right: 0,
+                      height: 2, background: 'rgba(4,119,191,0.18)',
+                    }} />
+                    {activeNodes > i && (
+                      <div style={{
+                        position: 'absolute', width: 7, height: 7, borderRadius: '50%',
+                        background: GREEN, top: '50%', marginTop: -3.5,
+                        animation: `dfDot 1600ms linear infinite`,
+                        animationDelay: `${i * 300}ms`,
+                      }} />
+                    )}
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* Exit arrow */}
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+            <line x1="0" y1="6" x2="13" y2="6"
+              stroke={dashIn ? 'rgba(62,207,142,0.55)' : 'rgba(4,119,191,0.18)'}
+              strokeWidth="1.5" style={{ transition: 'stroke 400ms ease' }}/>
+            <path d="M11 3L17 6L11 9"
+              stroke={dashIn ? 'rgba(62,207,142,0.55)' : 'rgba(4,119,191,0.18)'}
+              strokeWidth="1.5" fill="none" style={{ transition: 'stroke 400ms ease' }}/>
+          </svg>
+
+          {/* Dashboard tile */}
+          <div style={{
+            flexShrink: 0, width: 148,
+            background: dashIn ? WHITE : 'rgba(255,255,255,0.04)',
+            border: `1.5px solid ${dashIn ? GREEN : 'rgba(62,207,142,0.12)'}`,
+            borderRadius: 12, padding: '14px 16px',
+            opacity: dashIn ? 1 : 0,
+            transform: dashIn ? 'translateX(0)' : 'translateX(16px)',
+            transition: 'opacity 400ms cubic-bezier(0.22,1,0.36,1), transform 400ms cubic-bezier(0.22,1,0.36,1), background 400ms ease, border-color 400ms ease',
+          }}>
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, fontWeight: 600,
+              color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 7,
+            }}>OUTPUT</div>
+            <div style={{
+              fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 26, fontWeight: 700,
+              color: NAVY, lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 2,
+            }}>97%</div>
+            <div style={{
+              fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 10,
+              color: MUTED, lineHeight: 1.4, marginBottom: 10,
+            }}>accuracy</div>
+            <svg width="100%" height="22" viewBox="0 0 114 22" fill="none" aria-label="Trending upward">
+              <polygon points="0,20 19,16 38,17 57,10 76,6 95,3 114,1 114,22 0,22" fill="rgba(62,207,142,0.08)"/>
+              <polyline points="0,20 19,16 38,17 57,10 76,6 95,3 114,1"
+                stroke={GREEN} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* ── Stats strip ── */}
+        <div style={{
+          display: 'flex', justifyContent: 'center', gap: 56, marginTop: 36,
+          opacity: statsIn ? 1 : 0,
+          transform: statsIn ? 'translateY(0)' : 'translateY(8px)',
+          transition: 'opacity 320ms ease, transform 320ms ease',
+        }}>
+          {[
+            { num: '4.2M',  label: 'records per run'            },
+            { num: '6 sec', label: 'avg processing time'        },
+            { num: '97%',   label: 'accuracy — Kitsap CU'       },
+          ].map(({ num, label }) => (
+            <div key={label} style={{ textAlign: 'center' }}>
+              <div style={{
+                fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 20, fontWeight: 700,
+                color: GREEN, lineHeight: 1, letterSpacing: '-0.01em',
+              }}>{num}</div>
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, fontWeight: 500,
+                letterSpacing: '0.1em', color: 'rgba(255,255,255,0.38)',
+                textTransform: 'uppercase', marginTop: 5,
+              }}>{label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── CTA ── */}
+        <div style={{
+          textAlign: 'center', marginTop: 28,
+          opacity: ctaIn ? 1 : 0,
+          transform: ctaIn ? 'translateY(0)' : 'translateY(8px)',
+          transition: 'opacity 300ms ease 80ms, transform 300ms ease 80ms',
+        }}>
+          <a href="/platform" style={{
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: 13, fontWeight: 600,
+            color: BLUE, textDecoration: 'none',
+          }}>See how it works in your stack →</a>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+

@@ -1050,7 +1050,7 @@ function WorkflowsSection() {
             <Eyebrow>WORKFLOWS IN PRACTICE</Eyebrow>
           </div>
           <SectionH2 style={{ maxWidth: 640, transitionDelay: '80ms' }}>
-            The same platform. Three completely different problems.
+            The same platform. Three unique solutions.
           </SectionH2>
           <SectionH3 style={{ maxWidth: 540, transitionDelay: '160ms' }}>
             Rule-heavy. High-volume. Manual today. Automated in 6 weeks.
@@ -1158,7 +1158,7 @@ function PlatformClosingCTA() {
           style={{ fontSize: 16, padding: '17px 40px', background: BLUE }}
         >
           <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Get in touch</span>
+          <span className="d8-btn-inner">Book a Demo</span>
         </a>
       </div>
     </section>
