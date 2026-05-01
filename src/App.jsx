@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomepageNav from './components/HomepageNav';
 import D8Button from './components/D8Button';
+import ParticleCanvas from './components/ParticleCanvas';
 import {
   GLOBAL_CSS,
   HeroSection,
@@ -19,59 +20,6 @@ import {
 import PlatformPage from './components/PlatformPage';
 import AboutPage from './components/AboutPage';
 import D8LABPage from './components/D8LABPage';
-
-function ParticleCanvas({ count = 60, scale = 1 }) {
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    const canvas = ref.current; if (!canvas) return;
-    const ctx = canvas.getContext('2d'); if (!ctx) return;
-    let particles = [], raf;
-    const resize = () => {
-      const p = canvas.parentElement; const r = p.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = r.width * dpr; canvas.height = r.height * dpr;
-      canvas.style.width = r.width + 'px'; canvas.style.height = r.height + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * r.width, y: Math.random() * r.height,
-        vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.18,
-        size: Math.random() * 1.5 + 0.4,
-        opacity: Math.min(1, (Math.random() * 0.4 + 0.12) * scale),
-      }));
-    };
-    resize();
-    const ro = new ResizeObserver(resize); ro.observe(canvas.parentElement);
-    const animate = () => {
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      ctx.clearRect(0, 0, w, h);
-      for (const p of particles) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
-      }
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 140) {
-            ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(4,119,191,${(1 - d / 140) * 0.18 * scale})`; ctx.lineWidth = 0.6; ctx.stroke();
-          }
-        }
-      }
-      for (const p of particles) {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(4,119,191,${p.opacity})`; ctx.fill();
-      }
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
-  }, []);
-  return <canvas ref={ref} aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }} />;
-}
 
 function ComingSoonPage() {
   const { pathname } = useLocation();
