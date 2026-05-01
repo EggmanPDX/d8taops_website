@@ -3,18 +3,10 @@ import D8Button from './D8Button';
 
 export default function HomepageNav({ activePath }) {
   const currentPath = activePath || (typeof window !== 'undefined' ? window.location.pathname : '/');
-  const [hidden, setHidden] = React.useState(false);
-  const [atTop, setAtTop]   = React.useState(true);
-  const lastY = React.useRef(0);
+  const [atTop, setAtTop] = React.useState(true);
 
   React.useEffect(() => {
-    const handler = () => {
-      const y = window.scrollY;
-      setAtTop(y < 60);
-      if (y > lastY.current && y > 80) setHidden(true);
-      else if (y < lastY.current) setHidden(false);
-      lastY.current = y;
-    };
+    const handler = () => setAtTop(window.scrollY < 60);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
@@ -53,9 +45,7 @@ export default function HomepageNav({ activePath }) {
             border: '1px solid rgba(8,31,92,0.1)',
             boxShadow: atTop ? '0 2px 8px rgba(8,31,92,0.06)' : '0 4px 24px rgba(8,31,92,0.1)',
             borderRadius: 14,
-            pointerEvents: hidden ? 'none' : 'all',
-            transform: hidden ? 'translateY(-110%)' : 'translateY(0)',
-            opacity: hidden ? 0 : 1,
+            pointerEvents: 'all',
           }}
         >
           {/* Logo */}

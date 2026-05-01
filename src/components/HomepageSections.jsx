@@ -600,7 +600,7 @@ function HeroSection() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
-              <D8Button href="#contact">Get in touch</D8Button>
+              <D8Button href="#contact" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
             </div>
 
           </div>

@@ -79,7 +79,7 @@ function ComingSoonPage() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />
-      <HomepageNav />
+      <HomepageNav activePath={pathname} />
       <div style={{
         minHeight: '100vh',
         backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)`,
@@ -125,7 +125,7 @@ function ComingSoonPage() {
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 18, maxWidth: 480, lineHeight: 1.6, margin: 0 }}>
             We're building it out. In the meantime, get in touch and we'll walk you through it directly.
           </p>
-          <D8Button href="mailto:hello@d8taops.com" style={{ marginTop: 8 }}>Get in touch</D8Button>
+          <D8Button href="mailto:hello@d8taops.com" style={{ marginTop: 8 }} innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
         </div>
       </div>
     </>
@@ -135,7 +135,7 @@ function ComingSoonPage() {
 function Homepage() {
   return (
     <>
-      <HomepageNav />
+      <HomepageNav activePath="/" />
       <HeroSection />
       <TickerBar />
       <StatsSection />
