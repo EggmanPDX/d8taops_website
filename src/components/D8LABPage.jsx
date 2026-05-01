@@ -222,7 +222,7 @@ const LAB_CSS = `
   align-items: center;
   gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -890,8 +890,8 @@ export default function D8LABPage() {
         <ParticleCanvas scale={1.5} />
         <div className="lab-header-content">
           <div className="lab-eyebrow">From the Lab</div>
-          <h2>How we think about data readiness.</h2>
-          <p>Architecture decisions, deployment patterns, and research from the field.</p>
+          <h2>How we think about <span style={{ fontStyle: 'italic', color: 'rgba(77,184,255,0.9)' }}>data readiness.</span></h2>
+          <p>AI changes daily. But one thing doesn't — the need to use good data. Your data.</p>
         </div>
       </div>
 

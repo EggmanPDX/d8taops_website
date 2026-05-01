@@ -364,7 +364,7 @@ function PlatformHero() {
             maxWidth: 700,
             opacity: 0, animation: 'plt-hero-in 720ms 160ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
-            This is how we get your data ready for AI.
+            <>This is how we get your data{' '}<span style={{ color: BLUE, fontStyle: 'italic' }}>ready for AI.</span></>
           </h1>
 
           <h3 style={{
@@ -531,7 +531,7 @@ function AgentsSection() {
 
         {/* Proof attribution */}
         <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, color: 'rgba(51,51,51,0.55)', marginTop: 36, marginBottom: 0 }}>
-          97% faster. 99.5% accuracy. — Kitsap Credit Union
+          97% faster. 99.5% accuracy. $1.2M+ projected savings. — Kitsap Credit Union
         </p>
       </div>
     </section>
@@ -652,7 +652,7 @@ function ThePlatformSection() {
               Most AI deployments start with a migration. Move your data to a new warehouse. Rebuild your infrastructure around a new tool. Six to eighteen months before you see results — if the project survives that long.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 600, color: NAVY, lineHeight: 1.75, margin: '0 0 20px' }}>
-              We work differently.
+              No migration. No new infrastructure. No security exceptions.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: '0 0 20px' }}>
               D8:PLATFORM provisions inside your existing cloud tenant — AWS, Azure, or GCP. The agents run where your data already lives. Your IT team doesn't file a security exception. Your CIO doesn't approve a data transfer. The pipeline exists entirely within your walls.
@@ -1156,7 +1156,7 @@ function PlatformClosingCTA() {
           style={{ fontSize: 16, padding: '17px 40px' }}
         >
           <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Get in touch</span>
+          <span className="d8-btn-inner">Map the D8:Agents to your stack</span>
         </a>
       </div>
     </section>
@@ -1169,7 +1169,7 @@ function PlatformClosingCTA() {
 export default function PlatformPage() {
   return (
     <>
-      <HomepageNav />
+      <HomepageNav activePath="/platform" />
       <PlatformHero />
       <AgentsSection />
       <ThePlatformSection />

@@ -415,7 +415,7 @@ function BlurRevealH1({ text }) {
 
 // ── Dashboard widget ──────────────────────────────────────────────────────────
 const PANEL_ITEMS = [
-  { strong: 'Runs on top of your stack.',  muted: '' },
+  { strong: 'Runs inside your cloud environment.',  muted: '' },
   { strong: 'Your data stays put.',         muted: 'On-premise, in the cloud, SaaS platforms.' },
   { strong: 'Governed by design.',          muted: 'Auditable outputs. Human-in-the-loop.' },
   { strong: 'Live in 6 weeks.',              muted: 'Not multi-year migrations.' },
@@ -619,7 +619,7 @@ function HeroSection() {
               lineHeight: 1.4, maxWidth: 480,
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
-              Most audits take days. Complete audits take minutes. See what's possible.
+              Audits take minutes, not days. 100% accuracy.
             </h3>
 
             {/* CTAs */}

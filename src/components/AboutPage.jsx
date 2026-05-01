@@ -98,7 +98,7 @@ const ABOUT_CSS = `
 
   /* ── stat cards — light mode ── */
   .ab-stats-row {
-    display: grid; grid-template-columns: repeat(3, 1fr);
+    display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 16px; margin-top: 40px;
   }
   .ab-stat-card {
@@ -140,7 +140,7 @@ const ABOUT_CSS = `
     .ab-two-col { grid-template-columns: 1fr !important; gap: 40px !important; }
     .ab-quote-card { padding: 36px 28px !important; }
     .ab-quote-ghost { font-size: 120px !important; }
-    .ab-stats-row { grid-template-columns: 1fr !important; }
+    .ab-stats-row { grid-template-columns: repeat(2, 1fr) !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -256,8 +256,8 @@ function AboutHero() {
         }}>
           <div style={{
             fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 11, fontWeight: 600, letterSpacing: '0.18em',
-            color: BLUE_LIGHT, textTransform: 'uppercase', marginBottom: 24,
+            fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
+            color: BLUE, textTransform: 'uppercase', marginBottom: 24,
             opacity: 0, animation: 'ab-hero-in 720ms 80ms cubic-bezier(0.22,1,0.36,1) both',
           }}>ABOUT D8TAOPS</div>
           <h1 style={{
@@ -267,7 +267,7 @@ function AboutHero() {
             margin: '0 0 32px', maxWidth: 740,
             opacity: 0, animation: 'ab-hero-in 720ms 160ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
-            AI gets the credit.<br />The real work is ours.
+            AI gets the credit.<br /><span style={{ color: BLUE, fontStyle: 'italic' }}>The real work is ours.</span>
           </h1>
           <p style={{
             fontFamily: "'IBM Plex Sans', sans-serif",
@@ -276,7 +276,7 @@ function AboutHero() {
             lineHeight: 1.6, margin: 0, maxWidth: 520,
             opacity: 0, animation: 'ab-hero-in 720ms 240ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
-            Before a model touches your data, eight agents have already done the hard part.
+            Before AI gets the credit, eight agents have already done the work that made it possible.
           </p>
         </div>
       </div>
@@ -305,7 +305,7 @@ const INSIGHTS = [
   {
     num: '03',
     headline: 'We build that infrastructure.',
-    body: 'Inside your cloud environment. Without moving your data. In six weeks.',
+    body: 'Inside your cloud environment. Without moving your data. In 6 weeks.',
   },
 ];
 
@@ -320,7 +320,7 @@ function WhyWeExist() {
           <div ref={ref}>
             <div className={`ab-reveal${visible ? ' in' : ''}`} style={{
               fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 11, fontWeight: 600, letterSpacing: '0.18em',
+              fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
               color: BLUE, textTransform: 'uppercase', marginBottom: 20,
             }}>WHY WE EXIST</div>
             <h2 className={`ab-reveal${visible ? ' in' : ''}`} style={{
@@ -511,12 +511,13 @@ function CloudInfographic() {
 
 function TheApproach() {
   const [ref, visible] = useReveal();
-  const [statsRef, statsCount] = useStaggerReveal(3, 0.1);
+  const [statsRef, statsCount] = useStaggerReveal(4, 0.1);
 
   const stats = [
-    { num: '6 weeks', label: 'Time to production',            sub: 'Micro-MVP to production.' },
-    { num: '0',       label: 'Data migration required',       sub: 'Agents come to your data.' },
+    { num: '6 weeks', label: 'Time to production',             sub: 'Micro-MVP to production.' },
+    { num: '0',       label: 'Data migration required',        sub: 'Agents come to your data.' },
     { num: '100%',    label: 'Data stays in your environment', sub: 'AWS, Azure, or GCP.' },
+    { num: '$1.2M+',  label: 'Projected savings',              sub: 'Over a 3-year deployment.' },
   ];
 
   return (
@@ -527,7 +528,7 @@ function TheApproach() {
           <div ref={ref}>
             <div className={`ab-reveal${visible ? ' in' : ''}`} style={{
               fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 11, fontWeight: 600, letterSpacing: '0.18em',
+              fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
               color: BLUE, textTransform: 'uppercase', marginBottom: 20,
             }}>THE APPROACH</div>
             <h2 className={`ab-reveal${visible ? ' in' : ''}`} style={{
