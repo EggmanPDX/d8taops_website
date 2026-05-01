@@ -10,8 +10,9 @@
   --color-white:         #FFFFFF;
 
   /* --- Functional UI ----------------------------------------------------- */
-  --color-success:       #22C55E;
-  --color-success-bright: #26D07C;
+  --color-green:         #3ecf8e;
+  --color-success:       #3ecf8e;
+  --color-success-bright: #3ecf8e;
   --color-error:         #FF5252;
   --color-warning:       #FFD500;
   --color-grey-dark:     #515151;
@@ -65,6 +66,10 @@
   --leading-heading: 1.15;
   --leading-body:    1.7;
   --leading-tight:   1.25;
+
+  /* --- Display size tokens (fluid, for page heroes) --------------------- */
+  --h1-display-size: clamp(40px, 5vw, 68px);
+  --h2-display-size: clamp(30px, 4vw, 50px);
 
   /* --- Semantic type tokens --------------------------------------------- */
   --h1-size: var(--text-4xl);
@@ -124,8 +129,30 @@
   --shadow-nav: 0 10px 40px rgba(8, 31, 92, 0.18);
   
   --blur-nav: 16px;
-  
+
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ─── D8LAB component tokens ────────────────────────────────────────────── */
+  --navy:          #081F5C;
+  --navy-deep:     #050f33;
+  --blue:          #0477BF;
+  --blue-hover:    #0590e8;
+  --blue-tint:     #eef5fb;
+  --blue-tint-mid: #daeaf6;
+  --grey-dark:     #333333;
+  --grey-mid:      #5a6478;
+  --grey-light:    #8a96a8;
+  --grey-rule:     #e4e8ef;
+  --surface:       #f5f7fb;
+  --surface-hover: #eef2f9;
+  --white:         #ffffff;
+  --border:        rgba(8, 31, 92, 0.12);
+  --border-strong: rgba(8, 31, 92, 0.20);
+  --ease-out:      cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:      120ms;
+  --dur-base:      240ms;
+  --dur-slow:      400ms;
 }
 
 *, *::before, *::after {
@@ -354,7 +381,7 @@ a:hover { opacity: 0.75; }
   border-radius: var(--radius-md);
   padding: var(--space-6);
   font-family: var(--font-mono);
-  color: #22C55E;
+  color: var(--color-green);
   font-size: var(--text-sm);
   box-shadow: var(--shadow-lg);
   border: 1px solid rgba(255,255,255,0.1);

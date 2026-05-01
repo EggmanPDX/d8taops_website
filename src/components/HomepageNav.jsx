@@ -1,6 +1,7 @@
 import React from 'react';
 
-export default function HomepageNav() {
+export default function HomepageNav({ activePath }) {
+  const currentPath = activePath || (typeof window !== 'undefined' ? window.location.pathname : '/');
   const [hidden, setHidden] = React.useState(false);
   const [atTop, setAtTop]   = React.useState(true);
   const lastY = React.useRef(0);
@@ -23,6 +24,7 @@ export default function HomepageNav() {
         .d8-nav-link { transition: color 0.15s ease; }
         .d8-nav-link:hover { color: #081F5C !important; }
         .d8-nav-link:focus-visible { outline: 2px solid #0477BF; outline-offset: 4px; border-radius: 4px; }
+        .d8-nav-link-active { color: #081F5C !important; font-weight: 600 !important; border-bottom: 2px solid #0477BF; padding-bottom: 2px; }
         .d8-nav-pill { transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
         .d8-btn-colorful {
           position: relative; overflow: hidden;
@@ -97,12 +99,13 @@ export default function HomepageNav() {
               { label: 'PLATFORM',     href: '/platform' },
               { label: 'CASE STUDIES', href: '/case-studies' },
               { label: 'ABOUT',        href: '/about' },
-              { label: 'LAB',          href: '/lab' },
+              { label: 'LABS',         href: '/lab' },
             ].map(({ label, href }) => (
               <a
                 key={label}
                 href={href}
-                className="d8-nav-link"
+                className={`d8-nav-link${currentPath === href ? ' d8-nav-link-active' : ''}`}
+                aria-current={currentPath === href ? 'page' : undefined}
                 style={{
                   color: '#0477BF',
                   fontSize: 14, fontWeight: 500,

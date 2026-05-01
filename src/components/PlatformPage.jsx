@@ -70,7 +70,7 @@ const PLATFORM_CSS = `
     border-radius: 12px;
     padding: 20px 24px;
     box-shadow: 0 8px 32px rgba(8,31,92,0.12);
-    animation: plt-panel-in 240ms cubic-bezier(0.0,0,0.2,1) both;
+    animation: plt-panel-in 300ms cubic-bezier(0.22,1,0.36,1) both;
     position: relative;
   }
   @keyframes plt-panel-in {
@@ -81,7 +81,7 @@ const PLATFORM_CSS = `
   /* ── Use case cards ── */
   .plt-card {
     background: ${WHITE};
-    border: 1px solid rgba(8,31,92,0.07);
+    border: 1px solid rgba(8,31,92,0.12);
     border-radius: 16px;
     padding: 36px 32px;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -96,7 +96,7 @@ const PLATFORM_CSS = `
   /* ── Callout cards ── */
   .plt-callout {
     background: ${WHITE};
-    border: 1px solid rgba(8,31,92,0.10);
+    border: 1px solid rgba(8,31,92,0.12);
     border-radius: 16px;
     padding: 24px;
     transition: box-shadow 120ms ease, border-color 120ms ease;
@@ -304,7 +304,7 @@ function SectionH2({ children, light, style }) {
       fontFamily: "'IBM Plex Sans', sans-serif",
       fontWeight: 700, fontSize: 'clamp(30px, 4vw, 50px)',
       color: light ? WHITE : NAVY,
-      lineHeight: 1.1, letterSpacing: '-1px',
+      lineHeight: 1.1, letterSpacing: '-0.03em',
       margin: '0 0 16px',
       textWrap: 'balance',
       ...style,
@@ -351,7 +351,7 @@ function PlatformHero() {
             fontFamily: "'IBM Plex Mono', monospace",
             fontSize: 13, fontWeight: 600, letterSpacing: '0.15em',
             color: BLUE, textTransform: 'uppercase', marginBottom: 20,
-            opacity: 0, animation: 'plt-hero-in 400ms 80ms cubic-bezier(0.0,0,0.2,1) both',
+            opacity: 0, animation: 'plt-hero-in 720ms 80ms cubic-bezier(0.22,1,0.36,1) both',
           }}>PLATFORM</div>
 
           <h1 style={{
@@ -362,7 +362,7 @@ function PlatformHero() {
             lineHeight: 1.08, letterSpacing: '-0.02em',
             margin: '0 0 28px',
             maxWidth: 700,
-            opacity: 0, animation: 'plt-hero-in 400ms 160ms cubic-bezier(0.0,0,0.2,1) both',
+            opacity: 0, animation: 'plt-hero-in 720ms 160ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
             This is how we get your data ready for AI.
           </h1>
@@ -373,7 +373,7 @@ function PlatformHero() {
             color: BLUE,
             lineHeight: 1.45, margin: 0,
             maxWidth: 520,
-            opacity: 0, animation: 'plt-hero-in 400ms 240ms cubic-bezier(0.0,0,0.2,1) both',
+            opacity: 0, animation: 'plt-hero-in 720ms 240ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
             Eight specialized agents. One governed platform.<br />
             Agents execute. ACM controls. Here's exactly how it works.
@@ -490,7 +490,7 @@ function AgentsSection() {
                   style={{
                     opacity: pipeVisible ? 1 : 0,
                     transform: pipeVisible ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(8px)',
-                    transition: `opacity 320ms ${i * 60}ms cubic-bezier(0.22,1,0.36,1), transform 320ms ${i * 60}ms cubic-bezier(0.22,1,0.36,1), border-color 120ms ease, box-shadow 120ms ease`,
+                    transition: `opacity 480ms ${i * 60}ms cubic-bezier(0.22,1,0.36,1), transform 480ms ${i * 60}ms cubic-bezier(0.22,1,0.36,1), border-color 120ms ease, box-shadow 120ms ease`,
                     background: 'none',
                   }}
                   onClick={() => toggle(agent.id)}
@@ -672,9 +672,8 @@ function ThePlatformSection() {
       {/* Proof block */}
       <div style={{
         marginTop: 80,
-        background: NAVY,
-        backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px)`,
-        backgroundSize: '24px 24px',
+        backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)`,
+        backgroundSize: '24px 24px, 100% 100%',
         padding: '64px clamp(1.5rem, 5vw, 80px)',
         position: 'relative', overflow: 'hidden',
       }}>
@@ -903,7 +902,7 @@ function ACMSection() {
               style={{
                 opacity: calloutsVisible > i ? 1 : 0,
                 transform: calloutsVisible > i ? 'translateY(0)' : 'translateY(12px)',
-                transition: 'opacity 320ms cubic-bezier(0.22,1,0.36,1), transform 320ms cubic-bezier(0.22,1,0.36,1)',
+                transition: 'opacity 480ms cubic-bezier(0.22,1,0.36,1), transform 480ms cubic-bezier(0.22,1,0.36,1)',
               }}
             >
               <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 15, fontWeight: 600, color: NAVY, marginBottom: 10 }}>{label}</div>
@@ -1072,7 +1071,7 @@ function WorkflowsSection() {
               style={{
                 opacity: cardsVisible > i ? 1 : 0,
                 transform: cardsVisible > i ? 'translateY(0)' : 'translateY(16px)',
-                transition: `opacity 400ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1), transform 400ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1)`,
+                transition: `opacity 480ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1), transform 480ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1)`,
               }}
             >
               {/* Eyebrow */}
@@ -1126,9 +1125,8 @@ function WorkflowsSection() {
 function PlatformClosingCTA() {
   return (
     <section style={{
-      background: NAVY,
-      backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px)`,
-      backgroundSize: '24px 24px',
+      backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)`,
+      backgroundSize: '24px 24px, 100% 100%',
       padding: '96px clamp(1.5rem, 5vw, 80px)',
       textAlign: 'center',
       position: 'relative', overflow: 'hidden',
@@ -1155,10 +1153,10 @@ function PlatformClosingCTA() {
         <a
           href="mailto:hello@d8taops.com"
           className="d8-btn-colorful"
-          style={{ fontSize: 16, padding: '17px 40px', background: BLUE }}
+          style={{ fontSize: 16, padding: '17px 40px' }}
         >
           <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Book a Demo</span>
+          <span className="d8-btn-inner">Get in touch</span>
         </a>
       </div>
     </section>

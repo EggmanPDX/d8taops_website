@@ -1257,7 +1257,7 @@ const FOOTER_NAV = [
   { label: 'PLATFORM',     href: '/platform' },
   { label: 'CASE STUDIES', href: '/case-studies' },
   { label: 'ABOUT',        href: '/about' },
-  { label: 'LAB',          href: '/lab' },
+  { label: 'LABS',         href: '/labs' },
 ];
 
 function GlobalFooter() {
