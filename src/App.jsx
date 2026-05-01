@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomepageNav from './components/HomepageNav';
+import D8Button from './components/D8Button';
 import {
   GLOBAL_CSS,
   HeroSection,
@@ -124,14 +125,7 @@ function ComingSoonPage() {
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 18, maxWidth: 480, lineHeight: 1.6, margin: 0 }}>
             We're building it out. In the meantime, get in touch and we'll walk you through it directly.
           </p>
-          <a
-            href="mailto:hello@d8taops.com"
-            className="d8-btn-colorful"
-            style={{ marginTop: 8, fontSize: 15, padding: '14px 32px' }}
-          >
-            <div className="d8-btn-glow" aria-hidden="true" />
-            <span className="d8-btn-inner">Get in touch</span>
-          </a>
+          <D8Button href="mailto:hello@d8taops.com" style={{ marginTop: 8 }}>Get in touch</D8Button>
         </div>
       </div>
     </>

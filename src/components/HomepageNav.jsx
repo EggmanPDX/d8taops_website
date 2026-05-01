@@ -1,4 +1,5 @@
 import React from 'react';
+import D8Button from './D8Button';
 
 export default function HomepageNav({ activePath }) {
   const currentPath = activePath || (typeof window !== 'undefined' ? window.location.pathname : '/');
@@ -26,30 +27,6 @@ export default function HomepageNav({ activePath }) {
         .d8-nav-link:focus-visible { outline: 2px solid #0477BF; outline-offset: 4px; border-radius: 4px; }
         .d8-nav-link-active { color: #081F5C !important; font-weight: 600 !important; border-bottom: 2px solid #0477BF; padding-bottom: 2px; }
         .d8-nav-pill { transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
-        .d8-btn-colorful {
-          position: relative; overflow: hidden;
-          display: inline-flex; align-items: center; justify-content: center;
-          cursor: pointer; border: none;
-          font-family: 'IBM Plex Sans', sans-serif;
-          font-weight: 600; color: #ffffff !important;
-          border-radius: 24px; background: #081F5C;
-          transition: transform 0.18s ease;
-          text-decoration: none !important;
-          white-space: nowrap; flex-shrink: 0;
-        }
-        .d8-btn-colorful:hover { transform: translateY(-1px); }
-        .d8-btn-glow {
-          position: absolute; inset: -4px;
-          background: linear-gradient(135deg, #0477BF 0%, #3ecf8e 50%, #0477BF 100%);
-          opacity: 0.28; filter: blur(12px);
-          transition: opacity 0.45s ease;
-          pointer-events: none; border-radius: 24px;
-        }
-        .d8-btn-colorful:hover .d8-btn-glow { opacity: 0.88; }
-        .d8-btn-inner {
-          position: relative; z-index: 1;
-          display: flex; align-items: center; gap: 6px;
-        }
         @media (max-width: 768px) {
           .d8-nav-links-center { display: none !important; }
         }
@@ -117,10 +94,7 @@ export default function HomepageNav({ activePath }) {
           </div>
 
           {/* CTA */}
-          <a href="#contact" className="d8-btn-colorful" style={{ fontSize: 13, padding: '9px 22px' }}>
-            <div className="d8-btn-glow" aria-hidden="true" />
-            <span className="d8-btn-inner">Book a demo</span>
-          </a>
+          <D8Button href="#contact" innerStyle={{ fontSize: 13, padding: '9px 22px' }}>Book a demo</D8Button>
         </div>
       </nav>
     </>

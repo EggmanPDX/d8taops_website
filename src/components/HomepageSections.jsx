@@ -1,4 +1,5 @@
 import React from 'react';
+import D8Button from './D8Button';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const NAVY      = '#081F5C';
@@ -107,31 +108,6 @@ const GLOBAL_CSS = `
 
   .d8-stat-cell { opacity: 0; transform: translateY(22px); transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1); }
   .d8-stat-cell.in { opacity: 1; transform: translateY(0); }
-
-  .d8-btn-colorful {
-    position: relative; overflow: hidden;
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer; border: none;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 600; color: #ffffff !important;
-    border-radius: 24px; background: #081F5C;
-    transition: transform 0.18s ease;
-    text-decoration: none !important;
-    white-space: nowrap;
-  }
-  .d8-btn-colorful:hover { transform: translateY(-2px); }
-  .d8-btn-glow {
-    position: absolute; inset: -4px;
-    background: linear-gradient(135deg, #0477BF 0%, #3ecf8e 50%, #0477BF 100%);
-    opacity: 0.28; filter: blur(12px);
-    transition: opacity 0.45s ease;
-    pointer-events: none; border-radius: 24px;
-  }
-  .d8-btn-colorful:hover .d8-btn-glow { opacity: 0.88; }
-  .d8-btn-inner {
-    position: relative; z-index: 1;
-    display: flex; align-items: center; gap: 6px;
-  }
 
   .footer-placeholder { color: rgba(255,255,255,0.42); cursor: default; pointer-events: none; }
   .footer-link { color: rgba(255,255,255,0.42); text-decoration: none; transition: color 0.15s ease; }
@@ -624,10 +600,7 @@ function HeroSection() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
-              <a href="#contact" className="d8-btn-colorful" style={{ fontSize: 15, padding: '14px 32px' }}>
-                <div className="d8-btn-glow" aria-hidden="true" />
-                <span className="d8-btn-inner">Get in touch</span>
-              </a>
+              <D8Button href="#contact">Get in touch</D8Button>
             </div>
 
           </div>
@@ -1241,10 +1214,7 @@ function ClosingCTA() {
         <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
           We'll show you what a 6-week deployment looks like for your environment — no pitch, no pressure.
         </p>
-        <a href="mailto:hello@d8taops.com" className="d8-btn-colorful" style={{ fontSize: 16, padding: '17px 40px' }}>
-          <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Get in touch</span>
-        </a>
+        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
       </div>
     </section>
   );

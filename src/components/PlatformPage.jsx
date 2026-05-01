@@ -1,6 +1,7 @@
 import React from 'react';
 import HomepageNav from './HomepageNav';
 import { GLOBAL_CSS, GlobalFooter } from './HomepageSections';
+import D8Button from './D8Button';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const NAVY  = '#081F5C';
@@ -1150,14 +1151,7 @@ function PlatformClosingCTA() {
         <h3 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, fontWeight: 600, color: BLUE, lineHeight: 1.5, margin: '0 0 40px' }}>
           We'll map the D8:AGENTS to your actual data environment.<br />One conversation. No pitch deck.
         </h3>
-        <a
-          href="mailto:hello@d8taops.com"
-          className="d8-btn-colorful"
-          style={{ fontSize: 16, padding: '17px 40px' }}
-        >
-          <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Map the D8:Agents to your stack</span>
-        </a>
+        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Map the D8:Agents to your stack</D8Button>
       </div>
     </section>
   );

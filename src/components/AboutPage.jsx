@@ -1,6 +1,7 @@
 import React from 'react';
 import HomepageNav from './HomepageNav';
 import { GLOBAL_CSS, GlobalFooter } from './HomepageSections';
+import D8Button from './D8Button';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
 const NAVY      = '#081F5C';
@@ -619,10 +620,7 @@ function AboutCTA() {
         }}>
           One conversation. No pitch deck. We'll map the D8:Agents to your actual data stack.
         </p>
-        <a href="mailto:hello@d8taops.com" className="d8-btn-colorful" style={{ fontSize: 16, padding: '17px 40px' }}>
-          <div className="d8-btn-glow" aria-hidden="true" />
-          <span className="d8-btn-inner">Get in touch</span>
-        </a>
+        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
       </div>
     </section>
   );
