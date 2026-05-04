@@ -1,4 +1,5 @@
 import React from 'react';
+import { Briefcase, Database, Settings2 } from 'lucide-react';
 import D8Button from './D8Button';
 
 // ── Brand tokens ──────────────────────────────────────────────────────────────
@@ -442,8 +443,8 @@ function DashboardWidget() {
   return (
     <div className="d8-dashboard-tilt">
       <div style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.11)',
+        background: 'rgba(255,255,255,0.10)',
+        border: '1px solid rgba(255,255,255,0.22)',
         borderRadius: 16, padding: '20px 24px',
         height: '100%', boxSizing: 'border-box',
         display: 'flex', flexDirection: 'column', gap: 0,
@@ -453,7 +454,7 @@ function DashboardWidget() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <div style={{ width: 7, height: 7, borderRadius: '50%', background: GREEN, flexShrink: 0, animation: 'd8LivePulse 2s ease-in-out infinite' }} />
           <span style={{ fontSize: 10, color: GREEN, letterSpacing: '0.12em' }}>LIVE</span>
-          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.1em', marginLeft: 6 }}>D8:VIEW DASHBOARD</span>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', marginLeft: 6 }}>D8:VIEW DASHBOARD</span>
         </div>
 
         {/* Stage track */}
@@ -461,17 +462,17 @@ function DashboardWidget() {
           {LIVE_STAGES.map((s, i) => (
             <div key={s} style={{
               flex: 1, height: 3, borderRadius: 2,
-              background: i <= stage ? BLUE : 'rgba(255,255,255,0.1)',
+              background: i <= stage ? BLUE : 'rgba(255,255,255,0.18)',
               transition: 'background 0.4s ease',
             }} />
           ))}
         </div>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', marginBottom: 14 }}>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', marginBottom: 14 }}>
           ACTIVE: {LIVE_STAGES[stage]}
         </div>
 
         {/* Progress bar → 73% */}
-        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 3, height: 5, marginBottom: 14 }}>
+        <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 3, height: 5, marginBottom: 14 }}>
           <div style={{
             width: `${progress}%`, height: '100%', borderRadius: 3,
             background: 'linear-gradient(90deg, #0477BF, #26D07C)',
@@ -485,11 +486,11 @@ function DashboardWidget() {
             <div style={{ fontSize: 26, fontWeight: 700, color: WHITE, fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: 1 }}>
               {loans.toLocaleString()}
             </div>
-            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.1em', marginTop: 4 }}>LOANS PROCESSED</div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', marginTop: 4 }}>LOANS PROCESSED</div>
           </div>
           <div>
             <div style={{ fontSize: 26, fontWeight: 700, color: '#e8a838', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: 1 }}>31</div>
-            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.38)', letterSpacing: '0.1em', marginTop: 4 }}>EXCEPTIONS FLAGGED</div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', marginTop: 4 }}>EXCEPTIONS FLAGGED</div>
           </div>
         </div>
 
@@ -510,7 +511,7 @@ function DashboardWidget() {
               </div>
               <div style={{ fontSize: 12, lineHeight: 1.4, fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 <strong style={{ color: WHITE, fontWeight: 600 }}>{item.strong}</strong>
-                {item.muted && <span style={{ color: 'rgba(255,255,255,0.38)' }}> {item.muted}</span>}
+                {item.muted && <span style={{ color: 'rgba(255,255,255,0.55)' }}> {item.muted}</span>}
               </div>
             </div>
           ))}
@@ -520,7 +521,7 @@ function DashboardWidget() {
 
         {/* Live feed */}
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginBottom: 10 }}>RECENT ACTIVITY</div>
+          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.12em', marginBottom: 10 }}>RECENT ACTIVITY</div>
           {rows.map((row, i) => (
             <div key={row.id + feedIdx + i} style={{
               display: 'flex', alignItems: 'center', gap: 8,
@@ -528,8 +529,8 @@ function DashboardWidget() {
               borderBottom: i < rows.length - 1 ? '0.5px solid rgba(255,255,255,0.06)' : 'none',
               opacity: 1 - i * 0.18,
             }}>
-              <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', minWidth: 52, flexShrink: 0 }}>{row.id}</span>
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.check}</span>
+              <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.45)', minWidth: 52, flexShrink: 0 }}>{row.id}</span>
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.check}</span>
               <span style={{
                 fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4, flexShrink: 0,
                 background: row.status === 'PASS' ? 'rgba(38,208,124,0.15)' : 'rgba(232,168,56,0.15)',
@@ -576,7 +577,7 @@ function HeroSection() {
         >
           {/* ── Left column ── */}
           <div>
-            <BlurRevealH1 text="We get YOUR data ready for AI." />
+            <BlurRevealH1 text="Your data doesn't move. Our AI does the work." />
 
             <p style={{
               margin: '0 0 32px',
@@ -585,7 +586,7 @@ function HeroSection() {
               lineHeight: 1.55, maxWidth: 480,
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
-              D8TAOPS deploys AI agents directly into your existing data environment. No migration. No infrastructure rebuild. You get working AI in 6 weeks — without moving a thing.
+              D8TAOPS deploys agents directly into your existing environment — running pipelines, audits, and compliance workflows nightly. No migration. No infrastructure rebuild. Production-ready in 6 weeks.
             </p>
 
             <h3 style={{
@@ -595,12 +596,24 @@ function HeroSection() {
               lineHeight: 1.4, maxWidth: 480,
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}>
-              Audits take minutes, not days. 100% accuracy.
+              97% faster audits · 99.5% accuracy · $1.2M saved.
             </h3>
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
-              <D8Button href="#contact" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
+              <D8Button href="#agents" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>See how it works</D8Button>
+              <a href="#contact" style={{
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                fontSize: 16, fontWeight: 500,
+                color: 'rgba(255,255,255,0.75)',
+                textDecoration: 'none',
+                borderBottom: '1px solid rgba(255,255,255,0.35)',
+                paddingBottom: 2,
+                transition: 'color 0.18s ease, border-color 0.18s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.8)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'; }}
+              >Talk to us</a>
             </div>
 
           </div>
@@ -633,7 +646,7 @@ function TickerBar() {
       {/* Nvidia Partner */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
-        opacity: 0.52,
+        opacity: 0.72,
       }}>
         <div style={{
           width: 28, height: 28, borderRadius: 4,
@@ -657,7 +670,7 @@ function TickerBar() {
       {/* Trail Blazers Small Business Partner */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
-        opacity: 0.52,
+        opacity: 0.72,
       }}>
         <div style={{
           width: 28, height: 28, borderRadius: 4,
@@ -684,8 +697,8 @@ function TickerBar() {
 // ═══════════════════════════════════════════════════════════════════════════════
 const STATS_DATA = [
   { target: 97,  decimals: 0, suffix: '%',    label: 'FASTER AUDITS',      source: 'vs. manual audit cycles' },
-  { target: 1.2, decimals: 1, prefix: '$', suffix: 'M+', label: 'PROJECTED SAVINGS', source: 'Over 3-year deployment' },
-  { target: 100, decimals: 0, suffix: '%',    label: 'COMPLETE COVERAGE',  source: 'Every loan, every night' },
+  { target: 1.2, decimals: 1, prefix: '$', suffix: 'M+', label: 'IN SAVINGS', source: 'Delivered for clients' },
+  { target: 99.5, decimals: 1, suffix: '%',   label: 'ACCURACY',           source: 'Every audit, every night' },
 ];
 
 function StatCell({ stat }) {
@@ -717,7 +730,7 @@ function StatCell({ stat }) {
 
 function StatsSection() {
   return (
-    <section style={{ background: WHITE, padding: '72px clamp(1.5rem, 5vw, 80px)' }}>
+    <section style={{ background: '#F5F7FA', padding: '72px clamp(1.5rem, 5vw, 80px)' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div
           className="d8-stats-grid"
@@ -739,21 +752,21 @@ function StatsSection() {
 // ═══════════════════════════════════════════════════════════════════════════════
 const PERSONA_CARDS = [
   {
-    num: '01', icon: null, colorClass: 'c1',
+    num: '01', icon: Briefcase, colorClass: 'c1',
     role: 'VP / C-SUITE',
     headline: 'The board wants results,\u00a0not\u00a0roadmaps.',
     pain: 'Competitors moving faster. Board pressure to show AI progress. No clear path from data to production.',
     change: 'A working system in 6 weeks with measurable ROI. No infrastructure overhaul required.',
   },
   {
-    num: '02', icon: null, colorClass: 'c2',
+    num: '02', icon: Database, colorClass: 'c2',
     role: 'DATA ENGINEER / ARCHITECT',
     headline: "You're asked to add AI. You're not given the foundation.",
     pain: "Asked to 'add AI' to systems not designed for it. Unclear ownership. No governance layer.",
     change: 'Agents that run inside your existing stack. Clean interfaces. Traceable lineage. Governance built in.',
   },
   {
-    num: '03', icon: null, colorClass: 'c3',
+    num: '03', icon: Settings2, colorClass: 'c3',
     role: 'OPERATIONS LEADER',
     headline: "Manual volume is the ceiling. It doesn't scale.",
     pain: "Manual, high-volume work that doesn't scale. Audit coverage gaps. Human error at scale.",
@@ -803,10 +816,9 @@ function WhoItIsSection() {
               <div className="d8-portrait-top" style={{ background: 'linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)' }}>
                 <ParticleCanvas count={28} />
                 <div style={{ position: 'relative', zIndex: 1, marginBottom: 16 }}>
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="40" height="40" rx="10" fill="#0477BF"/>
-                    <circle cx="20" cy="20" r="7" fill="#FFFFFF"/>
-                  </svg>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: '#0477BF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <card.icon size={22} color="#000000" strokeWidth={1.5} />
+                  </div>
                 </div>
                 <div style={{
                   position: 'relative', zIndex: 1,
@@ -887,23 +899,23 @@ function WhatWeDoSection() {
   const [activeIdx, setActiveIdx] = React.useState(-1);
 
   return (
-    <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box', position: 'relative' }} id="agents">
+    <section style={{ background: '#040e2e', width: '100%', padding: '96px 0', boxSizing: 'border-box', position: 'relative' }} id="agents">
       <div aria-hidden="true" className="d8-section-label" style={{
         position: 'absolute', left: 'clamp(4px, 1.5vw, 18px)', top: '50%',
         transform: 'translateY(-50%) rotate(180deg)',
         writingMode: 'vertical-rl',
         fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, fontWeight: 600,
         letterSpacing: '0.18em', textTransform: 'uppercase',
-        color: 'rgba(4,119,191,0.35)', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap',
+        color: 'rgba(62,207,142,0.25)', userSelect: 'none', pointerEvents: 'none', whiteSpace: 'nowrap',
       }}>THE PLATFORM</div>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 80px)' }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BLUE, marginBottom: 16 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: GREEN, marginBottom: 16 }}>
           THE PLATFORM
         </div>
-        <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12 }}>
+        <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 12 }}>
           Meet the D8:Agents who get your data ready for AI.
         </h2>
-        <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: BODY, maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
+        <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, color: 'rgba(255,255,255,0.7)', maxWidth: 680, lineHeight: 1.6, margin: '0 0 48px' }}>
           Each agent handles a distinct job. Together, they take raw data from your systems to governed, AI-ready output — without touching your infrastructure.
         </p>
 
@@ -919,8 +931,8 @@ function WhatWeDoSection() {
                 onMouseEnter={() => setActiveIdx(i)}
                 onMouseLeave={() => setActiveIdx(-1)}
                 style={{
-                  background: isActive ? NAVY : '#f5f8fb',
-                  border: isView ? '1px solid rgba(4,119,191,0.35)' : isActive ? `1px solid ${NAVY}` : '1px solid rgba(8,31,92,0.10)',
+                  background: isActive ? 'rgba(62,207,142,0.12)' : 'rgba(255,255,255,0.06)',
+                  border: isView ? '1px solid rgba(62,207,142,0.4)' : isActive ? '1px solid rgba(62,207,142,0.5)' : '1px solid rgba(255,255,255,0.12)',
                   borderRadius: 14,
                   padding: '16px 14px',
                   cursor: 'default',
@@ -932,7 +944,7 @@ function WhatWeDoSection() {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                  <div className="d8-agent-desig" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: isActive ? 'rgba(62,207,142,0.9)' : BLUE }}>{agent.d}</div>
+                  <div className="d8-agent-desig" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: isActive ? 'rgba(62,207,142,0.9)' : 'rgba(255,255,255,0.5)' }}>{agent.d}</div>
                   <div className="d8-agent-num" style={{
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                     width: 20, height: 20, borderRadius: '50%',
@@ -943,14 +955,14 @@ function WhatWeDoSection() {
                     flexShrink: 0, marginLeft: 6,
                   }}>{agent.num}</div>
                 </div>
-                <div className="d8-agent-role" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: isActive ? 'rgba(255,255,255,0.6)' : BODY, lineHeight: 1.4 }}>{agent.r}</div>
+                <div className="d8-agent-role" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: isActive ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.45)', lineHeight: 1.4 }}>{agent.r}</div>
               </button>
             );
           })}
         </div>
 
         <div style={{ marginTop: '2rem', textAlign: 'right' }}>
-          <a href="/agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: BLUE, textDecoration: 'none' }}
+          <a href="/agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: GREEN, textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
             onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
           >Learn more about our agents →</a>
@@ -1143,7 +1155,7 @@ function ProofBlockSection() {
           CUSTOMER STORY
         </div>
         <h2 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.25rem)', color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.15, marginBottom: 48 }}>
-          What this looks like in production.
+          Kitsap Credit Union went from 8 hours to 14 minutes.
         </h2>
 
         <div
@@ -1205,16 +1217,39 @@ function ProofBlockSection() {
 // ═══════════════════════════════════════════════════════════════════════════════
 function ClosingCTA() {
   return (
-    <section id="contact" style={{ padding: '96px clamp(1.5rem, 5vw, 3rem)', background: WHITE, borderTop: '1px solid #E4E7EC', scrollMarginTop: 80 }}>
-      <div style={{ maxWidth: 620, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <h2 style={{ margin: '0 0 20px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700, color: NAVY, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-          <span style={{ color: NAVY, fontStyle: 'normal' }}>Ready to see what's possible </span>
-          <span style={{ color: BLUE, fontStyle: 'italic' }}>with your data?</span>
+    <section id="contact" style={{ padding: '96px clamp(1.5rem, 5vw, 3rem)', background: '#040e2e', scrollMarginTop: 80, position: 'relative', overflow: 'hidden' }}>
+      {/* Subtle background glow */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
+        width: 600, height: 400, borderRadius: '50%',
+        background: 'radial-gradient(ellipse, rgba(4,119,191,0.15) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{ maxWidth: 620, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: GREEN, marginBottom: 20 }}>
+          GET STARTED
+        </div>
+        <h2 style={{ margin: '0 0 20px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 700, color: WHITE, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          Your first audit runs tonight.
         </h2>
-        <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: MUTED, maxWidth: 480 }}>
+        <p style={{ margin: '0 0 40px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, lineHeight: 1.7, color: 'rgba(255,255,255,0.65)', maxWidth: 480 }}>
           We'll show you what a 6-week deployment looks like for your environment — no pitch, no pressure.
         </p>
-        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Book a Demo</D8Button>
+          <a href="#agents" style={{
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: 16, fontWeight: 500,
+            color: 'rgba(255,255,255,0.65)',
+            textDecoration: 'none',
+            borderBottom: '1px solid rgba(255,255,255,0.3)',
+            paddingBottom: 2,
+            transition: 'color 0.18s ease, border-color 0.18s ease',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+          >See how it works →</a>
+        </div>
       </div>
     </section>
   );
@@ -1316,7 +1351,7 @@ const WHAT_CARDS = [
     body: 'We scope a Micro-MVP, validate it with your team, and go live. Most clients are in production within 6 weeks of kickoff.',
   },
   {
-    h3: 'You keep control',
+    h3: 'You own it. We maintain it.',
     body: 'Human-in-the-loop design means your team reviews, overrides, and approves what the agents produce. AI handles volume. People handle judgment.',
   },
 ];
