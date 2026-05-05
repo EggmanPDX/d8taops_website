@@ -1365,8 +1365,8 @@ function GlobalFooter() {
 
           {/* Legal links */}
           <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-            <a href="#privacy" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Privacy Policy</a>
-            <a href="#terms" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Terms of Use</a>
+            <a href="/privacy" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Privacy Policy</a>
+            <a href="/terms" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Terms of Use</a>
           </div>
         </div>
       </div>

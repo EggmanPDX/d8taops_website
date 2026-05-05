@@ -19,6 +19,8 @@ import {
 import PlatformPage from './components/PlatformPage';
 import AboutPage from './components/AboutPage';
 import D8LABPage from './components/D8LABPage';
+import PrivacyPage from './components/PrivacyPage';
+import TermsPage from './components/TermsPage';
 
 function ParticleCanvas({ count = 60, scale = 1 }) {
   const ref = React.useRef(null);
@@ -185,6 +187,8 @@ export default function App() {
         <Route path="/platform" element={<PlatformPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/lab" element={<D8LABPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<ComingSoonPage />} />
       </Routes>
     </BrowserRouter>
