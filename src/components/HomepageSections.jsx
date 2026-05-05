@@ -1343,7 +1343,8 @@ function GlobalFooter() {
             fontSize: 12, color: 'rgba(255,255,255,0.32)',
             fontStyle: 'normal', lineHeight: 1.6,
           }}>
-            Somewhere deep in the woods.
+            4145 Southwest Watson Avenue, Suite 350<br />
+            Beaverton, Oregon 97005, United States
           </address>
 
           {/* Social icons */}
