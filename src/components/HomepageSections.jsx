@@ -1362,6 +1362,9 @@ function GlobalFooter() {
             </a>
           </div>
 
+          {/* Quote */}
+          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.32)', fontStyle: 'italic', margin: '12px 0 0 0', width: '100%', textAlign: 'center' }}>Nowhere is the dreamer or the misfit so alone.</p>
+
           {/* Legal links */}
           <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
             <a href="/privacy" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Privacy Policy</a>
