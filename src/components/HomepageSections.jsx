@@ -1354,23 +1354,24 @@ function GlobalFooter() {
         {/* Divider */}
         <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 24 }} />
 
-        {/* Bottom row: address · legal links · centered quote */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
+        {/* Bottom row: address · quote · legal links on one line */}
+        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: 32 }}>
           {/* Address */}
           <address style={{
             fontFamily: "'IBM Plex Sans', sans-serif",
             fontSize: 12, color: 'rgba(255,255,255,0.32)',
             fontStyle: 'normal', lineHeight: 1.6,
+            flex: 1, textAlign: 'center',
           }}>
             4145 Southwest Watson Avenue, Suite 350<br />
             Beaverton, Oregon 97005, United States
           </address>
 
-          {/* Quote - centered */}
-          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.32)', fontStyle: 'italic', margin: '0', width: '100%', textAlign: 'center' }}>Nowhere is the dreamer or the misfit so alone.</p>
+          {/* Quote */}
+          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.32)', fontStyle: 'italic', margin: '0', flex: 1, textAlign: 'center' }}>Nowhere is the dreamer or the misfit so alone.</p>
 
           {/* Legal links */}
-          <div style={{ display: 'flex', gap: 20, alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', flex: 1, justifyContent: 'center' }}>
             <a href="/privacy" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Privacy Policy</a>
             <a href="/terms" className="footer-link" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12 }}>Terms of Use</a>
           </div>
