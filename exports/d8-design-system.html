@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D8TAOPS Design System — The Intelligent Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     D8TAOPS DESIGN SYSTEM — COMPLETE TOKEN LAYER
+     Source of truth for all D8TAOPS websites and webapps.
+     Version: 1.1 · April 2026 · Gregg Eiler
+     Derived from: /src/index.css + HomepageNav.jsx + HomepageSections.jsx
+  ============================================================ */
+
+  :root {
+    /* --- BRAND COLORS --- */
+    --color-navy:         #081F5C;   /* H1, H2, section headings, hero bg */
+    --color-blue:         #0477BF;   /* H3, eyebrow, stat numbers, link color */
+    --color-blue-mid:     #0577BE;   /* gradient midpoint */
+    --color-cyan:         #048ABF;   /* gradient endpoint */
+    --color-body:         #333333;   /* All body copy */
+    --color-white:        #FFFFFF;   /* Light section backgrounds, text on dark */
+
+    /* --- EXTENDED BRAND PALETTE --- */
+    --color-deep-navy:    #040e2e;   /* Footer bg, darkest hero gradient stop */
+    --color-green-accent: #3ecf8e;   /* Proof block accents, button glow, success bright */
+
+    /* --- FUNCTIONAL UI COLORS (state/data only — not decorative) --- */
+    --color-success:        #22C55E;   /* Positive metrics, "After" states */
+    --color-success-bright: #26D07C;   /* Brighter green, progress bars */
+    --color-error:          #FF5252;   /* Compliance violations, failures */
+    --color-warning:        #FFD500;   /* Stale data, review needed */
+    --color-grey-dark:      #515151;   /* UI sub-headers, secondary text */
+    --color-grey-mid:       #6B7280;   /* Muted body text */
+    --color-grey-light:     #F1F5F9;   /* Table headers, empty chart tracks */
+    --color-tinted-surface: #f0f4f8;   /* Alternating light section bg */
+
+    /* --- SURFACE SYSTEM (5 levels) --- */
+    --color-bg:                         #FAFBFF;   /* Page background — never pure white */
+    --color-surface:                    #FFFFFF;   /* Card / panel surface */
+    --color-surface-container-lowest:   #FFFFFF;
+    --color-surface-container-low:      #FAFBFF;
+    --color-surface-container:          #F5F7FC;
+    --color-surface-container-high:     #EEF2F9;
+    --color-surface-container-highest:  #E7ECF5;
+    --color-border:                     rgba(8, 31, 92, 0.12); /* Ghost border — felt, not seen */
+    --color-border-strong:              rgba(8, 31, 92, 0.20);
+
+    /* --- GRADIENTS --- */
+    --gradient-brand:          linear-gradient(90deg,  #081F5C 0%, #0577BE 45%, #048ABF 75%, #FFFFFF 100%);
+    --gradient-brand-vertical: linear-gradient(180deg, #081F5C 0%, #0577BE 45%, #048ABF 75%, #FFFFFF 100%);
+    --gradient-card-soul:      linear-gradient(135deg, rgba(8,31,92,0.05) 0%, rgba(4,119,191,0.05) 100%);
+    --gradient-hero:           linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%);
+    --gradient-cta:            linear-gradient(90deg,  #0477BF 0%, #048ABF 100%);
+    --gradient-agent-stroke:   linear-gradient(135deg, #081F5C 0%, #0477BF 100%);
+
+    /* --- FONT FAMILIES --- */
+    --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* --- TYPOGRAPHIC SCALE (1.25 ratio) --- */
+    --text-xs:   0.75rem;     /*  12px */
+    --text-sm:   0.875rem;    /*  14px */
+    --text-base: 1rem;        /*  16px */
+    --text-lg:   1.25rem;     /*  20px */
+    --text-xl:   1.563rem;    /*  25px */
+    --text-2xl:  1.953rem;    /*  31px */
+    --text-3xl:  2.441rem;    /*  39px */
+    --text-4xl:  3.052rem;    /*  49px */
+    --text-5xl:  3.815rem;    /*  61px */
+
+    /* --- FONT WEIGHTS --- */
+    --fw-regular:  400;
+    --fw-medium:   500;
+    --fw-semibold: 600;
+    --fw-bold:     700;
+
+    /* --- LETTER SPACING --- */
+    --tracking-tight:   -0.03em;   /* H1, H2 */
+    --tracking-normal:   0;
+    --tracking-eyebrow:  0.05em;   /* Eyebrow labels */
+
+    /* --- LINE HEIGHTS --- */
+    --leading-display: 1.05;   /* Hero H1 */
+    --leading-heading: 1.15;   /* H2, H3 */
+    --leading-body:    1.7;    /* All body copy */
+    --leading-tight:   1.25;
+
+    /* --- SEMANTIC TYPE TOKENS --- */
+    --h1-size: var(--text-4xl); --h1-weight: var(--fw-bold);
+    --h1-tracking: var(--tracking-tight); --h1-leading: var(--leading-display);
+    --h1-color: var(--color-navy);
+
+    --h2-size: var(--text-3xl); --h2-weight: var(--fw-bold);
+    --h2-tracking: var(--tracking-tight); --h2-leading: var(--leading-heading);
+    --h2-color: var(--color-navy);
+
+    --h3-size: var(--text-xl); --h3-weight: var(--fw-semibold);
+    --h3-tracking: var(--tracking-normal); --h3-leading: var(--leading-heading);
+    --h3-color: var(--color-blue);
+
+    --eyebrow-size: var(--text-sm); --eyebrow-weight: var(--fw-semibold);
+    --eyebrow-tracking: var(--tracking-eyebrow); --eyebrow-color: var(--color-blue);
+
+    --body-size: var(--text-base); --body-weight: var(--fw-regular);
+    --body-leading: var(--leading-body); --body-color: var(--color-body);
+
+    --stat-size: var(--text-4xl); --stat-weight: var(--fw-bold);
+    --stat-color: var(--color-blue);
+
+    /* --- SPACING (base-8) --- */
+    --space-1:   0.25rem;    /*   4px */
+    --space-2:   0.5rem;     /*   8px */
+    --space-3:   0.75rem;    /*  12px */
+    --space-4:   1rem;       /*  16px */
+    --space-6:   1.5rem;     /*  24px */
+    --space-8:   2rem;       /*  32px */
+    --space-10:  2.5rem;     /*  40px */
+    --space-12:  3rem;       /*  48px */
+    --space-16:  4rem;       /*  64px */
+    --space-20:  5rem;       /*  80px */
+    --space-24:  6rem;       /*  96px */
+    --space-32:  8rem;       /* 128px */
+
+    /* --- MOTION --- */
+    --duration-fast:   120ms;
+    --duration-base:   240ms;
+    --duration-slow:   400ms;
+    --ease-out:        cubic-bezier(0.0, 0, 0.2, 1);
+    --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-reveal:     cubic-bezier(0.22, 1, 0.36, 1);   /* used on all scroll reveals */
+    --transition:      all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* --- ELEVATION (Navy-tinted — never pure grey) --- */
+    --shadow-sm:  0 1px 2px 0 rgba(8, 31, 92, 0.05);
+    --shadow-md:  0 4px 6px -1px rgba(8, 31, 92, 0.10), 0 2px 4px -2px rgba(8, 31, 92, 0.08);
+    --shadow-lg:  0 20px 40px rgba(8, 31, 92, 0.08);
+    --shadow-nav: 0 10px 40px rgba(8, 31, 92, 0.18);   /* floating nav only */
+
+    /* --- RADIUS --- */
+    --radius-sm:   0.5rem;    /*  8px */
+    --radius-md:   1rem;      /* 16px */
+    --radius-lg:   2rem;      /* 32px */
+    --radius-xl:   3rem;      /* 48px */
+    --radius-pill: 9999px;    /* fully rounded */
+
+    /* --- BLUR --- */
+    --blur-nav: 24px;   /* nav backdrop-filter */
+  }
+
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    color: var(--color-body);
+    background: var(--color-bg);
+  }
+
+  /* ============================================================
+     DESIGN SYSTEM PAGE STYLES
+  ============================================================ */
+  .ds-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-16) clamp(1rem, 5vw, 3rem);
+  }
+
+  .ds-header {
+    background: var(--gradient-hero);
+    padding: var(--space-16) clamp(1rem, 5vw, 3rem);
+    margin-bottom: var(--space-16);
+  }
+
+  .ds-header h1 {
+    font-size: var(--text-4xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-white);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-display);
+    margin-bottom: var(--space-4);
+  }
+
+  .ds-header p {
+    color: rgba(255,255,255,0.7);
+    font-size: var(--text-lg);
+    max-width: 600px;
+  }
+
+  .ds-header .badge {
+    display: inline-block;
+    background: var(--color-blue);
+    color: white;
+    font-size: var(--text-xs);
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: var(--space-6);
+  }
+
+  .ds-section {
+    margin-bottom: var(--space-24);
+  }
+
+  .ds-section-label {
+    font-size: var(--text-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+  }
+
+  .ds-section h2 {
+    font-size: var(--text-2xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-navy);
+  }
+
+  /* Code blocks */
+  pre {
+    background: #0d1526;
+    color: #e2e8f0;
+    padding: var(--space-8);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: var(--leading-body);
+    margin-bottom: var(--space-6);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: rgba(8, 31, 92, 0.08);
+    color: var(--color-navy);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-bottom: var(--space-8); font-size: var(--text-sm); }
+  th { text-align: left; padding: var(--space-4) var(--space-6); background: var(--color-navy); color: white; font-weight: var(--fw-semibold); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: var(--space-4) var(--space-6); color: var(--color-body); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(8, 31, 92, 0.03); }
+  tr:hover td { background: rgba(4, 119, 191, 0.05); }
+
+  /* ============================================================
+     COLOR SWATCHES
+  ============================================================ */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-8); }
+  .swatch { border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .swatch-color { height: 80px; }
+  .swatch-info { padding: var(--space-4); background: white; }
+  .swatch-name { font-weight: var(--fw-semibold); color: var(--color-navy); font-size: var(--text-sm); display: block; margin-bottom: 2px; }
+  .swatch-hex { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-body); display: block; margin-bottom: 4px; }
+  .swatch-token { font-family: var(--font-mono); font-size: 10px; color: var(--color-blue); }
+  .swatch-use { font-size: 11px; color: #666; margin-top: 4px; line-height: 1.4; }
+
+  /* ============================================================
+     TYPOGRAPHY SPECIMENS
+  ============================================================ */
+  .type-specimen { background: white; border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-6); box-shadow: var(--shadow-sm); }
+  .type-meta { font-family: var(--font-mono); font-size: 10px; color: var(--color-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-2); display: block; }
+
+  .specimen-h1 { font-size: var(--text-4xl); font-weight: var(--fw-bold); color: var(--color-navy); letter-spacing: var(--tracking-tight); line-height: var(--leading-display); }
+  .specimen-h2 { font-size: var(--text-3xl); font-weight: var(--fw-bold); color: var(--color-navy); letter-spacing: var(--tracking-tight); line-height: var(--leading-heading); }
+  .specimen-h3 { font-size: var(--text-xl); font-weight: var(--fw-semibold); color: var(--color-blue); line-height: var(--leading-heading); }
+  .specimen-body { font-size: var(--text-base); font-weight: var(--fw-regular); color: var(--color-body); line-height: var(--leading-body); }
+  .specimen-eyebrow { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-blue); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); }
+  .specimen-nav { font-size: 14px; font-weight: var(--fw-medium); color: var(--color-blue); }
+
+  /* ============================================================
+     COMPONENT DEMOS
+  ============================================================ */
+  .component-demo { background: white; border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-6); box-shadow: var(--shadow-sm); }
+  .component-label { font-family: var(--font-mono); font-size: 10px; color: var(--color-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-6); display: block; }
+
+  /* NAV — White glassmorphism (matches actual site) */
+  .demo-nav-pill {
+    width: 100%; max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 54px; padding: 0 24px 0 28px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(8,31,92,0.1);
+    box-shadow: 0 4px 24px rgba(8,31,92,0.1);
+    border-radius: 14px;
+  }
+
+  .demo-nav-logo img { height: 36px; width: auto; display: block; }
+
+  .demo-nav-links { display: flex; gap: 28px; list-style: none; }
+  .demo-nav-links a { color: #0477BF; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.15s ease; }
+  .demo-nav-links a:hover { color: #081F5C; }
+
+  /* BUTTON — Navy + glow (matches actual site) */
+  .btn-primary {
+    position: relative; overflow: hidden;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    font-family: var(--font-sans);
+    font-weight: var(--fw-semibold);
+    color: #ffffff;
+    border-radius: 24px;
+    background: #081F5C;
+    transition: transform 0.18s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-glow {
+    position: absolute; inset: -4px;
+    background: linear-gradient(135deg, #0477BF 0%, #3ecf8e 50%, #0477BF 100%);
+    opacity: 0.28; filter: blur(12px);
+    transition: opacity 0.45s ease;
+    pointer-events: none; border-radius: 24px;
+  }
+
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-primary:hover .btn-glow { opacity: 0.88; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:focus-visible { outline: 3px solid var(--color-blue); outline-offset: 3px; }
+
+  .btn-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; }
+
+  /* CARDS */
+  .demo-cards { display: grid; grid-template-columns: 8fr 4fr; gap: var(--space-8); }
+  .demo-card { background: var(--color-bg); border-radius: var(--radius-lg); padding: 2.5rem; transition: background var(--duration-fast) var(--ease-out); }
+  .demo-card:hover { background: var(--color-grey-light); }
+  .demo-card-eyebrow { font-size: var(--text-xs); font-weight: var(--fw-semibold); color: var(--color-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-2); }
+  .demo-card h3 { font-size: var(--text-xl); font-weight: var(--fw-bold); color: var(--color-navy); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+  .demo-card p { color: var(--color-body); font-size: var(--text-sm); line-height: var(--leading-body); }
+  .demo-stat { font-size: var(--text-4xl); font-weight: var(--fw-bold); color: var(--color-blue); letter-spacing: var(--tracking-tight); line-height: 1; margin-bottom: var(--space-2); }
+
+  /* SECTION TYPE DEMOS */
+  .section-demo-white { background: #FFFFFF; border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-4); }
+  .section-demo-tinted { background: #f0f4f8; border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-4); }
+  .section-demo-dark { background: var(--gradient-hero); border-radius: var(--radius-lg); padding: var(--space-8); margin-bottom: var(--space-4); }
+
+  /* BENTO GRID DEMO */
+  .bento-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-4); }
+  .bento-demo > * { border-radius: var(--radius-md); padding: var(--space-6); min-height: 80px; display: flex; align-items: center; font-family: var(--font-mono); font-size: var(--text-xs); color: rgba(255,255,255,0.8); }
+  .bento-col-8  { grid-column: span 8;  background: var(--color-navy); }
+  .bento-col-4  { grid-column: span 4;  background: var(--color-blue); }
+  .bento-col-7  { grid-column: span 7;  background: rgba(8,31,92,0.6); }
+  .bento-col-5  { grid-column: span 5;  background: rgba(4,119,191,0.6); }
+  .bento-col-12 { grid-column: span 12; background: rgba(8,31,92,0.2); color: var(--color-navy); }
+
+  /* FORM INPUT */
+  .demo-input { display: flex; flex-direction: column; gap: var(--space-2); max-width: 400px; }
+  .demo-input label { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-navy); }
+  .demo-input input { background: var(--color-bg); border-radius: var(--radius-xl); padding: 0.875rem 1.25rem; font-size: var(--text-base); font-family: var(--font-sans); color: var(--color-body); border: 1px solid var(--color-border); outline: none; transition: border-color var(--duration-fast) var(--ease-out); }
+  .demo-input input:focus { border-color: var(--color-blue); background: rgba(4, 119, 191, 0.04); }
+
+  /* MOTION DEMO */
+  .motion-demo { display: flex; gap: var(--space-6); flex-wrap: wrap; }
+  .motion-box { width: 80px; height: 80px; background: var(--color-navy); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-family: var(--font-mono); font-size: 10px; text-align: center; cursor: pointer; transition: transform var(--duration-base) var(--ease-out), background var(--duration-base) var(--ease-out); }
+  .motion-box:hover { transform: translateY(-6px); background: var(--color-blue); }
+
+  /* RULES */
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+  .rules-block { background: white; border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-sm); }
+  .rules-block h3 { font-size: var(--text-lg); font-weight: var(--fw-bold); margin-bottom: var(--space-6); }
+  .rules-block.do h3 { color: var(--color-success); }
+  .rules-block.dont h3 { color: var(--color-error); }
+  .rules-block ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-4); }
+  .rules-block li { font-size: var(--text-sm); color: var(--color-body); padding-left: var(--space-6); position: relative; line-height: 1.6; }
+  .rules-block.do li::before { content: '✓'; position: absolute; left: 0; color: var(--color-success); font-weight: var(--fw-bold); }
+  .rules-block.dont li::before { content: '✗'; position: absolute; left: 0; color: var(--color-error); font-weight: var(--fw-bold); }
+
+  /* TOC */
+  .toc { background: white; border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-sm); margin-bottom: var(--space-16); display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-2); }
+  .toc a { display: block; padding: var(--space-2) var(--space-4); color: var(--color-navy); text-decoration: none; font-size: var(--text-sm); font-weight: var(--fw-medium); border-radius: var(--radius-sm); transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+  .toc a:hover { background: rgba(4,119,191,0.08); color: var(--color-blue); }
+  .toc a:focus-visible { outline: 2px solid var(--color-blue); }
+
+  /* ANTI-PATTERNS */
+  .antipattern-grid { display: grid; gap: var(--space-4); }
+  .antipattern-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); background: white; border-radius: var(--radius-md); padding: var(--space-4) var(--space-6); font-size: var(--text-sm); align-items: start; }
+  .ap-label { font-weight: var(--fw-semibold); color: var(--color-navy); }
+  .ap-fail { color: var(--color-error); }
+  .ap-fix { color: #1a7a4a; }
+
+  @media (max-width: 768px) {
+    .demo-cards, .rules-grid { grid-template-columns: 1fr; }
+    .bento-demo { display: block; }
+    .bento-demo > * { margin-bottom: var(--space-2); }
+    .antipattern-row { grid-template-columns: 1fr; }
+    .specimen-h1 { font-size: var(--text-2xl); }
+    .specimen-h2 { font-size: var(--text-xl); }
+    .demo-nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="ds-header">
+  <span class="badge">Design System v1.1 · April 2026 · Derived from /src/index.css</span>
+  <h1>D8TAOPS Design System</h1>
+  <p>The Intelligent Editorial — complete token layer, component library, and rules for every D8TAOPS website and webapp.</p>
+</header>
+
+<main class="ds-wrapper">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <a href="#colors">1. Colors</a>
+    <a href="#typography">2. Typography</a>
+    <a href="#tokens">3. CSS Token Layer</a>
+    <a href="#sections">4. Section Types</a>
+    <a href="#nav">5. Navigation</a>
+    <a href="#buttons">6. Buttons</a>
+    <a href="#cards">7. Cards</a>
+    <a href="#inputs">8. Inputs</a>
+    <a href="#layout">9. Bento Grid Layout</a>
+    <a href="#motion">10. Motion</a>
+    <a href="#elevation">11. Elevation</a>
+    <a href="#rules">12. Rules</a>
+    <a href="#antipatterns">13. Anti-Patterns</a>
+    <a href="#copy">14. Copy Rules</a>
+  </div>
+
+  <!-- ============================
+       1. COLORS
+  ============================= -->
+  <section class="ds-section" id="colors">
+    <p class="ds-section-label">Section 01</p>
+    <h2>Colors</h2>
+
+    <p style="margin-bottom: var(--space-6); font-size: var(--text-sm);">The palette is locked. Three core brand colors + deep navy + white. Functional UI colors are for state and data only — never decoration. The tinted surface (<code>#f0f4f8</code>) is used for alternating light sections.</p>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4);">Core Brand Colors</p>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#081F5C;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Brand Navy</span>
+          <span class="swatch-hex">#081F5C</span>
+          <span class="swatch-token">--color-navy</span>
+          <span class="swatch-use">H1, H2, section headings, proof block bg</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#040e2e;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Deep Navy</span>
+          <span class="swatch-hex">#040e2e</span>
+          <span class="swatch-token">--color-deep-navy</span>
+          <span class="swatch-use">Footer bg, darkest hero gradient stop</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#0477BF;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Brand Blue</span>
+          <span class="swatch-hex">#0477BF</span>
+          <span class="swatch-token">--color-blue</span>
+          <span class="swatch-use">H3, eyebrow labels, nav links, stat numbers</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#048ABF;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Brand Cyan</span>
+          <span class="swatch-hex">#048ABF</span>
+          <span class="swatch-token">--color-cyan</span>
+          <span class="swatch-use">Gradient endpoint, CTA gradient</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3ecf8e;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Green Accent</span>
+          <span class="swatch-hex">#3ecf8e</span>
+          <span class="swatch-token">--color-green-accent</span>
+          <span class="swatch-use">Proof block accents, button glow, agent active states</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#333333;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Body Text</span>
+          <span class="swatch-hex">#333333</span>
+          <span class="swatch-token">--color-body</span>
+          <span class="swatch-use">All body copy on light sections</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FFFFFF; outline: 1px solid #eee;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">White</span>
+          <span class="swatch-hex">#FFFFFF</span>
+          <span class="swatch-token">--color-white</span>
+          <span class="swatch-use">Light section backgrounds, text on dark sections</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4);">Surface System (5 levels)</p>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FAFBFF; outline: 1px solid #eee;"></div>
+        <div class="swatch-info"><span class="swatch-name">Page BG</span><span class="swatch-hex">#FAFBFF</span><span class="swatch-token">--color-bg</span><span class="swatch-use">Base page background — never pure white</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F5F7FC; outline: 1px solid #eee;"></div>
+        <div class="swatch-info"><span class="swatch-name">Surface Container</span><span class="swatch-hex">#F5F7FC</span><span class="swatch-token">--color-surface-container</span><span class="swatch-use">Card backgrounds, agent icon bg</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f0f4f8; outline: 1px solid #eee;"></div>
+        <div class="swatch-info"><span class="swatch-name">Tinted Surface</span><span class="swatch-hex">#f0f4f8</span><span class="swatch-token">--color-tinted-surface</span><span class="swatch-use">Alternating section bg (ticker, personas, D8:VIEW)</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#EEF2F9; outline: 1px solid #eee;"></div>
+        <div class="swatch-info"><span class="swatch-name">Surface High</span><span class="swatch-hex">#EEF2F9</span><span class="swatch-token">--color-surface-container-high</span><span class="swatch-use">Elevated surfaces, hovered states</span></div>
+      </div>
+    </div>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4);">Functional UI Colors (state &amp; data only)</p>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#22C55E;"></div>
+        <div class="swatch-info"><span class="swatch-name">Success Green</span><span class="swatch-hex">#22C55E</span><span class="swatch-token">--color-success</span><span class="swatch-use">Positive metrics, "After" states</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#26D07C;"></div>
+        <div class="swatch-info"><span class="swatch-name">Success Bright</span><span class="swatch-hex">#26D07C</span><span class="swatch-token">--color-success-bright</span><span class="swatch-use">Progress bars, PASS status badges</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FF5252;"></div>
+        <div class="swatch-info"><span class="swatch-name">Alert Red</span><span class="swatch-hex">#FF5252</span><span class="swatch-token">--color-error</span><span class="swatch-use">Violations, failures</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FFD500;"></div>
+        <div class="swatch-info"><span class="swatch-name">Signal Yellow</span><span class="swatch-hex">#FFD500</span><span class="swatch-token">--color-warning</span><span class="swatch-use">Stale data, REVIEW status badges</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#515151;"></div>
+        <div class="swatch-info"><span class="swatch-name">Grey Dark</span><span class="swatch-hex">#515151</span><span class="swatch-token">--color-grey-dark</span><span class="swatch-use">UI sub-headers, secondary text</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#6B7280;"></div>
+        <div class="swatch-info"><span class="swatch-name">Grey Mid</span><span class="swatch-hex">#6B7280</span><span class="swatch-token">--color-grey-mid</span><span class="swatch-use">Muted body text</span></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F1F5F9;"></div>
+        <div class="swatch-info"><span class="swatch-name">Light Grey</span><span class="swatch-hex">#F1F5F9</span><span class="swatch-token">--color-grey-light</span><span class="swatch-use">Table headers, empty chart tracks</span></div>
+      </div>
+    </div>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4);">D8 Gradient (logo &amp; select brand moments only)</p>
+    <div style="height: 60px; border-radius: var(--radius-md); background: var(--gradient-brand); margin-bottom: var(--space-4);"></div>
+    <div style="height: 60px; border-radius: var(--radius-md); background: var(--gradient-hero); margin-bottom: var(--space-4);"></div>
+    <p style="font-size: var(--text-sm); color: #666; margin-bottom: var(--space-2);">Top: Brand gradient (<code>#081F5C → #0577BE → #048ABF → #FFFFFF</code>). Logo and select brand moments only.</p>
+    <p style="font-size: var(--text-sm); color: #666;">Bottom: Hero gradient (<code>linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)</code>). Hero section and proof block only.</p>
+  </section>
+
+  <!-- ============================
+       2. TYPOGRAPHY
+  ============================= -->
+  <section class="ds-section" id="typography">
+    <p class="ds-section-label">Section 02</p>
+    <h2>Typography</h2>
+
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);"><strong>One font family: IBM Plex Sans.</strong> IBM Plex Mono for code and data contexts only. Import all weights 100–700 via Google Fonts. Set <code>display=swap</code>.</p>
+
+    <div class="type-specimen">
+      <span class="type-meta">H1 · --fw-bold · --text-4xl (49px) · --color-navy · --tracking-tight (-0.03em) · --leading-display (1.05) · once per page</span>
+      <p class="specimen-h1">We get your data ready for AI.</p>
+    </div>
+
+    <div class="type-specimen">
+      <span class="type-meta">H2 · --fw-bold · --text-3xl (39px) · --color-navy · --tracking-tight · --leading-heading (1.15) · one per section</span>
+      <p class="specimen-h2">Meet the D8:Agents who get your data ready for AI.</p>
+    </div>
+
+    <div class="type-specimen">
+      <span class="type-meta">H3 · --fw-semibold · --text-xl (25px) · --color-blue · --tracking-normal · --leading-heading (1.15)</span>
+      <p class="specimen-h3">Most audits take days. Complete audits take minutes.</p>
+    </div>
+
+    <div class="type-specimen">
+      <span class="type-meta">Body · --fw-regular · --text-base (16px) · --color-body · --leading-body (1.7) · max 65ch</span>
+      <p class="specimen-body">D8TAOPS deploys AI agents directly into your existing data environment. No migration. No infrastructure rebuild. Your data stays where it lives — and your agents know how to work with it.</p>
+    </div>
+
+    <div class="type-specimen">
+      <span class="type-meta">Eyebrow · --fw-semibold · --text-sm (14px) · --color-blue · UPPERCASE · --tracking-eyebrow (0.05em) · above H2</span>
+      <p class="specimen-eyebrow">Customer Story</p>
+    </div>
+
+    <div class="type-specimen">
+      <span class="type-meta">Nav Links · --fw-medium · 14px · --color-blue · hover: --color-navy</span>
+      <p class="specimen-nav">Platform · Agents · Use Cases · D8:LAB · About Us</p>
+    </div>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4); margin-top: var(--space-8);">Typography Rules (all mandatory)</p>
+    <table>
+      <tr><th>Rule</th><th>Value</th></tr>
+      <tr><td>Font family</td><td>IBM Plex Sans only. No exceptions.</td></tr>
+      <tr><td>Heading tracking</td><td><code>--tracking-tight: -0.03em</code> on H1, H2</td></tr>
+      <tr><td>H1 line-height</td><td><code>--leading-display: 1.05</code></td></tr>
+      <tr><td>H2/H3 line-height</td><td><code>--leading-heading: 1.15</code></td></tr>
+      <tr><td>Body line-height</td><td><code>--leading-body: 1.7</code> — mandatory</td></tr>
+      <tr><td>Body line length</td><td>55–75 characters (max: 65ch). Never below 16px on mobile.</td></tr>
+      <tr><td>Eyebrow tracking</td><td><code>--tracking-eyebrow: 0.05em</code></td></tr>
+      <tr><td>Nav link size</td><td>14px (--text-sm), weight 500. Color: --color-blue. Hover: --color-navy.</td></tr>
+      <tr><td>Alignment</td><td>Left-justify all text. Exception: the closing CTA section is center-aligned (intentional, one occurrence).</td></tr>
+      <tr><td>Widows</td><td>No single word on its own line. Fix with copy edits or <code>&amp;nbsp;</code>.</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================
+       3. CSS TOKEN LAYER
+  ============================= -->
+  <section class="ds-section" id="tokens">
+    <p class="ds-section-label">Section 03</p>
+    <h2>CSS Token Layer</h2>
+    <p style="margin-bottom: var(--space-6); font-size: var(--text-sm);">Exact token block from <code>/src/index.css</code>. Copy this into every project before writing any UI code. Never hardcode values.</p>
+<pre><code>/* ==========================================================
+   D8TAOPS DESIGN TOKENS — paste into :root before any UI
+   Source: /src/index.css
+   ========================================================== */
+
+:root {
+
+  /* BRAND COLORS */
+  --color-navy:         #081F5C;
+  --color-blue:         #0477BF;
+  --color-blue-mid:     #0577BE;   /* gradient midpoint */
+  --color-cyan:         #048ABF;   /* gradient endpoint */
+  --color-body:         #333333;
+  --color-white:        #FFFFFF;
+
+  /* EXTENDED BRAND */
+  --color-deep-navy:    #040e2e;   /* footer bg, darkest hero stop */
+  --color-green-accent: #3ecf8e;   /* proof block, button glow */
+
+  /* FUNCTIONAL UI (state & data only — never decoration) */
+  --color-success:        #22C55E;
+  --color-success-bright: #26D07C;
+  --color-error:          #FF5252;
+  --color-warning:        #FFD500;
+  --color-grey-dark:      #515151;
+  --color-grey-mid:       #6B7280;
+  --color-grey-light:     #F1F5F9;
+  --color-tinted-surface: #f0f4f8;   /* alternating section bg */
+
+  /* SURFACE SYSTEM */
+  --color-bg:                        #FAFBFF;   /* page bg */
+  --color-surface:                   #FFFFFF;   /* card surface */
+  --color-surface-container-lowest:  #FFFFFF;
+  --color-surface-container-low:     #FAFBFF;
+  --color-surface-container:         #F5F7FC;
+  --color-surface-container-high:    #EEF2F9;
+  --color-surface-container-highest: #E7ECF5;
+  --color-border:                    rgba(8, 31, 92, 0.12);
+  --color-border-strong:             rgba(8, 31, 92, 0.20);
+
+  /* GRADIENTS */
+  --gradient-brand:          linear-gradient(90deg,  #081F5C 0%, #0577BE 45%, #048ABF 75%, #FFFFFF 100%);
+  --gradient-brand-vertical: linear-gradient(180deg, #081F5C 0%, #0577BE 45%, #048ABF 75%, #FFFFFF 100%);
+  --gradient-card-soul:      linear-gradient(135deg, rgba(8,31,92,0.05) 0%, rgba(4,119,191,0.05) 100%);
+  --gradient-hero:           linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%);
+  --gradient-cta:            linear-gradient(90deg,  #0477BF 0%, #048ABF 100%);
+  --gradient-agent-stroke:   linear-gradient(135deg, #081F5C 0%, #0477BF 100%);
+
+  /* FONT FAMILIES */
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* TYPOGRAPHIC SCALE (1.25 ratio) */
+  --text-xs:   0.75rem;     /*  12px */
+  --text-sm:   0.875rem;    /*  14px */
+  --text-base: 1rem;        /*  16px */
+  --text-lg:   1.25rem;     /*  20px */
+  --text-xl:   1.563rem;    /*  25px */
+  --text-2xl:  1.953rem;    /*  31px */
+  --text-3xl:  2.441rem;    /*  39px */
+  --text-4xl:  3.052rem;    /*  49px */
+  --text-5xl:  3.815rem;    /*  61px */
+
+  /* FONT WEIGHTS */
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* LETTER SPACING */
+  --tracking-tight:   -0.03em;   /* H1, H2 */
+  --tracking-normal:  0;
+  --tracking-eyebrow: 0.05em;
+
+  /* LINE HEIGHTS */
+  --leading-display: 1.05;   /* hero H1 */
+  --leading-heading: 1.15;   /* H2, H3 */
+  --leading-body:    1.7;
+  --leading-tight:   1.25;
+
+  /* SEMANTIC TYPE TOKENS */
+  --h1-size: var(--text-4xl); --h1-weight: var(--fw-bold);
+  --h1-tracking: var(--tracking-tight); --h1-leading: var(--leading-display);
+  --h1-color: var(--color-navy);
+
+  --h2-size: var(--text-3xl); --h2-weight: var(--fw-bold);
+  --h2-tracking: var(--tracking-tight); --h2-leading: var(--leading-heading);
+  --h2-color: var(--color-navy);
+
+  --h3-size: var(--text-xl); --h3-weight: var(--fw-semibold);
+  --h3-tracking: var(--tracking-normal); --h3-leading: var(--leading-heading);
+  --h3-color: var(--color-blue);
+
+  --eyebrow-size: var(--text-sm); --eyebrow-weight: var(--fw-semibold);
+  --eyebrow-tracking: var(--tracking-eyebrow); --eyebrow-color: var(--color-blue);
+
+  --body-size: var(--text-base); --body-weight: var(--fw-regular);
+  --body-leading: var(--leading-body); --body-color: var(--color-body);
+
+  --stat-size: var(--text-4xl); --stat-weight: var(--fw-bold);
+  --stat-color: var(--color-blue);
+
+  /* SPACING (base-8) */
+  --space-1:   0.25rem;    /*   4px */
+  --space-2:   0.5rem;     /*   8px */
+  --space-3:   0.75rem;    /*  12px */
+  --space-4:   1rem;       /*  16px */
+  --space-6:   1.5rem;     /*  24px */
+  --space-8:   2rem;       /*  32px */
+  --space-10:  2.5rem;     /*  40px */
+  --space-12:  3rem;       /*  48px */
+  --space-16:  4rem;       /*  64px */
+  --space-20:  5rem;       /*  80px */
+  --space-24:  6rem;       /*  96px */
+  --space-32:  8rem;       /* 128px */
+
+  /* MOTION */
+  --duration-fast:  120ms;
+  --duration-base:  240ms;
+  --duration-slow:  400ms;
+  --ease-out:       cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-reveal:    cubic-bezier(0.22, 1, 0.36, 1);   /* scroll reveals */
+  --transition:     all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ELEVATION (Navy-tinted — never pure grey) */
+  --shadow-sm:  0 1px 2px 0 rgba(8, 31, 92, 0.05);
+  --shadow-md:  0 4px 6px -1px rgba(8, 31, 92, 0.10),
+                0 2px 4px -2px rgba(8, 31, 92, 0.08);
+  --shadow-lg:  0 20px 40px rgba(8, 31, 92, 0.08);
+  --shadow-nav: 0 10px 40px rgba(8, 31, 92, 0.18);   /* floating nav only */
+
+  /* RADIUS */
+  --radius-sm:   0.5rem;    /*  8px */
+  --radius-md:   1rem;      /* 16px */
+  --radius-lg:   2rem;      /* 32px */
+  --radius-xl:   3rem;      /* 48px */
+  --radius-pill: 9999px;
+
+  /* BLUR */
+  --blur-nav: 24px;   /* nav backdrop-filter */
+
+}</code></pre>
+  </section>
+
+  <!-- ============================
+       4. SECTION TYPES
+  ============================= -->
+  <section class="ds-section" id="sections">
+    <p class="ds-section-label">Section 04</p>
+    <h2>Section Types</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Three section types. Light sections alternate between <strong>White</strong> and <strong>Tinted</strong> — never stack two of the same consecutively. The <strong>Dark</strong> type is used for the hero and proof block only.</p>
+
+    <div class="section-demo-white">
+      <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-4);">Type 1 — White · bg: #FFFFFF · Stats, Agents Platform, Closing CTA</p>
+      <p style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-blue);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-2);">Customer Story</p>
+      <p style="font-size:var(--text-2xl);font-weight:var(--fw-bold);color:var(--color-navy);letter-spacing:-0.03em;margin-bottom:var(--space-2);">97% faster. Zero disruption.</p>
+      <p style="font-size:var(--text-xl);font-weight:var(--fw-semibold);color:var(--color-blue);margin-bottom:var(--space-4);">How KCU got audit-ready in minutes, not days.</p>
+      <p style="color:var(--color-body);font-size:var(--text-base);line-height:1.7;">D8TAOPS deployed directly into the credit union's existing data environment. No migration. No new tooling. Within 90 days, their team could answer data governance questions that previously took a week.</p>
+    </div>
+
+    <div class="section-demo-tinted">
+      <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-4);">Type 2 — Tinted · bg: #f0f4f8 · Ticker bar, Personas, D8:VIEW</p>
+      <p style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-blue);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-2);">Who It's For</p>
+      <p style="font-size:var(--text-2xl);font-weight:var(--fw-bold);color:var(--color-navy);letter-spacing:-0.03em;margin-bottom:var(--space-4);">Built for the people who own the data.</p>
+      <p style="color:var(--color-body);font-size:var(--text-base);line-height:1.7;">A light blue-grey tint creates a visible rhythm between sections without borders or dividers.</p>
+    </div>
+
+    <div class="section-demo-dark">
+      <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-4);">Type 3 — Dark · bg: gradient-hero · Hero + proof block only</p>
+      <p style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-blue);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-2);">The Platform</p>
+      <p style="font-size:var(--text-2xl);font-weight:var(--fw-bold);color:white;letter-spacing:-0.03em;margin-bottom:var(--space-2);">We get your data ready for AI.</p>
+      <p style="font-size:var(--text-xl);font-weight:var(--fw-semibold);color:var(--color-blue);margin-bottom:var(--space-4);">No migration. No new tech.</p>
+      <p style="color:white;font-size:var(--text-base);line-height:1.7;opacity:0.85;">D8TAOPS deploys AI agents directly into your existing data environment. Your data stays where it lives.</p>
+    </div>
+
+    <p class="ds-section-label" style="margin-bottom: var(--space-4); margin-top: var(--space-8);">Section Sequence (homepage)</p>
+    <table>
+      <tr><th>Section</th><th>Type</th><th>Background</th></tr>
+      <tr><td>Hero</td><td>Dark</td><td><code>linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)</code></td></tr>
+      <tr><td>Ticker Bar</td><td>Tinted</td><td>#f0f4f8 · border top/bottom: <code>rgba(8,31,92,0.08)</code></td></tr>
+      <tr><td>Stats</td><td>White</td><td>#FFFFFF</td></tr>
+      <tr><td>Who It's For (Personas)</td><td>Tinted</td><td>#f0f4f8</td></tr>
+      <tr><td>Agents Platform</td><td>White</td><td>#FFFFFF</td></tr>
+      <tr><td>D8:VIEW</td><td>Tinted</td><td>#f0f4f8</td></tr>
+      <tr><td>Proof Block / Case Study</td><td>Dark</td><td><code>linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #081F5C 100%)</code></td></tr>
+      <tr><td>Closing CTA</td><td>White</td><td>#FFFFFF · border-top: <code>1px solid #E4E7EC</code></td></tr>
+      <tr><td>Footer</td><td>Deep Navy</td><td>#040e2e · border-top: <code>rgba(255,255,255,0.055)</code></td></tr>
+    </table>
+
+    <table style="margin-top: var(--space-6);">
+      <tr><th>Element</th><th>Type 1 — White</th><th>Type 2 — Tinted</th><th>Type 3 — Dark</th></tr>
+      <tr><td>Background</td><td>#FFFFFF</td><td>#f0f4f8</td><td>gradient-hero</td></tr>
+      <tr><td>H1, H2</td><td>#081F5C</td><td>#081F5C</td><td>#FFFFFF</td></tr>
+      <tr><td>H3 / Subhead</td><td>#0477BF</td><td>#0477BF</td><td>#0477BF</td></tr>
+      <tr><td>Eyebrow</td><td>#0477BF</td><td>#0477BF</td><td>#0477BF</td></tr>
+      <tr><td>Body</td><td>#333333</td><td>#333333</td><td>#FFFFFF (85% opacity)</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================
+       5. NAVIGATION
+  ============================= -->
+  <section class="ds-section" id="nav">
+    <p class="ds-section-label">Section 05</p>
+    <h2>Navigation</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Floating white glassmorphism pill. Fixed at top. Hides on scroll down, reveals on scroll up. <strong>Not</strong> navy — the background is white/translucent. Border-radius is <code>14px</code>, not a full pill.</p>
+
+    <div class="component-demo">
+      <span class="component-label">Floating Nav · White Glassmorphism · 14px radius</span>
+      <div style="background: #e8eef8; padding: var(--space-8); border-radius: var(--radius-md);">
+        <nav style="display:flex;align-items:center;justify-content:space-between;height:54px;padding:0 24px 0 28px;background:rgba(255,255,255,0.96);backdrop-filter:blur(24px);border:1px solid rgba(8,31,92,0.1);box-shadow:0 4px 24px rgba(8,31,92,0.1);border-radius:14px;">
+          <div style="font-weight:700;color:#081F5C;font-size:16px;letter-spacing:-0.02em;">D8TAOPS</div>
+          <div style="display:flex;align-items:center;gap:28px;">
+            <a href="#" style="color:#0477BF;font-size:14px;font-weight:500;text-decoration:none;">Platform</a>
+            <a href="#" style="color:#0477BF;font-size:14px;font-weight:500;text-decoration:none;">Agents</a>
+            <a href="#" style="color:#0477BF;font-size:14px;font-weight:500;text-decoration:none;">Use Cases</a>
+            <a href="#" style="color:#0477BF;font-size:14px;font-weight:500;text-decoration:none;">D8:LAB</a>
+            <a href="#" style="color:#0477BF;font-size:14px;font-weight:500;text-decoration:none;">About Us</a>
+          </div>
+          <a href="#" class="btn-primary" style="font-size:13px;padding:9px 22px;">
+            <div class="btn-glow" aria-hidden="true"></div>
+            <span class="btn-inner">Book a Demo</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+<pre><code>/* Navigation — Floating White Glassmorphism */
+nav {
+  position: fixed;
+  top: 16px; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.nav-pill {
+  width: 100%; max-width: 1200px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 54px;
+  padding: 0 24px 0 28px;
+  background: rgba(255, 255, 255, 0.88);   /* scrolled: 0.96 */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(8, 31, 92, 0.1);
+  box-shadow: 0 2px 8px rgba(8,31,92,0.06); /* scrolled: 0 4px 24px rgba(8,31,92,0.1) */
+  border-radius: 14px;                       /* NOT 9999px — rounded rect */
+  /* hide on scroll down, reveal on scroll up */
+  transition: background 0.25s ease, box-shadow 0.25s ease,
+              transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+}
+
+/* Nav link */
+.nav-link {
+  color: #0477BF;       /* --color-blue */
+  font-size: 14px;      /* --text-sm */
+  font-weight: 500;     /* --fw-medium */
+  text-decoration: none;
+  gap: 28px between links;
+  transition: color 0.15s ease;
+}
+.nav-link:hover       { color: #081F5C; }
+.nav-link:focus-visible {
+  outline: 2px solid #0477BF;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Nav link order — locked */
+/* Platform · Agents · Use Cases · D8:LAB · About Us */
+
+/* Nav CTA — "Book a Demo" (see Buttons section for style) */</code></pre>
+  </section>
+
+  <!-- ============================
+       6. BUTTONS
+  ============================= -->
+  <section class="ds-section" id="buttons">
+    <p class="ds-section-label">Section 06</p>
+    <h2>Buttons</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Primary CTA is <strong>navy background (#081F5C)</strong> with a blue-green glow pseudo-element. The glow reveals on hover. Border-radius: <code>24px</code>. Two CTA labels are in use: nav = <strong>"Book a Demo"</strong>, hero/closing/footer = <strong>"Get in touch."</strong></p>
+
+    <div class="component-demo">
+      <span class="component-label">Primary Button · Navy + Glow Effect</span>
+      <div style="display:flex;gap:var(--space-6);flex-wrap:wrap;align-items:center;">
+        <a href="#" class="btn-primary" style="font-size:13px;padding:9px 22px;">
+          <div class="btn-glow" aria-hidden="true"></div>
+          <span class="btn-inner">Book a Demo</span>
+        </a>
+        <a href="#" class="btn-primary" style="font-size:15px;padding:14px 32px;">
+          <div class="btn-glow" aria-hidden="true"></div>
+          <span class="btn-inner">Get in touch.</span>
+        </a>
+        <a href="#" class="btn-primary" style="font-size:16px;padding:17px 40px;">
+          <div class="btn-glow" aria-hidden="true"></div>
+          <span class="btn-inner">Get in touch. →</span>
+        </a>
+      </div>
+      <p style="font-size:var(--text-xs);color:#666;margin-top:var(--space-4);">Left: nav size (13px, 9/22px padding). Center: hero (15px, 14/32px). Right: closing CTA (16px, 17/40px).</p>
+    </div>
+
+<pre><code>/* Primary Button — Navy + Blue-Green Glow */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;              /* --fw-semibold */
+  color: #ffffff;
+  border-radius: 24px;           /* NOT --radius-pill */
+  background: #081F5C;           /* navy — NOT blue */
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.18s ease;
+}
+
+/* Size variants */
+.btn-nav    { font-size: 13px; padding: 9px 22px;   }
+.btn-hero   { font-size: 15px; padding: 14px 32px;  }
+.btn-close  { font-size: 16px; padding: 17px 40px;  }
+
+/* Glow effect */
+.btn-glow {
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, #0477BF 0%, #3ecf8e 50%, #0477BF 100%);
+  opacity: 0.28;
+  filter: blur(12px);
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+  border-radius: 24px;
+}
+
+.btn-primary:hover              { transform: translateY(-1px); }
+.btn-primary:hover .btn-glow   { opacity: 0.88; }
+.btn-primary:active             { transform: scale(0.98); }
+.btn-primary:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+/* Text wrapper — keeps text above glow layer */
+.btn-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* CTA labels — two labels in use, contexts below */
+/* "Book a Demo"  → nav only */
+/* "Get in touch." → hero, closing section, footer */</code></pre>
+  </section>
+
+  <!-- ============================
+       7. CARDS
+  ============================= -->
+  <section class="ds-section" id="cards">
+    <p class="ds-section-label">Section 07</p>
+    <h2>Cards</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Cards use tonal layering — no decorative shadows on body cards. Background shifts on hover. Outer container radius: <code>--radius-xl</code> (3rem). Inner cards: <code>--radius-lg</code> (2rem). Padding: 2.5rem standard. Agent cards: <code>14px</code> border-radius with <code>1px solid rgba(8,31,92,0.10)</code> border.</p>
+
+    <div class="component-demo">
+      <span class="component-label">Asymmetrical Card Pair · 8/4 Split</span>
+      <div class="demo-cards">
+        <div class="demo-card">
+          <p class="demo-card-eyebrow">Customer Story</p>
+          <h3>97% faster audit coverage</h3>
+          <p>Kitsap Credit Union deployed D8TAOPS agents directly into their data environment. No migration. No new tooling. Complete audit coverage within 90 days.</p>
+        </div>
+        <div class="demo-card" style="display:flex;flex-direction:column;justify-content:center;">
+          <p class="demo-card-eyebrow">Key Metric</p>
+          <p class="demo-stat">97%</p>
+          <p style="font-size:var(--text-sm);color:var(--color-body);">Faster audit coverage. Same infrastructure.</p>
+        </div>
+      </div>
+    </div>
+
+<pre><code>/* Card — tonal layering, no decorative borders on content cards */
+.card {
+  background: var(--color-bg);         /* slight tonal offset */
+  border-radius: var(--radius-lg);     /* 2rem inner card */
+  padding: 2.5rem;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.card:hover {
+  background: var(--color-grey-light); /* tonal shift — no movement */
+}
+
+/* Outer container: var(--radius-xl) = 3rem */
+/* Stat numbers: var(--text-4xl) in var(--color-blue) */
+
+/* Persona cards (Who It's For section) */
+.persona-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 36px;
+  border: 1px solid rgba(8, 31, 92, 0.08);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.persona-card:hover {
+  background: #edf4fc;
+  transform: translateY(-3px);
+  border-color: rgba(4, 119, 191, 0.2);
+}
+
+/* Agent cards */
+.agent-card {
+  background: #f5f8fb;
+  border: 1px solid rgba(8, 31, 92, 0.10);
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+.agent-card.active,
+.agent-card:hover {
+  background: #081F5C;   /* navy */
+  color: white;          /* accent: #3ecf8e */
+}</code></pre>
+  </section>
+
+  <!-- ============================
+       8. INPUTS
+  ============================= -->
+  <section class="ds-section" id="inputs">
+    <p class="ds-section-label">Section 08</p>
+    <h2>Inputs &amp; Form Fields</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Minimalist. Visible label always above the field — never placeholder-only. Ghost border on focus only. <code>--radius-xl</code> (3rem) corners.</p>
+
+    <div class="component-demo">
+      <span class="component-label">Form Input · Label Above · Ghost Border Focus</span>
+      <div style="display:flex;gap:var(--space-8);flex-wrap:wrap;">
+        <div class="demo-input">
+          <label for="demo-name">Full name</label>
+          <input type="text" id="demo-name" placeholder="Jane Smith">
+        </div>
+        <div class="demo-input">
+          <label for="demo-email">Work email</label>
+          <input type="email" id="demo-email" placeholder="jane@company.com">
+        </div>
+      </div>
+    </div>
+
+<pre><code>/* Input — never placeholder-only labeling */
+label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-navy);
+  margin-bottom: var(--space-2);
+}
+
+input, textarea, select {
+  width: 100%;
+  background: var(--color-bg);
+  border-radius: var(--radius-xl);     /* 3rem corners */
+  padding: 0.875rem 1.25rem;
+  font-size: var(--text-base);
+  font-family: var(--font-sans);
+  color: var(--color-body);
+  border: 1px solid var(--color-border);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+
+input:focus {
+  border-color: var(--color-blue);
+  background: rgba(4, 119, 191, 0.04);
+}</code></pre>
+  </section>
+
+  <!-- ============================
+       9. LAYOUT
+  ============================= -->
+  <section class="ds-section" id="layout">
+    <p class="ds-section-label">Section 09</p>
+    <h2>Bento Grid Layout</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">12-column asymmetrical grid. <strong>Never equal-width columns (4/4/4 or 3/3/3/3).</strong> Valid spans: 8/4, 7/5, 9/3. Horizontal padding: <code>clamp(1.5rem, 5vw, 80px)</code> on sections, <code>clamp(1rem, 5vw, 3rem)</code> on container. Max content width: 1200px.</p>
+
+    <div class="component-demo">
+      <span class="component-label">Grid Span Examples · Asymmetrical Pairs</span>
+      <div class="bento-demo">
+        <div class="bento-col-8">col-span-8</div>
+        <div class="bento-col-4">col-span-4</div>
+        <div class="bento-col-7">col-span-7</div>
+        <div class="bento-col-5">col-span-5</div>
+        <div class="bento-col-12" style="font-size:var(--text-xs);font-family:var(--font-mono);">col-span-12 (full-width accent row)</div>
+      </div>
+    </div>
+
+<pre><code>/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 5vw, 3rem);
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-8);
+}
+
+/* Approved asymmetrical spans */
+.col-8  { grid-column: span 8; }
+.col-4  { grid-column: span 4; }
+.col-7  { grid-column: span 7; }
+.col-5  { grid-column: span 5; }
+.col-9  { grid-column: span 9; }
+.col-3  { grid-column: span 3; }
+.col-12 { grid-column: span 12; }
+
+/* Section padding */
+section {
+  padding: clamp(64px, 8vw, 96px) clamp(1.5rem, 5vw, 80px);
+}
+
+/* Hero padding */
+.hero {
+  padding: 100px clamp(2rem, 5%, 64px) 80px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .col-8, .col-7, .col-9 { grid-column: span 12; }
+  .col-4, .col-5, .col-3 { grid-column: span 12; }
+}
+@media (max-width: 768px) {
+  /* stats: 2 columns */
+  /* agents: single column */
+}
+@media (max-width: 480px) {
+  /* stats: single column */
+}</code></pre>
+  </section>
+
+  <!-- ============================
+       10. MOTION
+  ============================= -->
+  <section class="ds-section" id="motion">
+    <p class="ds-section-label">Section 10</p>
+    <h2>Motion</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Only animate <code>transform</code> and <code>opacity</code>. Never <code>width</code>, <code>height</code>, <code>top</code>, <code>left</code>, <code>margin</code>, or <code>padding</code>. Never <code>transition-all</code>. Always specify the property. The site uses <code>--ease-reveal: cubic-bezier(0.22, 1, 0.36, 1)</code> for all scroll-triggered reveals.</p>
+
+    <div class="component-demo">
+      <span class="component-label">Motion Demo · Hover any box</span>
+      <div class="motion-demo">
+        <div class="motion-box">Reveal<br>0.72s</div>
+        <div class="motion-box" style="background:var(--color-blue);">State<br>120ms</div>
+        <div class="motion-box" style="background:rgba(8,31,92,0.5);">Ticker<br>30s</div>
+      </div>
+    </div>
+
+<pre><code>/* Motion — use --ease-reveal for all scroll-triggered entrances */
+
+/* Scroll reveal (applied via IntersectionObserver or d8-reveal class) */
+.d8-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.d8-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger: 60–80ms delay between items. Max 2–3 items. */
+.item:nth-child(1) { transition-delay: 0ms; }
+.item:nth-child(2) { transition-delay: 70ms; }
+.item:nth-child(3) { transition-delay: 140ms; }
+
+/* ---- Named keyframes used on the site ---- */
+
+/* Hero H1: word-by-word blur-to-focus stagger */
+@keyframes d8WordReveal {
+  from { filter: blur(8px); opacity: 0; transform: translateY(5px); }
+  to   { filter: blur(0);   opacity: 1; transform: translateY(0); }
+  /* applied per word: animation: d8WordReveal 0.6s cubic-bezier(0.22,1,0.36,1) forwards */
+  /* stagger: 80ms per word */
+}
+
+/* "LIVE" status pulse */
+@keyframes d8LivePulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+  /* duration: 2s */
+}
+
+/* Dashboard card 3D float */
+@keyframes d8CardFloat {
+  0%, 100% { transform: perspective(900px) rotateY(-5deg) rotateX(3deg) translateY(0px); }
+  50%      { transform: perspective(900px) rotateY(-5deg) rotateX(3deg) translateY(-10px); }
+  /* duration: 6s ease-in-out infinite */
+  /* paused on hover, resets to center with 0.55s cubic-bezier(0.22,1,0.36,1) */
+}
+
+/* Ticker bar infinite scroll */
+@keyframes d8TickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+  /* duration: 30s linear infinite */
+}
+
+/* REQUIRED: Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>
+
+    <table>
+      <tr><th>Use</th><th>Duration</th><th>Easing</th></tr>
+      <tr><td>Hover / active / focus state changes</td><td>--duration-fast (120ms)</td><td>--ease-out</td></tr>
+      <tr><td>UI state transitions</td><td>--duration-base (240ms)</td><td>--ease-out</td></tr>
+      <tr><td>Entrance / scroll reveals</td><td>0.72s</td><td>--ease-reveal (0.22, 1, 0.36, 1)</td></tr>
+      <tr><td>Hero word stagger</td><td>0.6s per word, 80ms stagger</td><td>--ease-reveal</td></tr>
+      <tr><td>Dashboard hover reset</td><td>0.55s</td><td>--ease-reveal</td></tr>
+      <tr><td>Ticker scroll</td><td>30s linear infinite</td><td>linear</td></tr>
+      <tr><td>Button glow reveal</td><td>0.45s</td><td>ease</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================
+       11. ELEVATION
+  ============================= -->
+  <section class="ds-section" id="elevation">
+    <p class="ds-section-label">Section 11</p>
+    <h2>Elevation &amp; Depth</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Hierarchy through tonal layering, not decorative shadows. Shadows are Navy-tinted — never pure grey. Four shadow levels including the nav-specific shadow.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-6);margin-bottom:var(--space-8);">
+      <div style="background:var(--color-surface);padding:var(--space-6);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);">
+        <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);">--shadow-sm</p>
+        <p style="font-size:var(--text-sm);color:var(--color-body);">Ambient. Cards at rest.</p>
+      </div>
+      <div style="background:var(--color-surface);padding:var(--space-6);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);">
+        <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);">--shadow-md</p>
+        <p style="font-size:var(--text-sm);color:var(--color-body);">Interactive on hover.</p>
+      </div>
+      <div style="background:var(--color-surface);padding:var(--space-6);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);">
+        <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);">--shadow-lg</p>
+        <p style="font-size:var(--text-sm);color:var(--color-body);">Floating overlays.</p>
+      </div>
+      <div style="background:var(--color-surface);padding:var(--space-6);border-radius:14px;box-shadow:var(--shadow-nav);">
+        <p style="font-family:var(--font-mono);font-size:10px;color:var(--color-blue);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);">--shadow-nav</p>
+        <p style="font-size:var(--text-sm);color:var(--color-body);">Nav pill only.</p>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Layer</th><th>Token</th><th>Color</th><th>Used for</th></tr>
+      <tr><td>Base</td><td>--color-bg</td><td>#FAFBFF</td><td>Page background</td></tr>
+      <tr><td>Tinted</td><td>--color-tinted-surface</td><td>#f0f4f8</td><td>Alternating sections</td></tr>
+      <tr><td>Elevated</td><td>--color-surface</td><td>#FFFFFF</td><td>Cards, panels</td></tr>
+      <tr><td>Floating</td><td>rgba(255,255,255,0.88–0.96)</td><td>White glass</td><td>Navigation pill</td></tr>
+      <tr><td>Dark</td><td>--gradient-hero</td><td>#0c1428 → #081F5C</td><td>Hero, proof block</td></tr>
+      <tr><td>Footer</td><td>--color-deep-navy</td><td>#040e2e</td><td>Footer only</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================
+       12. RULES
+  ============================= -->
+  <section class="ds-section" id="rules">
+    <p class="ds-section-label">Section 12</p>
+    <h2>Do's &amp; Don'ts</h2>
+
+    <div class="rules-grid">
+      <div class="rules-block do">
+        <h3>✓ Do</h3>
+        <ul>
+          <li>Left-justify all text — except the closing CTA section (center-aligned, intentional)</li>
+          <li>Alternate White (#FFFFFF) and Tinted (#f0f4f8) sections — never stack the same type twice</li>
+          <li>Use at least --space-24 (96px) between major section breaks</li>
+          <li>Use --text-4xl in #0477BF for key stat metrics</li>
+          <li>Include all three interactive states: hover + focus-visible + active</li>
+          <li>Use semantic HTML: nav, main, section, article, aside, footer</li>
+          <li>Set font-display: swap on all custom fonts</li>
+          <li>Pair Navy-tinted shadows: rgba(8, 31, 92, ...)</li>
+          <li>Use specific numbers: 97% faster, $1.2M+, 100% coverage</li>
+          <li>Respect prefers-reduced-motion on all animations</li>
+          <li>Use --ease-reveal (0.22, 1, 0.36, 1) for scroll-triggered reveals</li>
+          <li>Use 14px radius (not full pill) for the nav pill</li>
+        </ul>
+      </div>
+      <div class="rules-block dont">
+        <h3>✗ Don't</h3>
+        <ul>
+          <li>Don't use hr or 1px borders to separate sections — use tonal shifts</li>
+          <li>Don't center-align text (exception: closing CTA section only)</li>
+          <li>Don't use pure grey shadows — always Navy-tinted</li>
+          <li>Don't use transition-all — specify the property</li>
+          <li>Don't animate layout properties: width, height, top, left, margin, padding</li>
+          <li>Don't use equal-column grids (4/4/4 or 3/3/3/3)</li>
+          <li>Don't over-animate — 2–3 orchestrated moments per page, max</li>
+          <li>Don't use pure #FFFFFF as a page background — use #FAFBFF</li>
+          <li>Don't use default Tailwind colors (indigo-500, blue-600, etc.)</li>
+          <li>Don't use 3D robots, glowing brains, Matrix code, or stock handshakes</li>
+          <li>Don't use: transform, leverage, cutting-edge, seamless, robust, powerful</li>
+          <li>Don't use placeholder text as a label substitute</li>
+          <li>Don't use a blue button background — the CTA is navy (#081F5C) with a glow</li>
+          <li>Don't ship without verifying WCAG AA (4.5:1 normal text, 3:1 large/UI)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       13. ANTI-PATTERNS
+  ============================= -->
+  <section class="ds-section" id="antipatterns">
+    <p class="ds-section-label">Section 13</p>
+    <h2>Anti-Patterns</h2>
+
+    <div class="antipattern-grid">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);background:var(--color-navy);padding:var(--space-4) var(--space-6);border-radius:var(--radius-md);">
+        <strong style="color:white;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.05em;">Pattern</strong>
+        <strong style="color:white;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.05em;">Why it fails</strong>
+        <strong style="color:white;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.05em;">Do instead</strong>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">transition-all</span>
+        <span class="ap-fail">Animates layout props, triggers reflow</span>
+        <span class="ap-fix">Specify: transition: transform 120ms ease-out</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">col-span-4 × 3</span>
+        <span class="ap-fail">Flat hierarchy, no visual rhythm</span>
+        <span class="ap-fix">8/4, 7/5, or 9/3 split</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">border: 1px solid #eee</span>
+        <span class="ap-fail">Lines are a layout failure</span>
+        <span class="ap-fix">Tonal background shift or negative space</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Pure grey shadow</span>
+        <span class="ap-fail">Disconnected from brand</span>
+        <span class="ap-fix">Navy-tinted: rgba(8, 31, 92, 0.10)</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">background: #FFFFFF on body</span>
+        <span class="ap-fail">No depth, no tonal system</span>
+        <span class="ap-fix">--color-bg: #FAFBFF</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Placeholder as label</span>
+        <span class="ap-fail">Disappears on focus, fails a11y</span>
+        <span class="ap-fix">Visible persistent label above field</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Blue CTA button (#0477BF bg)</span>
+        <span class="ap-fail">Wrong — CTA is navy with glow effect</span>
+        <span class="ap-fix">background: #081F5C + .btn-glow pseudo-element</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Nav as navy pill</span>
+        <span class="ap-fail">Wrong — nav is a white glass pill</span>
+        <span class="ap-fix">rgba(255,255,255,0.88), blur(24px), border-radius: 14px</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Multiple equal CTAs</span>
+        <span class="ap-fail">Decision paralysis</span>
+        <span class="ap-fix">One primary CTA per page</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">Center-aligned text (all sections)</span>
+        <span class="ap-fail">Breaks editorial scan-line</span>
+        <span class="ap-fix">Left-justify always, except closing CTA section</span>
+      </div>
+      <div class="antipattern-row">
+        <span class="ap-label">--color-grey-mid: #694A38</span>
+        <span class="ap-fail">Wrong value (legacy)</span>
+        <span class="ap-fix">--color-grey-mid: #6B7280</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+       14. COPY RULES
+  ============================= -->
+  <section class="ds-section" id="copy">
+    <p class="ds-section-label">Section 14</p>
+    <h2>Copy Rules</h2>
+    <p style="margin-bottom: var(--space-8); font-size: var(--text-sm);">Design and words are the same discipline. These rules govern all copy on every D8TAOPS page.</p>
+
+    <div class="rules-grid">
+      <div class="rules-block do">
+        <h3>Write this way</h3>
+        <ul>
+          <li>Lead with outcome, not feature: "97% faster" beats "AI-powered audit agent"</li>
+          <li>One idea per sentence. Short sentences.</li>
+          <li>Use specific numbers: 97% faster, $1.2M+, 8 agents, 90 days</li>
+          <li>Active voice only</li>
+          <li>Write like explaining it at a coffee meeting</li>
+        </ul>
+      </div>
+      <div class="rules-block dont">
+        <h3>Never use these words</h3>
+        <ul>
+          <li>Transform</li>
+          <li>Leverage</li>
+          <li>Cutting-edge</li>
+          <li>Seamless</li>
+          <li>Robust</li>
+          <li>Powerful</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="ds-section-label" style="margin-top: var(--space-8); margin-bottom: var(--space-4);">Locked Copy — Do Not Rewrite</p>
+    <table>
+      <tr><th>Element</th><th>Locked Value</th></tr>
+      <tr><td>Nav CTA label</td><td>Book a Demo</td></tr>
+      <tr><td>Hero / closing / footer CTA label</td><td>Get in touch.</td></tr>
+      <tr><td>Homepage H1</td><td>We get your data ready for AI.</td></tr>
+      <tr><td>Homepage subhead</td><td>No migration. No new tech.</td></tr>
+      <tr><td>Agents section headline</td><td>Meet the D8:Agents who get your data ready for AI.</td></tr>
+      <tr><td>One-liner</td><td>We make enterprise data AI-ready — without moving it anywhere</td></tr>
+      <tr><td>KCU metric</td><td>97% faster (not 60%)</td></tr>
+      <tr><td>Agent count</td><td>8 (locked)</td></tr>
+      <tr><td>OFM reference (until approved)</td><td>a leading out-of-home media company</td></tr>
+      <tr><td>KCU anonymous reference</td><td>local credit unions (on homepage)</td></tr>
+    </table>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: #040e2e; border-radius: var(--radius-lg); padding: var(--space-8); margin-top: var(--space-24); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+    <div>
+      <p style="font-weight:var(--fw-bold);color:white;font-size:var(--text-lg);margin-bottom:var(--space-1);">D8TAOPS Design System</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:var(--text-sm);">The Intelligent Editorial · v1.1 · April 2026</p>
+    </div>
+    <p style="color:rgba(255,255,255,0.5);font-size:var(--text-xs);font-family:var(--font-mono);">Prepared by Gregg Eiler · Enablement Lead · Derived from /src/index.css</p>
+  </footer>
+
+</main>
+</body>
+</html>
