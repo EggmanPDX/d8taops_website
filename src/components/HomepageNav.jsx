@@ -39,11 +39,11 @@ export default function HomepageNav({ activePath }) {
             width: '100%', maxWidth: 1200,
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             height: 54, padding: '0 24px 0 28px',
-            background: atTop ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.96)',
+            background: atTop ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.98)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
-            border: '1px solid rgba(8,31,92,0.1)',
-            boxShadow: atTop ? '0 2px 8px rgba(8,31,92,0.06)' : '0 4px 24px rgba(8,31,92,0.1)',
+            border: atTop ? '1px solid rgba(8,31,92,0.1)' : '1px solid rgba(8,31,92,0.18)',
+            boxShadow: atTop ? '0 2px 8px rgba(8,31,92,0.06)' : '0 8px 32px rgba(8,31,92,0.14)',
             borderRadius: 14,
             pointerEvents: 'all',
           }}
@@ -63,6 +63,7 @@ export default function HomepageNav({ activePath }) {
             style={{ display: 'flex', alignItems: 'center', gap: 28 }}
           >
             {[
+              { label: 'HOME',         href: '/' },
               { label: 'PLATFORM',     href: '/platform' },
               { label: 'CASE STUDIES', href: '/case-studies' },
               { label: 'ABOUT',        href: '/about' },

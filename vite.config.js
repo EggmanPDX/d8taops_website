@@ -4,6 +4,9 @@ import fs from 'fs'
 import path from 'path'
 
 export default defineConfig({
+  server: {
+    host: true,
+  },
   plugins: [
     react(),
     {

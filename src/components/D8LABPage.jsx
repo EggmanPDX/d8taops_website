@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import HomepageNav from './HomepageNav';
 import { GLOBAL_CSS, GlobalFooter } from './HomepageSections';
+import D8Button from './D8Button';
 
 // ── Hooks ─────────────────────────────────────────────────────────────────────
 function useStaggerReveal(count, threshold = 0.12) {
@@ -79,15 +80,15 @@ function ParticleCanvas({ count = 60, scale = 1 }) {
 const DATA = [
   {
     t: 'article', label: 'Article',
-    h: 'Why we build agents that go to the data — not the other way around.',
+    h: 'Why we build agents that go to the data, not the other way around.',
     rt: '4 min read',
     body: `<p>Most enterprise AI projects fail before they start. Not because the models are bad. Because 80% of the project timeline gets consumed by a single question: <em>how do we move the data?</em></p>
-<div class="callout"><p>The standard playbook — centralize everything into a warehouse, clean it, then train on it — was designed for a world where AI was a quarterly batch job. That world is gone.</p></div>
+<div class="callout"><p>The standard playbook, centralizing everything into a warehouse, cleaning it, then training on it, was designed for a world where AI was a quarterly batch job. That world is gone.</p></div>
 <h3>The migration trap</h3>
 <p>When a buyer chooses Snowflake or Databricks, they're implicitly agreeing to a multi-month migration project before any AI can run. Data has to leave its original environment, be transformed, loaded, reconciled, and governed all over again. Every step is a failure point. Every transformation is a lineage break.</p>
 <h3>The agent-first alternative</h3>
 <p>D8TAOPS agents deploy inside your existing environment. <code>D8:INGEST</code> connects to your sources. <code>D8:CAT</code> maps what's there. <code>D8:CURATE</code> cleans it in place. Nothing leaves your perimeter unless you tell it to.</p>
-<p>The result: a production-ready pipeline in 4–6 weeks, running against your real data, in your real infrastructure — with no migration required.</p>`,
+<p>The result: a production-ready pipeline in 4–6 weeks, running against your real data, in your real infrastructure, with no migration required.</p>`,
   },
   {
     t: 'paper', label: 'Paper',
@@ -98,34 +99,34 @@ const DATA = [
 <h3>When determinism wins</h3>
 <p>Percent rent calculations. Loan covenant checks. Field validation against a known schema. These are 2+2=4 problems. A deterministic agent handles them in milliseconds with 100% consistency. An LLM handles them at higher cost and lower consistency per record.</p>
 <h3>Where the LLM earns its place</h3>
-<p>Narrative generation. Anomaly classification where edge cases require judgment. One LLM call at the end of a deterministic pipeline — reviewing output and writing the human-readable summary — is the pattern that works at production scale.</p>`,
+<p>Narrative generation. Anomaly classification where edge cases require judgment. One LLM call at the end of a deterministic pipeline, reviewing output and writing the human-readable summary, is the pattern that works at production scale.</p>`,
   },
   {
     t: 'article', label: 'Article',
     h: 'Governance built in: how D8:SEC enforces policy without slowing the pipeline.',
     rt: '6 min read',
     body: `<p>Security added after deployment is security that fights the pipeline. Access controls that sit outside the agent layer create bottlenecks, audit gaps, and failure modes that only surface under load.</p>
-<div class="callout"><p>D8:SEC runs at the agent level. It doesn't inspect traffic at a perimeter — it participates in every action, on every record, continuously.</p></div>
+<div class="callout"><p>D8:SEC runs at the agent level. It doesn't inspect traffic at a perimeter; it participates in every action, on every record, continuously.</p></div>
 <h3>What "built in" actually means</h3>
-<p>Every data access event is evaluated against policy before it executes. Field-level masking is applied at the source. Every action — read, transform, route, export — is logged with full context: who, what, when, which agent, which policy applied.</p>
+<p>Every data access event is evaluated against policy before it executes. Field-level masking is applied at the source. Every action (read, transform, route, export) is logged with full context: who, what, when, which agent, which policy applied.</p>
 <h3>Why this matters in regulated industries</h3>
-<p>Financial services, healthcare, and media companies need explainable audit trails. Not logs after the fact — proof that policy was applied correctly at every step. <code>D8:SEC</code> makes that trail automatic. <code>D8:OBSERVE</code> surfaces it in real time.</p>`,
+<p>Financial services, healthcare, and media companies need explainable audit trails. Not logs after the fact; proof that policy was applied correctly at every step. <code>D8:SEC</code> makes that trail automatic. <code>D8:OBSERVE</code> surfaces it in real time.</p>`,
   },
   {
     t: 'paper', label: 'Paper',
     h: 'Data lineage at scale: full traceability without a data catalog rebuild.',
     rt: '7 min read',
-    body: `<p>Data catalogs promised to solve lineage. Most implementations delivered a documentation project — manually maintained, perpetually out of date, and disconnected from the actual pipeline.</p>
+    body: `<p>Data catalogs promised to solve lineage. Most implementations delivered a documentation project: manually maintained, perpetually out of date, and disconnected from the actual pipeline.</p>
 <div class="callout"><p>D8:CAT maintains origin-to-output lineage on every record, automatically, as a byproduct of normal pipeline operation. No separate cataloging project required.</p></div>
 <h3>Lineage as a side effect, not a project</h3>
 <p>When <code>D8:INGEST</code> pulls from a source, it registers the origin. When <code>D8:CAT</code> classifies a field, it records the classification logic applied. When <code>D8:CURATE</code> transforms a record, it logs before and after state.</p>
-<p>By the time data reaches <code>D8:STAGE</code>, it carries a complete chain of custody — accumulated through normal agent execution, not a separate project.</p>`,
+<p>By the time data reaches <code>D8:STAGE</code>, it carries a complete chain of custody, accumulated through normal agent execution, not a separate project.</p>`,
   },
   {
     t: 'article', label: 'Article',
     h: 'Human-in-the-loop by design: where agents stop and people decide.',
     rt: '4 min read',
-    body: `<p>Agentic AI doesn't mean unattended AI. The most reliable production systems aren't the ones that run without human input — they're the ones that know exactly when to stop and ask.</p>
+    body: `<p>Agentic AI doesn't mean unattended AI. The most reliable production systems aren't the ones that run without human input; they're the ones that know exactly when to stop and ask.</p>
 <div class="callout"><p>We wire human checkpoints into every pipeline from day one. Not as an afterthought. As a deliberate design decision that makes the system more trustworthy, not less autonomous.</p></div>
 <h3>The checkpoint pattern</h3>
 <p><code>D8:FLOW</code> acts as the supervisor agent. It routes tasks, enforces sequencing — and triggers review requests when conditions require human judgment. Threshold exceptions. Policy ambiguities. Edge cases outside the training distribution.</p>
@@ -136,25 +137,25 @@ const DATA = [
     t: 'paper', label: 'Paper',
     h: 'From 5% sampling to 100% coverage: loan audit automation at a regional credit union.',
     rt: '8 min read',
-    body: `<p>A regional credit union was auditing 5% of its loan portfolio manually. Thirty minutes per loan. Good auditors doing careful work — reviewing a fraction of the risk.</p>
-<div class="callout"><p>After a 6-week deployment: 100% portfolio coverage. Every loan. Every night. 97% faster. No migration. No new infrastructure. No rip and replace.</p></div>
+    body: `<p>A regional credit union was auditing 5% of its loan portfolio manually. Thirty minutes per loan. Good auditors doing careful work, reviewing a fraction of the risk.</p>
+<div class="callout"><p>After a 6-week deployment: 100% portfolio coverage. Every loan. Every night. No migration. No new infrastructure. No rip and replace.</p></div>
 <h3>The problem with sampling</h3>
-<p>Sample-based audit isn't a methodology choice — it's a resource constraint disguised as one. When you can only review 5% of loans, you're betting the problems aren't in the 95% you didn't look at.</p>
+<p>Sample-based audit isn't a methodology choice; it's a resource constraint disguised as one. When you can only review 5% of loans, you're betting the problems aren't in the 95% you didn't look at.</p>
 <h3>The deployment</h3>
 <p><code>D8:INGEST</code> connected to the existing loan management system. <code>D8:FLOW</code> ran policy checks nightly. <code>D8:OBSERVE</code> surfaced exceptions for human review each morning.</p>
 <h3>Results</h3>
-<p>97% faster per loan. 100% portfolio coverage. 30% fewer human review discrepancies. 40–50% cost reduction per audit cycle. Break-even under 12 months.</p>`,
+<p>100% portfolio coverage. 30% fewer human review discrepancies. 40–50% cost reduction per audit cycle. Break-even under 12 months.</p>`,
   },
   {
     t: 'video', label: 'Video',
     h: 'Pipeline walkthrough: how a funded loan moves through 6 agents in under 3 seconds.',
     rt: '8 min watch',
-    body: `<p>This walkthrough traces a single funded loan document through each of the six D8TAOPS agents — from ingest to final audit report.</p>
+    body: `<p>This walkthrough traces a single funded loan document through each of the six D8TAOPS agents, from ingest to final audit report.</p>
 <div class="callout"><p>Total processing time per loan: under 3 seconds. Every field validated. Every policy checked. Full audit trail written. No human required until a flag is raised.</p></div>
 <h3>What you'll see</h3>
-<p>The walkthrough shows the real dashboard output at each agent handoff — not a mockup. You'll see <code>D8:INGEST</code> acquire the document, <code>D8:CAT</code> classify all 47 fields, <code>D8:CURATE</code> resolve two data quality issues, and <code>D8:FLOW</code> route the loan to the audit queue without a single manual step.</p>
+<p>The walkthrough shows the real dashboard output at each agent handoff, not a mockup. You'll see <code>D8:INGEST</code> acquire the document, <code>D8:CAT</code> classify all 47 fields, <code>D8:CURATE</code> resolve two data quality issues, and <code>D8:FLOW</code> route the loan to the audit queue without a single manual step.</p>
 <h3>Why this matters for your team</h3>
-<p>Most teams don't believe the speed claims until they see the execution trace. This walkthrough is the execution trace — real timestamps, real data (anonymized), real exception handling.</p>`,
+<p>Most teams don't believe the speed claims until they see the execution trace. This walkthrough is the execution trace: real timestamps, real data (anonymized), real exception handling.</p>`,
   },
 ];
 
@@ -245,7 +246,7 @@ const LAB_CSS = `
 }
 .lab-header p {
   font-size: 16px;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.72);
   max-width: 460px;
   line-height: 1.65;
 }
@@ -258,7 +259,7 @@ const LAB_CSS = `
   display: flex;
   align-items: center;
   position: sticky;
-  top: 82px;
+  top: 86px;
   z-index: 50;
   box-shadow: 0 2px 12px rgba(8,31,92,0.05);
 }
@@ -374,12 +375,12 @@ const LAB_CSS = `
   line-height: 1.3;
   letter-spacing: -0.015em;
 }
-.lab-card-hero .lab-card-teaser { color: rgba(255,255,255,0.55); }
+.lab-card-hero .lab-card-teaser { color: rgba(255,255,255,0.72); }
 .lab-card-hero .lab-card-tag { background: rgba(4,119,191,0.3); color: rgba(255,255,255,0.85); }
 .lab-card-hero .lab-card-tag.paper { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
 .lab-card-hero .lab-card-rule { border-color: rgba(255,255,255,0.1); }
-.lab-card-hero .lab-card-rt { color: rgba(255,255,255,0.4); }
-.lab-card-hero .lab-read-btn { color: rgba(255,255,255,0.5); }
+.lab-card-hero .lab-card-rt { color: rgba(255,255,255,0.55); }
+.lab-card-hero .lab-read-btn { color: rgba(255,255,255,0.65); }
 .lab-card-hero:hover { border-color: rgba(4,119,191,0.5); box-shadow: 0 8px 30px rgba(4,119,191,0.18), 0 2px 8px rgba(0,0,0,0.25); }
 .lab-card-hero:hover .lab-read-btn { color: var(--white); gap: 10px; }
 .lab-card-hero.active { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(4,119,191,0.25); }
@@ -635,7 +636,7 @@ const LAB_CSS = `
   flex-wrap: wrap;
   position: relative;
 }
-.lab-pane-author { font-size: 12px; color: rgba(255,255,255,0.5); }
+.lab-pane-author { font-size: 12px; color: rgba(255,255,255,0.65); }
 .lab-pane-author strong { color: rgba(255,255,255,0.8); font-weight: 500; }
 .lab-pane-rt-badge {
   display: inline-flex;
@@ -774,6 +775,55 @@ const ClockIcon = () => (
   </svg>
 );
 
+// ── CLOSING CTA ───────────────────────────────────────────────────────────────
+function LabClosingCTA() {
+  return (
+    <section aria-label="Get started" style={{
+      backgroundImage: `radial-gradient(circle, rgba(4,119,191,0.18) 1px, transparent 1px), linear-gradient(160deg, #0c1428 0%, #0f2560 45%, #040e2e 100%)`,
+      backgroundSize: '24px 24px, 100% 100%',
+      padding: '96px clamp(1.5rem, 5vw, 80px)',
+      textAlign: 'center',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      <div aria-hidden="true" style={{
+        position: 'absolute', width: 400, height: 400, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(62,207,142,0.07) 0%, transparent 70%)',
+        top: '-15%', right: '10%', pointerEvents: 'none', zIndex: 0,
+      }} />
+      <div style={{ maxWidth: 620, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: 12, fontWeight: 600, letterSpacing: '0.15em',
+          color: '#3ecf8e', textTransform: 'uppercase', marginBottom: 24,
+        }}>GET STARTED</div>
+        <h2 style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: 'clamp(28px, 4vw, 48px)',
+          fontWeight: 700, color: '#FFFFFF',
+          lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 20px',
+        }}>
+          The research is free. The platform is yours.
+        </h2>
+        <p style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: 18, fontWeight: 500,
+          color: 'rgba(255,255,255,0.72)',
+          lineHeight: 1.6, margin: '0 0 40px',
+        }}>
+          Book a conversation and we'll show you what this looks like inside your own data environment.
+        </p>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Book a Demo</D8Button>
+          <a href="/platform" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: 'rgba(255,255,255,0.65)', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: 2, transition: 'color 0.18s ease, border-color 0.18s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+          >Explore the platform →</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function D8LABPage() {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -890,8 +940,8 @@ export default function D8LABPage() {
         <ParticleCanvas scale={1.5} />
         <div className="lab-header-content">
           <div className="lab-eyebrow">From the Lab</div>
-          <h2>How we think about <span style={{ fontStyle: 'italic', color: 'rgba(77,184,255,0.9)' }}>data readiness.</span></h2>
-          <p>AI changes daily. But one thing doesn't — the need to use good data. Your data.</p>
+          <h2>How we think about <span style={{ fontStyle: 'italic', color: '#0477BF' }}>data readiness.</span></h2>
+          <p>AI changes daily. But one thing doesn't change: the need to use good data. Your data.</p>
         </div>
       </div>
 
@@ -924,7 +974,7 @@ export default function D8LABPage() {
           style={featHidden ? { display: 'none' } : undefined}
         >
           {[
-            { i: 0, teaser: 'Most AI deployments fail because teams spend 80% of their time moving data. We don\'t do that — and it changes everything about how fast you can ship.' },
+            { i: 0, teaser: 'Most AI deployments fail because teams spend 80% of their time moving data. We don\'t do that, and it changes everything about how fast you can ship.' },
             { i: 1, teaser: '1 API call per run instead of 30. How deterministic agents and a single LLM supervisor reach production scale.' },
           ].map(({ i, teaser }) => (
             <div
@@ -952,10 +1002,10 @@ export default function D8LABPage() {
         <div className="lab-card-grid" ref={cardsRef}>
           {[
             { i: 2, slot: 0, teaser: 'Security at the agent level behaves differently than security bolted on at the perimeter.' },
-            { i: 3, slot: 1, teaser: 'D8:CAT maintains origin-to-output lineage on every record — as a byproduct of normal pipeline operation.' },
+            { i: 3, slot: 1, teaser: 'D8:CAT maintains origin-to-output lineage on every record, as a byproduct of normal pipeline operation.' },
             { i: 4, slot: 2, teaser: 'Agentic AI doesn\'t mean unattended AI. Here\'s how we wire checkpoints into every pipeline from day one.' },
-            { i: 5, slot: 3, teaser: 'A production deployment case study. 97% faster. Every loan. Every night. No migration.' },
-            { i: 6, slot: 4, teaser: 'Watch a single loan move through all 6 agents — real timestamps, real data, real exception handling.' },
+            { i: 5, slot: 3, teaser: 'A production deployment case study. 100% portfolio coverage. Every loan. Every night. No migration.' },
+            { i: 6, slot: 4, teaser: 'Watch a single loan move through all 6 agents: real timestamps, real data, real exception handling.' },
           ].map(({ i, slot, teaser }) => (
             <div
               key={i}
@@ -1073,11 +1123,19 @@ export default function D8LABPage() {
         </div>
 
         <div className="lab-pane-foot">
-          <button className="lab-btn-primary">{paneData?.t === 'video' ? 'Watch video ↗' : 'Read full article ↗'}</button>
-          <button className="lab-btn-ghost" onClick={closePane}>Close</button>
+          <D8Button as="button" innerStyle={{ fontSize: 13, padding: '10px 22px' }}>
+            {paneData?.t === 'video' ? 'Watch video ↗' : 'Read full article ↗'}
+          </D8Button>
+          <button
+            onClick={closePane}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 500, color: '#515151', padding: '10px 12px', borderRadius: 9999, transition: 'color 0.15s ease' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#081F5C'}
+            onMouseLeave={e => e.currentTarget.style.color = '#515151'}
+          >Close</button>
         </div>
       </div>
 
+      <LabClosingCTA />
       <GlobalFooter />
     </>
   );

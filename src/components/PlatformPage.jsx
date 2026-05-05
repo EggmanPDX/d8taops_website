@@ -33,7 +33,7 @@ const PLATFORM_CSS = `
 
   .plt-node {
     flex-shrink: 0;
-    width: 120px; height: 64px;
+    width: 100px; height: 60px;
     background: ${WHITE};
     border: 1px solid rgba(4,119,191,0.30);
     border-radius: 10px;
@@ -55,7 +55,7 @@ const PLATFORM_CSS = `
   }
 
   .plt-connector {
-    flex: 1; min-width: 16px;
+    flex: 1; min-width: 8px;
     position: relative;
     height: 64px;
     display: flex; align-items: center;
@@ -397,7 +397,7 @@ function PlatformHero() {
 const AGENTS = [
   {
     id: 'INGEST',  name: 'D8:INGEST',  role: 'Connect',
-    desc: 'Connects directly to your existing data sources. No migration. No new infrastructure. Your data stays where it lives — agents come to it.',
+    desc: 'Connects directly to your existing data sources. No migration. No new infrastructure. Your data stays where it lives. Agents come to it.',
   },
   {
     id: 'CAT',     name: 'D8:CAT',     role: 'Catalog',
@@ -409,7 +409,7 @@ const AGENTS = [
   },
   {
     id: 'SEC',     name: 'D8:SEC',     role: 'Secure',
-    desc: 'Enforces access controls and governance policies across every data source and touchpoint. Built into the pipeline — not bolted on after the fact.',
+    desc: 'Enforces access controls and governance policies across every data source and touchpoint. Built into the pipeline, not bolted on after the fact.',
   },
   {
     id: 'FLOW',    name: 'D8:FLOW',    role: 'Orchestrate',
@@ -425,7 +425,7 @@ const AGENTS = [
   },
   {
     id: 'VIEW',    name: 'D8:VIEW',    role: 'Surface',
-    desc: 'The human-facing layer. Clean, governed data delivered as dashboards, reports, and APIs — in real time, when your team needs it.',
+    desc: 'The human-facing layer. Clean, governed data delivered as dashboards, reports, and APIs, in real time, when your team needs it.',
   },
 ];
 
@@ -438,7 +438,7 @@ function AgentsSection() {
   const toggle = (id) => setActiveId(prev => prev === id ? null : id);
 
   return (
-    <section style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box', position: 'relative' }}>
+    <section id="agents" style={{ background: WHITE, width: '100%', padding: '96px 0', boxSizing: 'border-box', position: 'relative' }}>
       <div aria-hidden="true" className="d8-section-label" style={{
         position: 'absolute', left: 'clamp(4px, 1.5vw, 18px)', top: '50%',
         transform: 'translateY(-50%) rotate(180deg)',
@@ -461,7 +461,7 @@ function AgentsSection() {
             Here's exactly what happens between raw data and AI-ready output.
           </SectionH3>
           <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.7, maxWidth: 640, margin: '0 0 20px' }}>
-            This is not eight separate tools. It's one connected pipeline. Each agent does a single job — and hands off to the next only when it's done.
+            This is not eight separate tools. It's one connected pipeline. Each agent does a single job and hands off to the next only when it's done.
           </p>
           <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.7, maxWidth: 640, margin: '0 0 48px' }}>
             Skip D8:CURATE and unvalidated data reaches your models. Skip D8:SEC and your governance layer doesn't exist. The sequence is the product.
@@ -481,7 +481,6 @@ function AgentsSection() {
             className="plt-pipe-row"
             style={{
               display: 'flex', alignItems: 'center',
-              minWidth: 900,
             }}
           >
             {AGENTS.map((agent, i) => (
@@ -496,7 +495,7 @@ function AgentsSection() {
                   }}
                   onClick={() => toggle(agent.id)}
                   aria-expanded={activeId === agent.id}
-                  aria-label={`${agent.name} — ${agent.role}`}
+                  aria-label={`${agent.name}: ${agent.role}`}
                 >
                   <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, fontWeight: 700, color: NAVY, lineHeight: 1 }}>{agent.name}</span>
                   <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 10, color: BLUE, lineHeight: 1 }}>{agent.role}</span>
@@ -522,7 +521,7 @@ function AgentsSection() {
         {activeAgent && (
           <div key={activeAgent.id} className="plt-panel" style={{ marginTop: 20, maxWidth: 540 }}>
             <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 8 }}>
-              {activeAgent.name} — {activeAgent.role}
+              {activeAgent.name}: {activeAgent.role}
             </div>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 14, color: BODY, lineHeight: 1.6, margin: 0 }}>
               {activeAgent.desc}
@@ -530,10 +529,7 @@ function AgentsSection() {
           </div>
         )}
 
-        {/* Proof attribution */}
-        <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 13, color: 'rgba(51,51,51,0.55)', marginTop: 36, marginBottom: 0 }}>
-          97% faster. 99.5% accuracy. $1.2M+ projected savings. — Kitsap Credit Union
-        </p>
+
       </div>
     </section>
   );
@@ -650,17 +646,15 @@ function ThePlatformSection() {
           {/* Left — body copy (60%) */}
           <div style={{ flex: '0 0 58%' }}>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: '0 0 20px' }}>
-              Most AI deployments start with a migration. Move your data to a new warehouse. Rebuild your infrastructure around a new tool. Six to eighteen months before you see results — if the project survives that long.
+              Most AI deployments start with a migration. Move your data to a new warehouse. Rebuild your infrastructure around a new tool. Six to eighteen months before you see results, if the project survives that long.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 600, color: NAVY, lineHeight: 1.75, margin: '0 0 20px' }}>
               No migration. No new infrastructure. No security exceptions.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: '0 0 20px' }}>
-              D8:PLATFORM provisions inside your existing cloud tenant — AWS, Azure, or GCP. The agents run where your data already lives. Your IT team doesn't file a security exception. Your CIO doesn't approve a data transfer. The pipeline exists entirely within your walls.
+              D8:PLATFORM provisions inside your existing cloud tenant: AWS, Azure, or GCP. The agents run where your data already lives. Your IT team doesn't file a security exception. Your CIO doesn't approve a data transfer. The pipeline exists entirely within your walls.
             </p>
-            <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 600, color: NAVY, lineHeight: 1.75, margin: 0 }}>
-              Kitsap Credit Union was in production in 6 weeks.
-            </p>
+
           </div>
 
           {/* Right — architecture diagram (40%) */}
@@ -707,7 +701,7 @@ function ThePlatformSection() {
             {[
               { num: '6 weeks', ghost: '6w',   label: 'Time to production',            sub: 'Micro-MVP to production. No multi-year migrations.' },
               { num: '0',       ghost: '0',     label: 'Data migration required',       sub: 'Agents run where your data already lives.' },
-              { num: '100%',    ghost: '100%',  label: 'Data stays in your environment', sub: 'Inside your cloud tenant — AWS, Azure, or GCP.' },
+              { num: '100%',    ghost: '100%',  label: 'Data stays in your environment', sub: 'Inside your cloud tenant: AWS, Azure, or GCP.' },
             ].map(({ num, ghost, label, sub }) => (
               <div key={label} style={{
                 background: 'rgba(255,255,255,0.05)',
@@ -726,14 +720,11 @@ function ThePlatformSection() {
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 700, color: GREEN, lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 8 }}>{num}</div>
                   <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: WHITE, marginBottom: 6 }}>{label}</div>
-                  <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>{sub}</div>
+                  <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5 }}>{sub}</div>
                 </div>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginTop: 28, marginBottom: 0 }}>
-            Kitsap Credit Union — deployed on existing infrastructure
-          </p>
         </div>
       </div>
     </section>
@@ -838,12 +829,16 @@ function ACMSection() {
   const [calloutsRef, calloutsVisible] = useStaggerReveal(3);
 
   return (
-    <section style={{ background: WHITE, width: '100%', padding: '96px clamp(1.5rem, 5vw, 80px)', boxSizing: 'border-box' }}>
+    <section id="acm" style={{ background: WHITE, width: '100%', padding: '96px clamp(1.5rem, 5vw, 80px)', boxSizing: 'border-box' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Header */}
         <div ref={ref}>
           <div className={`d8-reveal${visible ? ' in' : ''}`}>
-            <Eyebrow>ACM</Eyebrow>
+            <img
+              src="/images/ACM%20swish%20logo%20blue%20gradient.jpg"
+              alt="ACM"
+              style={{ height: 40, width: 'auto', marginBottom: 16, display: 'block' }}
+            />
           </div>
           <SectionH2 style={{ maxWidth: 600, transitionDelay: '80ms' }}>
             You control what the agents can do.
@@ -861,13 +856,13 @@ function ACMSection() {
               Agentic automation works best when humans stay in charge of the decisions that matter.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: '0 0 20px' }}>
-              ACM is the governance layer that makes that possible. It defines what each agent is allowed to do, what data it can access, and what requires human approval before an action runs. Role-based permissions. Policy-based execution. A complete, auditable record of every decision — so nothing happens in a black box.
+              ACM is the governance layer that makes that possible. It defines what each agent is allowed to do, what data it can access, and what requires human approval before an action runs. Role-based permissions. Policy-based execution. A complete, auditable record of every decision, so nothing happens in a black box.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: '0 0 20px' }}>
               When a workflow touches sensitive data, a regulated process, or anything that requires a second set of eyes, ACM stops and routes it for review. The agents handle the volume. Your team handles the judgment calls.
             </p>
             <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, margin: 0 }}>
-              A workflow that touches a regulated data field doesn't just slow down — it stops, routes to the right person, and waits for approval. With a full log of why.
+              A workflow that touches a regulated data field doesn't just slow down; it stops, routes to the right person, and waits for approval. With a full log of why.
             </p>
           </div>
 
@@ -981,12 +976,12 @@ const WORKFLOW_CARDS = [
     ],
     headline: 'Month-end close in 4 days. NCUA filing ready before the examiner asks.',
     trigger: 'Manual re-keying. Fragmented sources. No validation layer between source and filing.',
-    workflow: 'D8:AGENTS connect the data corridor, match GL entries against NCUA Call Report schedules in real time, and route exceptions automatically — so the Controller reviews only true outliers.',
+    workflow: 'D8:AGENTS connect the data corridor, match GL entries against NCUA Call Report schedules in real time, and route exceptions automatically, so the Controller reviews only true outliers.',
     stats: [
-      { num: '70% faster',   label: 'Close cycle — 10–14 days → under 4 days' },
+      { num: '70% faster',   label: 'Close cycle: 10–14 days → under 4 days' },
       { num: '$180K–$320K',  label: 'Annual leakage recovered' },
       { num: '35 hrs/week',  label: 'Returned to the accounting team' },
-      { num: 'Every day',    label: 'NCUA filing readiness — continuous' },
+      { num: 'Every day',    label: 'NCUA filing readiness: continuous' },
     ],
   },
   {
@@ -999,14 +994,14 @@ const WORKFLOW_CARDS = [
       { name: 'D8:CURATE', role: 'Clean' },
       { name: 'D8:FLOW',   role: 'Orchestrate' },
     ],
-    headline: 'Real-time campaign profitability. Before the margin disappears — not after.',
+    headline: 'Real-time campaign profitability. Before the margin disappears, not after.',
     trigger: '12 days to reconcile a billing cycle. By the time you find the gap, the campaign is closed.',
     workflow: 'D8:AGENTS cross-reference invoice actuals against approved insertion orders in real time and flag discrepancies before they reach finance.',
     stats: [
-      { num: '70% faster',    label: 'Reconciliation cycle — 12 days → under 4 days' },
+      { num: '70% faster',    label: 'Reconciliation cycle: 12 days → under 4 days' },
       { num: '$180K–$340K',   label: 'Annual recovery in overbilling and unbilled scope' },
       { num: '35 hrs/week',   label: 'Returned to account and operations staff' },
-      { num: 'Real-time',     label: 'Campaign profitability — live, not post-mortem' },
+      { num: 'Real-time',     label: 'Campaign profitability: live, not post-mortem' },
     ],
   },
   {
@@ -1019,7 +1014,7 @@ const WORKFLOW_CARDS = [
     ],
     headline: 'The diagnostic intelligence was always there. It was just trapped in a WhatsApp thread.',
     trigger: 'Fault intelligence written in a WhatsApp message. Summarized away before it reaches the manager.',
-    workflow: 'D8:AGENTS ingest shift logs and fault notes from existing CMMS and ERP systems, classify every fault by machine and severity, and surface a prioritized maintenance feed — automatically.',
+    workflow: 'D8:AGENTS ingest shift logs and fault notes from existing CMMS and ERP systems, classify every fault by machine and severity, and surface a prioritized maintenance feed automatically.',
     stats: [
       { num: '18–25%',        label: 'Reduction in unplanned downtime' },
       { num: '$200K–$800K',   label: 'Recovered annually depending on line throughput' },
@@ -1056,7 +1051,7 @@ function WorkflowsSection() {
             Rule-heavy. High-volume. Manual today. Automated in 6 weeks.
           </SectionH3>
           <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, maxWidth: 640, margin: '0 0 12px' }}>
-            The D8:Agents solve the same structural problem wherever it shows up — complex, rule-heavy work that humans are doing manually because no one ever built the connective tissue between the systems.
+            The D8:Agents solve the same structural problem wherever it shows up: complex, rule-heavy work that humans are doing manually because no one ever built the connective tissue between the systems.
           </p>
           <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: BODY, lineHeight: 1.75, maxWidth: 640, margin: '0 0 56px' }}>
             Here's what that looks like across three different operations.
@@ -1151,7 +1146,13 @@ function PlatformClosingCTA() {
         <h3 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 18, fontWeight: 600, color: BLUE, lineHeight: 1.5, margin: '0 0 40px' }}>
           We'll map the D8:AGENTS to your actual data environment.<br />One conversation. No pitch deck.
         </h3>
-        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Map the D8:Agents to your stack</D8Button>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Map the D8:Agents to your stack</D8Button>
+          <a href="/#agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: 'rgba(255,255,255,0.65)', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: 2, transition: 'color 0.18s ease, border-color 0.18s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+          >See the agents →</a>
+        </div>
       </div>
     </section>
   );

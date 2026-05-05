@@ -273,7 +273,7 @@ function AboutHero() {
           <p style={{
             fontFamily: "'IBM Plex Sans', sans-serif",
             fontSize: 'clamp(16px, 1.8vw, 20px)', fontWeight: 400,
-            color: 'rgba(255,255,255,0.65)',
+            color: 'rgba(255,255,255,0.75)',
             lineHeight: 1.6, margin: 0, maxWidth: 520,
             opacity: 0, animation: 'ab-hero-in 720ms 240ms cubic-bezier(0.22,1,0.36,1) both',
           }}>
@@ -337,7 +337,7 @@ function WhyWeExist() {
               fontSize: 16, color: BODY, lineHeight: 1.75,
               margin: 0, maxWidth: '48ch', transitionDelay: '160ms',
             }}>
-              Generative AI went from theoretical to practical almost overnight. But for most organizations, the answer to "is your data ready for AI?" is still no — not because the technology isn't ready, but because the infrastructure around the data never got built.
+              Generative AI went from theoretical to practical almost overnight. But for most organizations, the answer to "is your data ready for AI?" is still no, not because the technology isn't ready, but because the infrastructure around the data never got built.
             </p>
           </div>
           <div ref={insightRef} style={{ paddingTop: 4 }}>
@@ -367,7 +367,7 @@ function WhyWeExist() {
               <p style={{
                 fontFamily: "'IBM Plex Sans', sans-serif",
                 fontSize: 14, fontStyle: 'italic',
-                color: 'rgba(51,51,51,0.55)', lineHeight: 1.65, margin: 0,
+                color: MUTED, lineHeight: 1.65, margin: 0,
               }}>
                 Think of it like warehouse robotics: you don't rebuild the warehouse. You deploy robots into what already exists. That's how D8TAOPS works.
               </p>
@@ -471,7 +471,7 @@ function CloudInfographic() {
 
   return (
     <div className="ab-cloud-box">
-      <div className="ab-cloud-label">YOUR CLOUD ENVIRONMENT — AWS / AZURE / GCP</div>
+      <div className="ab-cloud-label">YOUR CLOUD ENVIRONMENT: AWS / AZURE / GCP</div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, width: '100%', boxSizing: 'border-box' }}>
         {sources.map(s => <div key={s} className="ab-source-chip">{s}</div>)}
@@ -502,8 +502,8 @@ function CloudInfographic() {
           <circle cx="8" cy="8" r="7" stroke="rgba(220,60,60,0.45)" strokeWidth="1.5" />
           <line x1="4" y1="4" x2="12" y2="12" stroke="rgba(220,60,60,0.55)" strokeWidth="1.5" />
         </svg>
-        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: 'rgba(51,51,51,0.55)', fontStyle: 'italic' }}>
-          External servers — your data never crosses this boundary
+        <span style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, color: MUTED, fontStyle: 'italic' }}>
+          External servers. Your data never crosses this boundary.
         </span>
       </div>
     </div>
@@ -512,13 +512,12 @@ function CloudInfographic() {
 
 function TheApproach() {
   const [ref, visible] = useReveal();
-  const [statsRef, statsCount] = useStaggerReveal(4, 0.1);
+  const [statsRef, statsCount] = useStaggerReveal(3, 0.1);
 
   const stats = [
     { num: '6 weeks', label: 'Time to production',             sub: 'Micro-MVP to production.' },
     { num: '0',       label: 'Data migration required',        sub: 'Agents come to your data.' },
     { num: '100%',    label: 'Data stays in your environment', sub: 'AWS, Azure, or GCP.' },
-    { num: '$1.2M+',  label: 'Projected savings',              sub: 'Over a 3-year deployment.' },
   ];
 
   return (
@@ -545,14 +544,14 @@ function TheApproach() {
               fontSize: 16, color: BODY, lineHeight: 1.75,
               margin: '0 0 20px', maxWidth: '44ch', transitionDelay: '160ms',
             }}>
-              The world is chasing public models. OpenAI, Anthropic, Grok — powerful tools built on public information.
+              The world is chasing public models. OpenAI, Anthropic, Grok: powerful tools built on public information.
             </p>
             <p className={`ab-reveal${visible ? ' in' : ''}`} style={{
               fontFamily: "'IBM Plex Sans', sans-serif",
               fontSize: 16, color: BODY, lineHeight: 1.75,
               margin: '0 0 20px', maxWidth: '44ch', transitionDelay: '200ms',
             }}>
-              Your competitive edge isn't there. It's in your systems — your transaction history, your operational decisions, the institutional knowledge your team has built over years.
+              Your competitive edge isn't there. It's in your systems: your transaction history, your operational decisions, the institutional knowledge your team has built over years.
             </p>
             <p className={`ab-reveal${visible ? ' in' : ''}`} style={{
               fontFamily: "'IBM Plex Sans', sans-serif",
@@ -581,7 +580,7 @@ function TheApproach() {
                 transition: `opacity 480ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1), transform 480ms ${i * 100}ms cubic-bezier(0.22,1,0.36,1)`,
               }}
             >
-              <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: 700, color: NAVY, lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 10 }}>{num}</div>
+              <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 'clamp(36px, 4vw, 52px)', fontWeight: 700, color: NAVY, lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 10 }}>{num}</div>
               <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: BLUE, marginBottom: 4 }}>{label}</div>
               <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12, color: MUTED, lineHeight: 1.5 }}>{sub}</div>
             </div>
@@ -610,17 +609,23 @@ function AboutCTA() {
           fontWeight: 700, color: WHITE,
           lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 20px',
         }}>
-          See it in your environment.
+          Six weeks to production. Zero migration.
         </h2>
         <p style={{
           fontFamily: "'IBM Plex Sans', sans-serif",
           fontSize: 18, fontWeight: 500,
-          color: 'rgba(255,255,255,0.65)',
+          color: 'rgba(255,255,255,0.75)',
           lineHeight: 1.6, margin: '0 0 40px',
         }}>
           One conversation. No pitch deck. We'll map the D8:Agents to your actual data stack.
         </p>
-        <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <D8Button href="mailto:hello@d8taops.com" innerStyle={{ fontSize: 16, padding: '17px 40px' }}>Get in touch</D8Button>
+          <a href="/platform#agents" style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, fontWeight: 500, color: 'rgba(255,255,255,0.65)', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: 2, transition: 'color 0.18s ease, border-color 0.18s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.65)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
+          >See how it works →</a>
+        </div>
       </div>
     </section>
   );
