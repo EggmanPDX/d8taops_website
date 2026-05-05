@@ -1343,8 +1343,7 @@ function GlobalFooter() {
             fontSize: 12, color: 'rgba(255,255,255,0.32)',
             fontStyle: 'normal', lineHeight: 1.6,
           }}>
-            123 Placeholder Street, Suite 100<br />
-            Portland, OR 97201
+            Somewhere deep in the woods.
           </address>
 
           {/* Social icons */}
